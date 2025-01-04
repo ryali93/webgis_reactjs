@@ -1,0 +1,70 @@
+.naxatw-w-fit {
+    /* width: -moz-fit-content; */
+    width: fit-content
+}
+
+.naxatw-mx-auto {
+    margin-left: auto;
+    margin-right: auto
+}
+
+.naxatw-w-full {
+    width: 100%
+}
+
+.naxatw-w-screen {
+    width: 100vw
+}
+
+.naxatw-mx-8 {
+    margin-left: 2rem;
+    margin-right: 2rem
+}
+
+.\!naxatw-flex {
+    display: flex!important
+}
+
+.naxatw-flex {
+    display: flex
+}
+
+.naxatw-inline-flex {
+    display: inline-flex
+}
+
+.naxatw-flex-row {
+    flex-direction: row
+}
+
+.naxatw-flex-col {
+    flex-direction: column
+}
+
+.naxatw-justify-center {
+    justify-content: center
+}
+
+.naxatw-gap-2\.5 {
+    gap: .625rem
+}
+
+.naxatw-mt-3 {
+    margin-top: .75rem
+}
+
+.\!naxatw-mt-3 {
+    margin-top: .75rem!important
+}
+
+.\!naxatw-mb-2 {
+    margin-bottom: .5rem!important
+}
+
+.naxatw-mb-2 {
+    margin-bottom: .5rem
+}
+
+.naxatw-gap-2\.5 {
+    gap: .625rem
+}

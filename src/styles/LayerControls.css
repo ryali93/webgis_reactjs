@@ -1,0 +1,33 @@
+/* src/styles/LayerControls.css */
+.layer-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 250px;
+  }
+  
+  .layer-group {
+    margin-bottom: 20px;
+  }
+  
+  .layer-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .layer-item label {
+    flex: 1;
+    font-size: 14px;
+  }
+  
+  .layer-item input[type='range'] {
+    margin-left: 10px;
+    flex: 2;
+  }
+  

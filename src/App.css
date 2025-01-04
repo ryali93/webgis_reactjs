@@ -1,0 +1,20 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* .main-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 50px);
+  position: relative;
+} */
+
+/* Ajustes para el contenedor principal */
+.main-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 50px); /* Descuenta la altura del navbar */
+  transition: margin-right 0.2s ease-in-out; /* Suaviza el ajuste del mapa */
+}
