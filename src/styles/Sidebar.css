@@ -15,11 +15,17 @@
   width: 50px; /* Ancho reducido */
 }
 
+/* Contenedor del botón toggle */
+.toggle-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centrar el botón horizontalmente */
+  padding: 10px 0; /* Espaciado en la parte superior e inferior */
+  background-color: #2c3e50; /* Mantén el color del fondo */
+}
+
 /* Botón de colapsar/expandir */
 .toggle-button {
-  position: absolute;
-  top: 10px;
-  right: -15px; /* Asegúrate de que no solape con el mapa */
   background-color: #3498db;
   color: white;
   border: none;
@@ -30,8 +36,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 20; /* Asegura que esté encima del sidebar */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
 }
 
 .toggle-button:hover {

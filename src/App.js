@@ -4,9 +4,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import MapContainer from './components/MapContainer';
-import LayerManager from './components/LayerManager';
-// import MapTools from './components/MapTools';
-// import LayerControls from './components/LayerControls';
 import RightSidebar from './components/RightSidebar';
 
 import createMap from './components/Map';
@@ -33,11 +30,6 @@ function App() {
           {map && <MapContainer map={map} />} {/* Ahora el LayerManager está dentro de MapContainer */}
         </div>
         <RightSidebar onWidthChange={setRightSidebarWidth}>
-          <h3>Tools</h3>
-          <p>Add your tools here!</p>
-          <button>Tool 1</button>
-          <button>Tool 2</button>
-          <button>Tool 3</button>
         </RightSidebar>
       </div>
     </ErrorBoundary>

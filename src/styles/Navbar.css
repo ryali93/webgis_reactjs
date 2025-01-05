@@ -1,33 +1,63 @@
-/* src/styles/Navbar.css */
-.navbar {
+/* Navbar general */
+.header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px; /* Altura fija */
-  background-color: #2c3e50;
-  color: white;
-  padding: 0 20px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  z-index: 2000; /* Asegura que el navbar esté encima */
-}
-/* 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Centrar elementos verticalmente */
+  justify-content: space-between; /* Separar las secciones del navbar */
   height: 50px;
-  background-color: #2c3e50;
-  color: white;
+  background-color: #ffffff;
   padding: 0 20px;
-} */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+}
 
-.navbar-center .tool-btn {
-  margin-right: 10px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 5px 10px;
+/* Sección izquierda */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.draw-icons-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.darwing-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e0e0e0;
   border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.darwing-icons img {
+  width: 20px;
+  height: 20px;
+}
+
+.darwing-icons:hover {
+  background-color: #e6f4ff;
+}
+
+/* Sección central */
+.navbar-center h1 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333333;
+  margin: 0;
+  text-align: center;
+}
+
+/* Sección derecha */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-btn {
@@ -35,120 +65,15 @@
   border: none;
   color: #2c3e50;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
-
-
-/* HEADER */
-.header {
-  align-items: center;
+  width: 40px;
+  height: 40px;
   display: flex;
-  height: 50px; /* EVALUAR POR QUE ES 69PX EN GEONADIR*/
-  padding: 0 10px;
-  justify-content: space-between;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  text-align: center;
-  --tw-shadow: 0px 1px 0px 0px rgba(0, 0, 0, .05);
-  --tw-shadow-colored: 0px 1px 0px 0px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)
-}
-
-.details-header-breadcrumb {
-  margin-bottom: auto;
-  margin-left: 16px;
-  margin-top: auto;
-  display: flex;
-  width: 100%;
-  gap: .25rem;
-  text-align: left
-}
-
-.details-header-breadcrumb.popup-header-breadcrumb {
-  margin-left: 32px;
-  margin-top: 0
-}
-
-.details-header-breadcrumb .header-project-name {
-  margin-right: 1rem;
-  font-family: Archivo;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  font-weight: 700
-}
-
-.new-layer-warpper {
-  margin-top: 1rem;
-  margin-right: 1.5rem;
-  display: flex;
-  height: 2.25rem;
-  flex-direction: row;
-  align-items: center;
-  gap: .5rem
-}
-
-
-/* Navbar icons */
-.header-back-btn {
-  display: flex;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  font-weight: 700
-}
-
-.header-back-btn i {
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-right: .5rem;
-  cursor: pointer;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  --tw-text-opacity: 1;
-  color: rgb(116 123 132 / var(--tw-text-opacity))
-}
-
-/* Draw icons */
-.draw-icons-wrapper img {
-  height: 2.5rem;
-  width: 2.5rem
-}
-
-.darwing-icons {
-  display: flex;
-  height: 2.5rem;
-  width: 2.5rem;
-  cursor: pointer;
   align-items: center;
   justify-content: center;
-  border-radius: .625rem;
-  border-width: 1px;
-  --tw-border-opacity: 1;
-  border-color: rgb(235 238 242 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(244 246 249 / var(--tw-bg-opacity))
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.darwing-icons:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 172 187 / var(--tw-border-opacity))
+.user-btn:hover {
+  background-color: #d6dbdf;
 }
-
-.darwing-icons.is-disabled {
-  --tw-bg-opacity: 1;
-  background-color: rgb(244 246 249 / var(--tw-bg-opacity))
-}
-
-.darwing-icons.is-selected {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 172 187 / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: rgb(202 237 241 / var(--tw-bg-opacity))
-}
-
-.darwing-icons img {
-  height: 1.358rem;
-  width: 1.237rem
-}
-

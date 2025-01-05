@@ -12,9 +12,11 @@ function Sidebar() {
   return (
     <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
       {/* Botón de colapsar/expandir */}
-      <button className="toggle-button" onClick={toggleSidebar}>
-        {collapsed ? '>' : '<'}
-      </button>
+      <div className="toggle-wrapper">
+        <button className="toggle-button" onClick={toggleSidebar}>
+          {collapsed ? '>' : '<'}
+        </button>
+      </div>
 
       {/* Lista de proyectos */}
       <div className="project-list">

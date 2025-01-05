@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/LayerManager.css';
 
-function LayerManager({ baseLayers, overlayLayers, toggleVisibility, changeOpacity }) {
+function LayerManager({ baseLayers, toggleVisibility, changeOpacity }) { //, overlayLayers
   return (
     <div className="layer-manager">
       <h3>Layer Manager</h3>
@@ -30,7 +30,7 @@ function LayerManager({ baseLayers, overlayLayers, toggleVisibility, changeOpaci
         ))}
       </div>
 
-      <div className="layer-group">
+      {/* <div className="layer-group">
         <div className="group-header">Overlays -</div>
         {overlayLayers.map(({ layer, visible, opacity }, index) => (
           <div key={index} className="layer-item">
@@ -52,7 +52,7 @@ function LayerManager({ baseLayers, overlayLayers, toggleVisibility, changeOpaci
             />
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

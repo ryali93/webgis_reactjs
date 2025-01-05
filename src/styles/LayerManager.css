@@ -56,11 +56,6 @@
   color: #333;
 }
 
-.layer-item input[type="range"] {
-  width: 120px;
-  margin-left: 10px;
-}
-
 .layer-item input[type="checkbox"] {
   margin-right: 10px;
 }
@@ -78,4 +73,69 @@
   background: #d9d9d9;
   height: 4px;
   border-radius: 2px;
+}
+
+
+
+
+
+
+.layer-item input[type="range"] {
+  -webkit-appearance: none; /* Estilo personalizado */
+  width: 120px;
+  margin-left: 10px;
+  height: 4px; /* Ajustar la altura de la pista */
+  background: #d9d9d9;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.layer-item input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #0078d4;
+  border: none;
+  border-radius: 50%;
+  height: 16px; /* Asegúrate de que este valor sea proporcional */
+  width: 16px;
+  margin-top: -6px; /* Ajustar la posición vertical del pulgar */
+  cursor: pointer;
+}
+
+.layer-item input[type="range"]::-moz-range-thumb {
+  background: #0078d4;
+  border: none;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+}
+
+.layer-item input[type="range"]::-ms-thumb {
+  background: #0078d4;
+  border: none;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+}
+
+.layer-item input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #d9d9d9;
+  border-radius: 2px;
+}
+
+.layer-item input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #d9d9d9;
+  border-radius: 2px;
+}
+
+.layer-item input[type="range"]::-ms-track {
+  height: 4px;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
 }

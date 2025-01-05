@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/RightSidebar.css';
 
-function RightSidebar({ children, onWidthChange }) {
+function RightSidebar({ onWidthChange }) {
   const [width, setWidth] = useState(300); // Ancho inicial del sidebar
   const sidebarRef = useRef(null);
   const isDragging = useRef(false);
@@ -46,7 +46,21 @@ function RightSidebar({ children, onWidthChange }) {
         onMouseDown={startDragging}
         title="Arrastra para redimensionar"
       ></div>
-      <div className="sidebar-content">{children}</div>
+      <div className="sidebar-content">
+        <h3>Tools</h3>
+        <p>Add your tools here!</p>
+        <ul>
+          <li>
+            <button>Tool 1</button>
+          </li>
+          <li>
+            <button>Tool 2</button>
+          </li>
+          <li>
+            <button>Tool 3</button>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }

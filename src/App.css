@@ -4,13 +4,6 @@
   height: 100vh;
 }
 
-/* .main-content {
-  display: flex;
-  flex: 1;
-  height: calc(100vh - 50px);
-  position: relative;
-} */
-
 /* Ajustes para el contenedor principal */
 .main-content {
   display: flex;

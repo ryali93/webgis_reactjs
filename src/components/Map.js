@@ -4,6 +4,7 @@ import OlView from 'ol/View';
 import OlLayerTile from 'ol/layer/Tile';
 import OlSourceOsm from 'ol/source/OSM';
 import OlSourceXYZ from 'ol/source/XYZ';
+import OlControlScaleLine from 'ol/control/ScaleLine';
 import { fromLonLat } from 'ol/proj';
 
 import 'ol/ol.css';
@@ -40,13 +41,13 @@ function createMap() {
       center: fromLonLat([-3.7038, 40.4168]), // Madrid
       zoom: 6,
     }),
-    layers: [...baseLayers, ...overlayLayers],
+    layers: [...baseLayers], //, ...overlayLayers
   });
 
   // Funciones para gestionar las capas
   map.getLayerManager = () => ({
     baseLayers,
-    overlayLayers,
+    // overlayLayers,
     toggleLayerVisibility: (layer) => {
       layer.setVisible(!layer.getVisible());
     },
@@ -54,6 +55,10 @@ function createMap() {
       layer.setOpacity(opacity);
     },
   });
+
+  // Set a scale line control
+  var scale = new OlControlScaleLine();
+  map.addControl(scale);
 
   return map;
 }

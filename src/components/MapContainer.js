@@ -5,8 +5,8 @@ import '../styles/MapContainer.css';
 function MapContainer({ map }) {
   const mapRef = useRef();
   const [layerState, setLayerState] = useState({
-    baseLayers: [],
-    overlayLayers: [],
+    baseLayers: []
+    // overlayLayers: [],
   });
 
   useEffect(() => {
@@ -20,12 +20,13 @@ function MapContainer({ map }) {
           layer,
           visible: layer.getVisible(),
           opacity: layer.getOpacity(),
-        })),
-        overlayLayers: layerManager.overlayLayers.map((layer) => ({
-          layer,
-          visible: layer.getVisible(),
-          opacity: layer.getOpacity(),
-        })),
+        }))
+        // ,
+        // overlayLayers: layerManager.overlayLayers.map((layer) => ({
+        //   layer,
+        //   visible: layer.getVisible(),
+        //   opacity: layer.getOpacity(),
+        // })),
       });
     }
 
@@ -39,7 +40,7 @@ function MapContainer({ map }) {
   const toggleVisibility = (targetLayer) => {
     const newState = { ...layerState };
 
-    for (const layerGroup of ['baseLayers', 'overlayLayers']) {
+    for (const layerGroup of ['baseLayers']) { //, 'overlayLayers'
       newState[layerGroup] = newState[layerGroup].map((item) => {
         if (item.layer === targetLayer) {
           item.layer.setVisible(!item.visible);
@@ -55,7 +56,7 @@ function MapContainer({ map }) {
   const changeOpacity = (targetLayer, value) => {
     const newState = { ...layerState };
 
-    for (const layerGroup of ['baseLayers', 'overlayLayers']) {
+    for (const layerGroup of ['baseLayers']) { //, 'overlayLayers'
       newState[layerGroup] = newState[layerGroup].map((item) => {
         if (item.layer === targetLayer) {
           item.layer.setOpacity(value);
@@ -73,7 +74,7 @@ function MapContainer({ map }) {
       <div ref={mapRef} className="ol-map" />
       <LayerManager
         baseLayers={layerState.baseLayers}
-        overlayLayers={layerState.overlayLayers}
+        // overlayLayers={layerState.overlayLayers}
         toggleVisibility={toggleVisibility}
         changeOpacity={changeOpacity}
       />
