@@ -15,7 +15,7 @@ RUN npm i web-vitals
 COPY . .
 
 # Exponer el puerto de la aplicación
-EXPOSE 3000
+EXPOSE 4000
 
 # Comando por defecto al iniciar el contenedor
 CMD ["npm", "start"]

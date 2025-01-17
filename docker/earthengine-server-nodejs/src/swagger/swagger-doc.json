@@ -1,0 +1,953 @@
+{
+    "info":
+    {
+        "description": "\n\n# Introduction\n\n### Welcome to the API reference!\n\nThe reference provides an explanation of all resources accessible through the Google Earth Engine API.\nOur API is designed around REST, has predictable resource-oriented URLs and uses standard HTTP verbs and status codes.\n\n### Message formats\nRequests are sent as JSON or in some cases form-encoded. \nString properties are encoded using UTF-8\n\n",
+        "title": "EarthEngine Server API",
+        "version": "1.0.0"
+    },
+    "license":
+    {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "host": "localhost:3000",
+    "schemes": ["http"],
+    "openapi": "3.0.2",
+    "paths":
+    {
+        "/display-img":
+        {
+            "get":
+            {
+                "parameters":
+                [
+                    {
+                        "description": "El ID del dataset en Earth Engine",
+                        "in": "query",
+                        "name": "id",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                    },
+                    {
+                        "description": "Punto de interés en formato de punto codificado",
+                        "in": "query",
+                        "name": "geometry",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[-4.691807057731051, 40.61561804774942]"
+                    },
+                    {
+                        "description": "Los índices a calcular",
+                        "in": "query",
+                        "name": "indices",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "NDVI"
+                    },
+                    {
+                        "description": "La escala de la imagen",
+                        "in": "query",
+                        "name": "scale",
+                        "required": false,
+                        "schema": {"type": "number"},
+                        "default": 1
+                    },
+                    {
+                        "description": "La fecha de inicio",
+                        "in": "query",
+                        "name": "start_date",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-03"
+                    },
+                    {
+                        "description": "La fecha de fin",
+                        "in": "query",
+                        "name": "end_date",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-07"
+                    },
+                    {
+                        "description": "Porcentaje de cobertura de nubes",
+                        "in": "query",
+                        "name": "cloud_cover",
+                        "required": false,
+                        "schema": {"type": "number"},
+                        "default": 80
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "El ID del dataset en Earth Engine",
+                                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                                    },
+                                    "geometry": {
+                                        "type": "array",
+                                        "description": "Área de interés en formato de polígono codificado",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "default": "[-4.691807057731051, 40.61561804774942]"
+                                    },
+                                    "indices": {
+                                        "type": "string",
+                                        "description": "Los índices a calcular",
+                                        "default": "NDVI"
+                                    },
+                                    "scale": {
+                                        "type": "number",
+                                        "description": "La escala de la imagen",
+                                        "default": 1
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "description": "La fecha de inicio",
+                                        "default": "2024-06-03"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "description": "La fecha de fin",
+                                        "default": "2024-06-07"
+                                    },
+                                    "cloud_cover": {
+                                        "type": "number",
+                                        "description": "Porcentaje de cobertura de nubes",
+                                        "default": 80
+                                    }
+                                },
+                                "required": ["id", "geometry"]
+                            }
+                        }
+                    }
+                },
+                "responses":
+                {
+                    "200":
+                    {
+                        "content":
+                        {
+                            "application/json":
+                            {
+                                "schema":
+                                {
+                                    "properties":
+                                    {
+                                        "urlFormat":
+                                        {
+                                            "description": "La URL de la imagen",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "Retorna la imagen"
+                    },
+                    "400": {"description": "Error en los datos de entrada"}
+                },
+                "summary": "Obtiene una serie de imágenes como parches para un rango de fechas desde Earth Engine",
+                "tags": ["Data"]
+            }
+        },
+        "/get-available-dates":
+        {
+            "get":
+            {
+                "parameters":
+                [
+                    {
+                        "description": "El ID del dataset en Earth Engine",
+                        "in": "query",
+                        "name": "id",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                    },
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                    },
+                    {
+                        "description": "Porcentaje de cobertura de nubes",
+                        "in": "query",
+                        "name": "cloud_cover",
+                        "required": true,
+                        "schema": {"type": "number"},
+                        "default": 80
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "El ID del dataset en Earth Engine",
+                                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                                    },
+                                    "area": {
+                                        "type": "array",
+                                        "description": "Área de interés en formato de polígono codificado",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                                    },
+                                    "cloud_cover": {
+                                        "type": "number",
+                                        "description": "Porcentaje de cobertura de nubes",
+                                        "default": 80
+                                    }
+                                },
+                                "required": ["id", "geometry"]
+                            }
+                        }
+                    }
+                },
+                "responses":
+                {
+                    "200":
+                    {
+                        "content":
+                        {
+                            "application/json":
+                            {
+                                "schema":
+                                {
+                                    "properties":
+                                    {
+                                        "dates":
+                                        {
+                                            "description": "Las fechas disponibles",
+                                            "items": {"type": "string"},
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "Retorna las fechas disponibles"
+                    },
+                    "400": {"description": "Error en los datos de entrada"}
+                },
+                "summary": "Obtiene las fechas disponibles para un conjunto de datos",
+                "tags": ["Data"]
+            }
+        },
+        "/get-hotspot":
+        {
+            "get":
+            {
+                "parameters":
+                [
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "schema": {"type": "string"},
+                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                    },
+                    {
+                        "description": "Fecha de inicio en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "start_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2021-08-09"
+                    },
+                    {
+                        "description": "Fecha de fin en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "end_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2021-08-20"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "area": {
+                                        "type": "array",
+                                        "description": "Área de interés en formato de polígono codificado",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "description": "Fecha de inicio en formato YYYY-MM-DD",
+                                        "default": "2021-08-09"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "description": "Fecha de fin en formato YYYY-MM-DD",
+                                        "default": "2021-08-20"
+                                    }
+                                },
+                                "required": ["area", "start_date", "end_date"]
+                            }
+                        }
+                    }
+                },
+                "responses":
+                {
+                    "200":
+                    {
+                        "content":
+                        {
+                            "application/json":
+                            {
+                                "schema":
+                                {
+                                    "properties":
+                                    {
+                                        "urlFormat":
+                                        {
+                                            "description": "URL del mapa de hotspot",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "Retorna el mapa de hotspot"
+                    },
+                    "400": {"description": "Error en los datos de entrada"}
+                },
+                "summary": "Obtiene el mapa de frente de llama",
+                "tags": ["Data", "Map"]
+            }
+        },
+        "/post-mapid": {
+            "post": {
+                "summary": "Obtiene el formato de URL del mapa",
+                "tags": ["Map"],
+                "parameters": [
+                    {
+                        "description": "El ID del dataset en Earth Engine",
+                        "in": "query",
+                        "name": "id",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                    },
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                    },
+                    {
+                        "description": "Los índices a calcular",
+                        "in": "query",
+                        "name": "indices",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "NDVI"
+                    },
+                    {
+                        "description": "Tipo de datos",
+                        "in": "query",
+                        "name": "gee_type",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "image_collection"
+                    },
+                    {
+                        "description": "El tipo de reducción a aplicar",
+                        "in": "query",
+                        "name": "reducer",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "mean"
+                    },
+                    {
+                        "description": "La escala de la imagen",
+                        "in": "query",
+                        "name": "scale",
+                        "required": false,
+                        "schema": {"type": "number"},
+                        "default": 1
+                    },
+                    {
+                        "description": "La fecha de inicio",
+                        "in": "query",
+                        "name": "start_date",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-03"
+                    },
+                    {
+                        "description": "La fecha de fin",
+                        "in": "query",
+                        "name": "end_date",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-07"
+                    },
+                    {
+                        "description": "Visualización de la imagen",
+                        "in": "query",
+                        "name": "vis",
+                        "required": false,
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "description": "Porcentaje de cobertura de nubes",
+                        "in": "query",
+                        "name": "cloud_cover",
+                        "required": false,
+                        "schema": {"type": "number"},
+                        "default": 80
+                    }
+                ], 
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "El ID del dataset en Earth Engine",
+                                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                                    },
+                                    "area": {
+                                        "type": "array",
+                                        "description": "Área de interés en formato de polígono codificado",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                                    },
+                                    "indices": {
+                                        "type": "string",
+                                        "description": "Los índices a calcular",
+                                        "default": "NDVI"
+                                    },
+                                    "gee_type": {
+                                        "type": "string",
+                                        "description": "Tipo de datos",
+                                        "default": "image_collection"
+                                    },
+                                    "reducer": {
+                                        "type": "string",
+                                        "description": "El tipo de reducción a aplicar",
+                                        "default": "mean"
+                                    },
+                                    "scale": {
+                                        "type": "number",
+                                        "description": "La escala de la imagen",
+                                        "default": 1
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "description": "La fecha de inicio",
+                                        "default": "2024-06-03"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "description": "La fecha de fin",
+                                        "default": "2024-06-07"
+                                    },
+                                    "vis": {
+                                        "type": "object",
+                                        "description": "Visualización de la imagen",
+                                        "properties": {
+                                            "bands": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "max": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "min": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        },
+                                        "default": {
+                                            "bands": ["B4", "B3", "B2"],
+                                            "max": [3000],
+                                            "min": [0]
+                                        }
+                                    },
+                                    "cloud_cover": {
+                                        "type": "number",
+                                        "description": "Porcentaje de cobertura de nubes",
+                                        "default": 80
+                                    }
+                                },
+                                "required": ["id", "geometry", "gee_type"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna el formato de URL del mapa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "urlFormat": {
+                                            "type": "string",
+                                            "description": "El formato de URL para el mapa"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en los datos de entrada"
+                    }
+                }
+            }
+        },
+
+
+        "/get-ts":
+        {
+            "get":
+            {
+                "parameters":
+                [
+                    {
+                        "description": "El ID del dataset en Earth Engine",
+                        "in": "query",
+                        "name": "id",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                    },
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[[ -4.691807057731051, 40.61561804774942 ], [ -4.6999105938050345, 40.602728272872724 ], [ -4.677529398934033, 40.6080016631 ], [ -4.691807057731051, 40.61561804774942 ]]"
+                    },
+                    {
+                        "description": "Los índices a calcular",
+                        "in": "query",
+                        "name": "indices",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "NDVI"
+                    },
+                    {
+                        "description": "El tipo de reducción a aplicar",
+                        "in": "query",
+                        "name": "reducer",
+                        "required": false,
+                        "schema": {"type": "string"},
+                        "default": "mean"
+                    },
+                    {
+                        "description": "La escala de la imagen",
+                        "in": "query",
+                        "name": "scale",
+                        "required": true,
+                        "schema": {"type": "number"},
+                        "default": 1
+                    },
+                    {
+                        "description": "La fecha de inicio",
+                        "in": "query",
+                        "name": "start_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-03"
+                    },
+                    {
+                        "description": "La fecha de fin",
+                        "in": "query",
+                        "name": "end_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-07"
+                    },
+                    {
+                        "description": "Porcentaje de cobertura de nubes",
+                        "in": "query",
+                        "name": "cloud_cover",
+                        "required": true,
+                        "schema": {"type": "number"},
+                        "default": 80
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "description": "El ID del dataset en Earth Engine",
+                                        "default": "COPERNICUS/S2_SR_HARMONIZED"
+                                    },
+                                    "area": {
+                                        "type": "array",
+                                        "description": "Área de interés en formato de polígono codificado",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "default": "[[ -4.691807057731051, 40.61561804774942 ], [ -4.6999105938050345, 40.602728272872724 ], [ -4.677529398934033, 40.6080016631 ], [ -4.691807057731051, 40.61561804774942 ]]"
+                                    },
+                                    "indices": {
+                                        "type": "string",
+                                        "description": "Los índices a calcular",
+                                        "default": "NDVI"
+                                    },
+                                    "reducer": {
+                                        "type": "string",
+                                        "description": "El tipo de reducción a aplicar",
+                                        "default": "mean"
+                                    },
+                                    "scale": {
+                                        "type": "number",
+                                        "description": "La escala de la imagen",
+                                        "default": 1
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "description": "La fecha de inicio",
+                                        "default": "2024-06-03"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "description": "La fecha de fin",
+                                        "default": "2024-06-07"
+                                    },
+                                    "cloud_cover": {
+                                        "type": "number",
+                                        "description": "Porcentaje de cobertura de nubes",
+                                        "default": 80
+                                    }
+                                },
+                                "required": ["id", "area", "indices", "scale", "start_date", "end_date", "cloud_cover"]
+                            }
+                        }
+                    }
+                },
+                "responses":
+                {
+                    "200":
+                    {
+                        "content":
+                        {
+                            "application/json":
+                            {
+                                "schema":
+                                {
+                                    "properties":
+                                    {
+                                        "dates":
+                                        {
+                                            "description": "Las fechas disponibles",
+                                            "items":
+                                            {
+                                                "type": "string"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "values":
+                                        {
+                                            "description": "Los valores de los índices",
+                                            "items":
+                                            {
+                                                "type": "number"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "Retorna la serie de tiempo"
+                    },
+                    "400": {"description": "Error en los datos de entrada"}
+                },
+                "summary": "Obtiene una serie de tiempo para un conjunto de datos",
+                "tags": ["Data"]
+            }
+        },
+        "/get-hillshade":
+        {
+            "get":
+            {
+                "parameters":
+                [
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "required": true,
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses":
+                {
+                    "200":
+                    {
+                        "content":
+                        {
+                            "application/json":
+                            {
+                                "schema":
+                                {
+                                    "properties":
+                                    {
+                                        "urlFormat":
+                                        {
+                                            "description": "La URL del hillshade",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "Retorna el hillshade"
+                    },
+                    "400": {"description": "Error en los datos de entrada"}
+                },
+                "summary": "Obtiene el hillshade de un área",
+                "tags": ["Data"]
+            }
+        },
+        "/get-burned": {
+            "get": {
+                "summary": "Obtiene el área quemada",
+                "tags": ["Data"],
+                "parameters": [
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                    },
+                    {
+                        "description": "Fecha de inicio en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "start_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2021-08-09"
+                    },
+                    {
+                        "description": "Fecha de fin en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "end_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2021-08-20"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna el área quemada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "urlFormat": {
+                                            "type": "string",
+                                            "description": "El formato de URL para el mapa"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/get-flood":{
+            "get": {
+                "summary": "Obtiene el área inundada",
+                "tags": ["Data"],
+                "parameters": [
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "area",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                    },
+                    {
+                        "description": "Fecha de inicio en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "start_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2021-08-09"
+                    },
+                    {
+                        "description": "Fecha de fin en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "end_date",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2021-08-20"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna el área inundada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "urlFormat": {
+                                            "type": "string",
+                                            "description": "El formato de URL para el mapa"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/post-fire-risk": {
+            "post": {
+                "summary": "Obtiene el riesgo de incendio",
+                "tags": ["Data"],
+                "parameters": [
+                    {
+                        "description": "Área de interés en formato de polígono codificado",
+                        "in": "query",
+                        "name": "geometry",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                    },
+                    {
+                        "description": "Fecha de evaluación en formato YYYY-MM-DD",
+                        "in": "query",
+                        "name": "date_eval",
+                        "required": true,
+                        "schema": {"type": "string"},
+                        "default": "2024-06-03"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "geometry": {
+                                        "type": "array",
+                                        "description": "Área de interés en formato de polígono codificado",
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "default": "[[-4.691807057731051,40.61561804774942],[-4.6999105938050345,40.602728272872724],[-4.677529398934033,40.6080016631],[-4.691807057731051,40.61561804774942]]"
+                                    },
+                                    "date_eval": {
+                                        "type": "string",
+                                        "description": "Fecha de evaluación en formato YYYY-MM-DD",
+                                        "default": "2024-06-03"
+                                    }
+                                },
+                                "required": ["geometry", "date_eval"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna el riesgo de incendio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "urlFormat": {
+                                            "type": "string",
+                                            "description": "El formato de URL para el mapa"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "servers":
+        [
+            {
+                "url": "http://localhost:3000/ee"
+            }
+        ]
+    }
+}

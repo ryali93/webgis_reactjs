@@ -1,0 +1,3 @@
+[submodule "docker/earthengine-server-nodejs"]
+	path = docker/earthengine-server-nodejs
+	url = git@github.com:TIDOP-USAL/earthengine-server-nodejs.git

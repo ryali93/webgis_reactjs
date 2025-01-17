@@ -18,10 +18,24 @@ services:
     working_dir: /usr/src/app
     command: npm start  # Usa nodemon y webpack --watch | # npm start para producción
     ports:
-      - "3000:3000"
+      - "${NODE_PORT}:3000"
     networks:
       - frontend
       - backend
+  earthengine:
+    build:
+      context: ./docker/earthengine-server-nodejs
+      dockerfile: docker/ee.Dockerfile
+    image: roadeye-earthengine:latest
+    restart: always
+    ports:
+      - "${EARTHENGINE_PORT}:3000"
+    networks:
+      - backend
+    mem_limit: 1g
+  
+
+
     # postgres:
     #     image: kartoza/postgis:14-3.3
     #     container_name: postgres
