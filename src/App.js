@@ -19,6 +19,16 @@ function App() {
     setMap(mapInstance);
   }, []);
 
+  const toggleRightSidebar = () => {
+    setRightSidebarCollapsed(!rightSidebarCollapsed);
+  };
+
+  useEffect(() => {
+    if (map) {
+      map.updateSize(); // Actualiza el tamaño del mapa
+    }
+  }, [rightSidebarCollapsed, rightSidebarWidth, map]);
+
   return (
     <ErrorBoundary>
       <div className="App">
@@ -27,6 +37,7 @@ function App() {
           className="main-content"
           style={{
             marginRight: rightSidebarCollapsed ? '50px' : `${rightSidebarWidth}px`, // Ajustar el espacio para el mapa
+            transition: 'margin-right 0.3s ease', // Suavizar la transición
           }}
         >
           <Sidebar />
@@ -34,7 +45,7 @@ function App() {
         </div>
         <RightSidebar
           isCollapsed={rightSidebarCollapsed}
-          onToggle={() => setRightSidebarCollapsed(!rightSidebarCollapsed)}
+          onToggle={toggleRightSidebar}
           onWidthChange={setRightSidebarWidth}
         />
       </div>

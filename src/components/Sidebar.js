@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import '../styles/Sidebar.css';
 
 function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);

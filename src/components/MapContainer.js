@@ -1,5 +1,5 @@
 // src/components/MapContainer.js
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../styles/MapContainer.css';
 
 function MapContainer({ map }) {
@@ -8,6 +8,7 @@ function MapContainer({ map }) {
   useEffect(() => {
     if (map) {
       map.setTarget(mapRef.current);
+      map.updateSize(); // Actualizar el tamaño al inicializar
     }
 
     return () => {
