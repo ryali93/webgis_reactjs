@@ -1,4 +1,4 @@
-/* Sidebar general */
+/* General del Sidebar Derecho */
 .right-sidebar {
   position: absolute;
   top: 50px; /* La altura del Navbar */
@@ -10,26 +10,42 @@
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   overflow-y: auto; /* Permite scroll interno si el contenido excede */
+  width: 400px; /* Cambia el ancho inicial */
+  transition: width 0.3s ease-in-out; /* Transición suave para ancho */
 }
 
-/* Barra de arrastre (slicer) */
-.slicer {
-  position: absolute;
-  top: 0;
-  left: -5px; /* Posición del slicer a la izquierda del sidebar */
-  width: 10px;
-  height: 100%;
-  cursor: ew-resize; /* Indicador de arrastre horizontal */
-  background: rgba(0, 0, 0, 0.2);
-  z-index: 1001;
+.right-sidebar.collapsed {
+  width: 50px; /* Ancho colapsado */
 }
 
-.slicer:hover {
-  background: rgba(0, 0, 0, 0.4);
+.toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  background-color: #2c3e50; /* Fondo consistente */
+}
+
+.toggle-button {
+  background-color: #3498db; /* Azul primario */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.toggle-button:hover {
+  background-color: #2980b9; /* Azul más oscuro al pasar el ratón */
 }
 
 .sidebar-content {
-  padding: 20px;
+  padding: 10px;
 }
 
 .sidebar-content ul {
@@ -50,5 +66,9 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  text-align: left; /* Alinear texto a la izquierda */
+  text-align: left;
+}
+
+.sidebar-content button:hover {
+  background-color: #2980b9;
 }

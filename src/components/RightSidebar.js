@@ -1,66 +1,57 @@
-// src/components/RightSidebar.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../styles/RightSidebar.css';
 
-function RightSidebar({ onWidthChange }) {
-  const [width, setWidth] = useState(300); // Ancho inicial del sidebar
-  const sidebarRef = useRef(null);
-  const isDragging = useRef(false);
+function RightSidebar({ isCollapsed, onToggle }) {
+  const [activeTab, setActiveTab] = useState('Tool1'); // Tab activa por defecto
 
-  const startDragging = (e) => {
-    e.preventDefault();
-    isDragging.current = true;
-    document.addEventListener('mousemove', onDragging);
-    document.addEventListener('mouseup', stopDragging);
+  // Herramientas disponibles
+  const tools = {
+    Tool1: (
+      <div>
+        <h4>Tool 1</h4>
+        <input type="text" placeholder="Enter value" />
+        <button>Run Tool 1</button>
+      </div>
+    ),
+    Tool2: (
+      <div>
+        <h4>Tool 2</h4>
+        <input type="range" min="0" max="100" />
+        <button>Run Tool 2</button>
+      </div>
+    ),
+    Tool3: (
+      <div>
+        <h4>Tool 3</h4>
+        <input type="date" />
+        <button>Run Tool 3</button>
+      </div>
+    ),
   };
-
-  const onDragging = (e) => {
-    if (!isDragging.current) return;
-
-    // Calculamos el nuevo ancho del sidebar
-    const newWidth = window.innerWidth - e.clientX;
-    if (newWidth >= 100 && newWidth <= 400) {
-      setWidth(newWidth);
-      onWidthChange(newWidth); // Notificamos el cambio de ancho
-    }
-  };
-
-  const stopDragging = () => {
-    isDragging.current = false;
-    document.removeEventListener('mousemove', onDragging);
-    document.removeEventListener('mouseup', stopDragging);
-  };
-
-  useEffect(() => {
-    onWidthChange(width); // Notificar el ancho inicial
-  }, [width, onWidthChange]);
 
   return (
-    <div
-      ref={sidebarRef}
-      className="right-sidebar"
-      style={{ width: `${width}px` }}
-    >
-      <div
-        className="slicer"
-        onMouseDown={startDragging}
-        title="Arrastra para redimensionar"
-      ></div>
-      <div className="sidebar-content">
-        <h3>Tools</h3>
-        <p>Add your tools here!</p>
-        <ul>
-          <li>
-            <button>Tool 1</button>
-          </li>
-          <li>
-            <button>Tool 2</button>
-          </li>
-          <li>
-            <button>Tool 3</button>
-          </li>
-        </ul>
+    <div className={`right-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="toggle-wrapper">
+        <button className="toggle-button" onClick={onToggle}>
+          {isCollapsed ? '<' : '>'}
+        </button>
       </div>
+      {!isCollapsed && (
+        <div className="sidebar-content">
+          <div className="tabs">
+            {Object.keys(tools).map((tab) => (
+              <button
+                key={tab}
+                className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+          <div className="tool-content">{tools[activeTab]}</div>
+        </div>
+      )}
     </div>
   );
 }

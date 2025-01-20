@@ -11,7 +11,8 @@ import './App.css';
 
 function App() {
   const [map, setMap] = useState(null);
-  const [rightSidebarWidth, setRightSidebarWidth] = useState(300); // Ancho inicial del sidebar derecho
+  const [rightSidebarWidth, setRightSidebarWidth] = useState(400); // Ancho inicial del sidebar derecho
+  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false); // Estado de colapso del sidebar derecho
 
   useEffect(() => {
     const mapInstance = createMap();
@@ -24,13 +25,18 @@ function App() {
         <Navbar />
         <div
           className="main-content"
-          style={{ marginRight: `${rightSidebarWidth}px` }} // Ajustar el espacio para el mapa
+          style={{
+            marginRight: rightSidebarCollapsed ? '50px' : `${rightSidebarWidth}px`, // Ajustar el espacio para el mapa
+          }}
         >
           <Sidebar />
-          {map && <MapContainer map={map} />} {/* Ahora el LayerManager está dentro de MapContainer */}
+          {map && <MapContainer map={map} />}
         </div>
-        <RightSidebar onWidthChange={setRightSidebarWidth}>
-        </RightSidebar>
+        <RightSidebar
+          isCollapsed={rightSidebarCollapsed}
+          onToggle={() => setRightSidebarCollapsed(!rightSidebarCollapsed)}
+          onWidthChange={setRightSidebarWidth}
+        />
       </div>
     </ErrorBoundary>
   );
