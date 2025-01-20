@@ -31,6 +31,39 @@ function RightSidebar({ onWidthChange }) {
     document.removeEventListener('mouseup', stopDragging);
   };
 
+  // Post-ts
+  const handleTool1Click = async () => {
+    try {
+      console.log('Sending request to /ee/post-ts');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/ee/post-ts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: "COPERNICUS/S2_HARMONIZED",
+          area: "[[-5.369417157985271,41.07879192796631],[-5.379929462314889,41.04508787639554],[-5.3352291213116025,41.037159091699976],[-5.324716816981985,41.07086720519197],[-5.369417157985271,41.07879192796631]]",
+          indices: "",
+          start_date: '2025-01-07',
+          end_date: '2025-01-16',
+          scale: "10",
+          reducer: "mean",
+          cloud_cover: "80"
+        }),
+      }); 
+
+      console.log('Received response:', response);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Received data:', data);
+      console.log(data.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   useEffect(() => {
     onWidthChange(width); // Notificar el ancho inicial
   }, [width, onWidthChange]);
@@ -51,7 +84,7 @@ function RightSidebar({ onWidthChange }) {
         <p>Add your tools here!</p>
         <ul>
           <li>
-            <button>Tool 1</button>
+            <button onClick={handleTool1Click}>Tool 1</button>
           </li>
           <li>
             <button>Tool 2</button>

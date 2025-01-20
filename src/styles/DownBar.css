@@ -1,0 +1,54 @@
+/* Sidebar general */
+.downbar {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    background: rgba(44, 62, 80, 0.95);
+    color: white;
+    border-top: 1px solid #ddd; /* Cambiado de border-left a border-top */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Cambiado de -4px 0 a 0 -4px */
+    z-index: 1000;
+    overflow-x: auto;
+    transition: left 0.3s ease, right 0.3s ease, width 0.3s ease; /* Añadido right y width */
+}
+
+/* Barra de arrastre (slicer) */
+.downslicer {
+position: absolute;
+top: -5px; /* Posición del slicer arriba del sidebar */
+left: 0; /* Posición del slicer a la izquierda del sidebar */
+width: 100%;
+height: 10px;
+cursor: ns-resize; /* Indicador de arrastre vertical */
+background: rgba(0, 0, 0, 0.2);
+z-index: 1001;
+}
+
+.downslicer:hover {
+background: rgba(0, 0, 0, 0.4);
+}
+
+.downbar-content {
+padding: 10px; /* Ajustado el padding */
+}
+
+.downbar-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.downbar-content li {
+    display: inline-block; /* Cambiado de block a inline-block */
+    margin-right: 10px; /* Ajustado el margen */
+}
+
+.downbar-content button {
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-align: center; /* Alinear texto al centro */
+}
