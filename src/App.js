@@ -13,42 +13,61 @@ import './App.css';
 function App() {
   const [map, setMap] = useState(null);
   const [rightSidebarWidth, setRightSidebarWidth] = useState(400); // Ancho inicial del sidebar derecho
+  const [leftSidebarWidth, setLeftSidebarWidth] = useState(250); // Ancho inicial del sidebar izquierdo
+  const [downBarHeight, setDownBarHeight] = useState(200); // Altura inicial del downbar
   const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false); // Estado de colapso del sidebar derecho
+  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(false); // Estado de colapso del sidebar izquierdo
 
   useEffect(() => {
     const mapInstance = createMap();
     setMap(mapInstance);
   }, []);
 
-  const toggleRightSidebar = () => {
+  const handleRightSidebarToggle = () => {
     setRightSidebarCollapsed(!rightSidebarCollapsed);
+    setRightSidebarWidth(!rightSidebarCollapsed ? 50 : 400); // Ajusta el ancho según el estado de colapso
   };
+
+  const handleLeftSidebarToggle = () => {
+    setLeftSidebarCollapsed(!leftSidebarCollapsed);
+    setLeftSidebarWidth(!leftSidebarCollapsed ? 50 : 250); // Ajusta el ancho según el estado de colapso
+  };
+
 
   useEffect(() => {
     if (map) {
       map.updateSize(); // Actualiza el tamaño del mapa
     }
-  }, [rightSidebarCollapsed, rightSidebarWidth, map]);
+  }, [rightSidebarCollapsed, rightSidebarWidth, 
+      leftSidebarCollapsed, leftSidebarWidth, map]);
 
   return (
     <ErrorBoundary>
       <div className="App">
-        <Navbar />
+      <Navbar />
         <div
           className="main-content"
           style={{
             marginRight: rightSidebarCollapsed ? '50px' : `${rightSidebarWidth}px`, // Ajustar el espacio para el mapa
             transition: 'margin-right 0.3s ease', // Suavizar la transición
           }}
-        >
-          <Sidebar />
+        >        
+          
+          <Sidebar onToggle={handleLeftSidebarToggle} />
           {map && <MapContainer map={map} />}
-        </div>
-        <RightSidebar
+
+          <RightSidebar
           isCollapsed={rightSidebarCollapsed}
-          onToggle={toggleRightSidebar}
+          onToggle={handleRightSidebarToggle}
           onWidthChange={setRightSidebarWidth}
-        />
+          />
+
+          <DownBar
+          onHeightChange={setDownBarHeight}
+          leftSidebarWidth={leftSidebarWidth}
+          rightSidebarWidth={rightSidebarWidth}
+          />
+        </div>
       </div>
     </ErrorBoundary>
   );

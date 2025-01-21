@@ -1,15 +1,14 @@
 /* Sidebar general */
 .downbar {
     position: absolute;
-    bottom: 0;
-    height: 50px;
+    bottom: -50px; /* Posición del sidebar abajo de la pantalla */
     background: rgba(44, 62, 80, 0.95);
     color: white;
     border-top: 1px solid #ddd; /* Cambiado de border-left a border-top */
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Cambiado de -4px 0 a 0 -4px */
     z-index: 1000;
     overflow-x: auto;
-    transition: left 0.3s ease, right 0.3s ease, width 0.3s ease; /* Añadido right y width */
+    transition: left 0.3s ease, right 0.3s ease; /* Añadido right y width */
 }
 
 /* Barra de arrastre (slicer) */
@@ -52,3 +51,99 @@ padding: 10px; /* Ajustado el padding */
     transition: background-color 0.2s ease;
     text-align: center; /* Alinear texto al centro */
 }
+
+
+.tools-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .tool-button {
+    flex: 1;
+    background-color: #34495e;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .tool-button:hover {
+    background-color: #2c3e50;
+  }
+  
+  .tool-button.active {
+    background-color: #3498db;
+    font-weight: bold;
+  }
+  
+  .tool-content {
+    padding: 15px;
+    background: #ecf0f1;
+    color: #333;
+    border-radius: 10px;
+    flex-grow: 1;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  
+/* Contenedor de pestañas (estado expandido) */
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+  }
+  
+  /* Botones de pestañas */
+  .tab-button {
+    flex: 1;
+    background-color: #34495e;
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px 5px 0 0; /* Bordes superiores redondeados */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    position: relative;
+    z-index: 1; /* Asegura que la pestaña activa esté por encima de la línea */
+    margin: 0 5px; /* Espaciado entre pestañas */
+  }
+  
+  .tab-button:hover {
+    background-color: #2c3e50;
+    transform: scale(1.05); /* Efecto hover */
+  }
+  
+  .tab-button.active {
+    background-color: #3498db;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Línea decorativa debajo de la pestaña activa */
+  .tab-button.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #3498db;
+    border-radius: 3px;
+    z-index: 2; /* Coloca la línea sobre la pestaña */
+  }
+  
+  /* Suavizar transiciones */
+  .tab-button,
+  .collapsed-tab {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  

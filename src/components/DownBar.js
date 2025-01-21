@@ -1,66 +1,75 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/DownBar.css';
+import TsVis from '../vis/TsVis';
+import GraphVis from '../vis/GraphVis';
 
 function DownBar({ onHeightChange, leftSidebarWidth, rightSidebarWidth }) {
-    const downbarRef = useRef(null);
-    const isDragging = useRef(false);
-    const [height, setHeight] = useState(300);
+  const downbarRef = useRef(null);
+  const isDragging = useRef(false);
+  const [height, setHeight] = useState(200);
+  const [activeTab, setActiveTab] = useState('Vis1'); // Tab activa por defecto
 
-    const startDragging = (e) => {
-        e.preventDefault();
-        isDragging.current = true;
-        document.addEventListener('mousemove', onDragging);
-        document.addEventListener('mouseup', stopDragging);
-    };
+  const vis = {
+    Vis1: { label: 'Time Series Graph', content: TsVis },
+    Vis2: { label: 'Image Collecion', content: GraphVis }
+  };
 
-    const onDragging = (e) => {
-        if (!isDragging.current) return;
+  const startDragging = (e) => {
+    e.preventDefault();
+    isDragging.current = true;
+    document.addEventListener('mousemove', onDragging);
+    document.addEventListener('mouseup', stopDragging);
+  };
 
-        // Calculamos la nueva altura del sidebar
-        const newHeight = window.innerHeight - e.clientY;
-        if (newHeight >= 100 && newHeight <= 500) {
-            setHeight(newHeight);
-            onHeightChange(newHeight); // Notificamos el cambio de altura
-        }
-    };
+  const onDragging = (e) => {
+    if (!isDragging.current) return;
 
-    const stopDragging = () => {
-        isDragging.current = false;
-        document.removeEventListener('mousemove', onDragging);
-        document.removeEventListener('mouseup', stopDragging);
-    };
-
-    useEffect(() => {
-        onHeightChange(height);
-    }, [height, onHeightChange])
-    return (
-        <div
-          ref={downbarRef}
-          className="downbar"
-          style={{ height: `${height}px`, left: `${leftSidebarWidth}px`, right: `${rightSidebarWidth}px` }}
-        >
-          <div
-            className="downslicer"
-            onMouseDown={startDragging}
-            title="Arrastra para redimensionar"
-          ></div>
-          <div className="downbar-content">
-            <h3>Tools</h3>
-            <p>Add your tools here!</p>
-            <ul>
-              <li>
-                <button>Tool 1</button>
-              </li>
-              <li>
-                <button>Tool 2</button>
-              </li>
-              <li>
-                <button>Tool 3</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      );
+    const newHeight = window.innerHeight - e.clientY;
+    if (newHeight >= 50 && newHeight <= 500) {
+      setHeight(newHeight);
+      onHeightChange(newHeight);
     }
-    
-    export default DownBar;
+  };
+
+  const stopDragging = () => {
+    isDragging.current = false;
+    document.removeEventListener('mousemove', onDragging);
+    document.removeEventListener('mouseup', stopDragging);
+  };
+
+  useEffect(() => {
+    onHeightChange(height);
+  }, [height, onHeightChange]);
+
+  return (
+    <div
+      ref={downbarRef}
+      className="downbar"
+      style={{ height: `${height}px`, left: `${leftSidebarWidth}px`, right: `${rightSidebarWidth}px` }}
+    >
+      <div
+        className="downslicer"
+        onMouseDown={startDragging}
+        title="Arrastra para redimensionar"
+      ></div>
+      <div className="downbar-content">
+        <div className="tabs">
+          {Object.keys(vis).map((tab) => (
+            <button
+              key={tab}
+              className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {vis[tab].label}
+            </button>
+          ))}
+        </div>
+        <div className="tool-content">
+          {React.createElement(vis[activeTab].content)} {/* Renderiza el componente */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DownBar;
