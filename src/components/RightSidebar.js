@@ -1,99 +1,93 @@
 // src/components/RightSidebar.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../styles/RightSidebar.css';
+import { FaTools, FaSlidersH, FaCalendarAlt } from 'react-icons/fa';
 
-function RightSidebar({ onWidthChange }) {
-  const [width, setWidth] = useState(300); // Ancho inicial del sidebar
-  const sidebarRef = useRef(null);
-  const isDragging = useRef(false);
+function RightSidebar({ isCollapsed, onToggle }) {
+  const [activeTab, setActiveTab] = useState('Tool1'); // Tab activa por defecto
 
-  const startDragging = (e) => {
-    e.preventDefault();
-    isDragging.current = true;
-    document.addEventListener('mousemove', onDragging);
-    document.addEventListener('mouseup', stopDragging);
+  // Herramientas disponibles
+  const tools = {
+    Tool1: {
+      label: 'Tool 1',
+      content: (
+        <div>
+          <h4>Tool 1</h4>
+          <input type="text" placeholder="Enter value" />
+          <button>Run Tool 1</button>
+        </div>
+      ),
+      icon: <FaTools />,
+    },
+    Tool2: {
+      label: 'Tool 2',
+      content: (
+        <div>
+          <h4>Tool 2</h4>
+          <input type="range" min="0" max="100" />
+          <button>Run Tool 2</button>
+        </div>
+      ),
+      icon: <FaSlidersH />,
+    },
+    Tool3: {
+      label: 'Tool 3',
+      content: (
+        <div>
+          <h4>Tool 3</h4>
+          <input type="date" />
+          <button>Run Tool 3</button>
+        </div>
+      ),
+      icon: <FaCalendarAlt />,
+    },
   };
 
-  const onDragging = (e) => {
-    if (!isDragging.current) return;
-
-    // Calculamos el nuevo ancho del sidebar
-    const newWidth = window.innerWidth - e.clientX;
-    if (newWidth >= 100 && newWidth <= 400) {
-      setWidth(newWidth);
-      onWidthChange(newWidth); // Notificamos el cambio de ancho
+  const activateTab = (tab) => {
+    setActiveTab(tab); // Activa la pestaña seleccionada
+    if (isCollapsed) {
+      onToggle(); // Expande el sidebar si está colapsado
     }
   };
-
-  const stopDragging = () => {
-    isDragging.current = false;
-    document.removeEventListener('mousemove', onDragging);
-    document.removeEventListener('mouseup', stopDragging);
-  };
-
-  // Post-ts
-  const handleTool1Click = async () => {
-    try {
-      console.log('Sending request to /ee/post-ts');
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/ee/post-ts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: "COPERNICUS/S2_HARMONIZED",
-          area: "[[-5.369417157985271,41.07879192796631],[-5.379929462314889,41.04508787639554],[-5.3352291213116025,41.037159091699976],[-5.324716816981985,41.07086720519197],[-5.369417157985271,41.07879192796631]]",
-          indices: "",
-          start_date: '2025-01-07',
-          end_date: '2025-01-16',
-          scale: "10",
-          reducer: "mean",
-          cloud_cover: "80"
-        }),
-      }); 
-
-      console.log('Received response:', response);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log('Received data:', data);
-      console.log(data.message);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  useEffect(() => {
-    onWidthChange(width); // Notificar el ancho inicial
-  }, [width, onWidthChange]);
 
   return (
-    <div
-      ref={sidebarRef}
-      className="right-sidebar"
-      style={{ width: `${width}px` }}
-    >
-      <div
-        className="slicer"
-        onMouseDown={startDragging}
-        title="Arrastra para redimensionar"
-      ></div>
-      <div className="sidebar-content">
-        <h3>Tools</h3>
-        <p>Add your tools here!</p>
-        <ul>
-          <li>
-            <button onClick={handleTool1Click}>Tool 1</button>
-          </li>
-          <li>
-            <button>Tool 2</button>
-          </li>
-          <li>
-            <button>Tool 3</button>
-          </li>
-        </ul>
+    <div className={`right-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      {/* Botón de colapsar/expandir */}
+      <div className="toggle-wrapper">
+        <button className="toggle-button" onClick={onToggle}>
+          {isCollapsed ? '>' : '<'}
+        </button>
       </div>
+      {/* Contenido */}
+      {!isCollapsed ? (
+        <div className="sidebar-content">
+          <div className="tabs">
+            {Object.keys(tools).map((tab) => (
+              <button
+                key={tab}
+                className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+                onClick={() => activateTab(tab)}
+              >
+                {tools[tab].label}
+              </button>
+            ))}
+          </div>
+          <div className="tool-content">{tools[activeTab].content}</div>
+        </div>
+      ) : (
+        <div className="collapsed-tools">
+          {Object.keys(tools).map((tab) => (
+            <button
+              key={tab}
+              className={`collapsed-tab ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => activateTab(tab)}
+              title={tools[tab].label}
+            >
+              {tools[tab].icon}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

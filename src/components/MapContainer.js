@@ -1,33 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import LayerManager from './LayerManager';
+// src/components/MapContainer.js
+import React, { useEffect, useRef } from 'react';
 import '../styles/MapContainer.css';
 
 function MapContainer({ map }) {
   const mapRef = useRef();
-  const [layerState, setLayerState] = useState({
-    baseLayers: []
-    // overlayLayers: [],
-  });
 
   useEffect(() => {
     if (map) {
       map.setTarget(mapRef.current);
-
-      // Sincronizar estado inicial de las capas
-      const layerManager = map.getLayerManager();
-      setLayerState({
-        baseLayers: layerManager.baseLayers.map((layer) => ({
-          layer,
-          visible: layer.getVisible(),
-          opacity: layer.getOpacity(),
-        }))
-        // ,
-        // overlayLayers: layerManager.overlayLayers.map((layer) => ({
-        //   layer,
-        //   visible: layer.getVisible(),
-        //   opacity: layer.getOpacity(),
-        // })),
-      });
+      map.updateSize(); // Actualizar el tamaño al inicializar
     }
 
     return () => {
@@ -37,47 +18,9 @@ function MapContainer({ map }) {
     };
   }, [map]);
 
-  const toggleVisibility = (targetLayer) => {
-    const newState = { ...layerState };
-
-    for (const layerGroup of ['baseLayers']) { //, 'overlayLayers'
-      newState[layerGroup] = newState[layerGroup].map((item) => {
-        if (item.layer === targetLayer) {
-          item.layer.setVisible(!item.visible);
-          return { ...item, visible: !item.visible };
-        }
-        return item;
-      });
-    }
-
-    setLayerState(newState);
-  };
-
-  const changeOpacity = (targetLayer, value) => {
-    const newState = { ...layerState };
-
-    for (const layerGroup of ['baseLayers']) { //, 'overlayLayers'
-      newState[layerGroup] = newState[layerGroup].map((item) => {
-        if (item.layer === targetLayer) {
-          item.layer.setOpacity(value);
-          return { ...item, opacity: value };
-        }
-        return item;
-      });
-    }
-
-    setLayerState(newState);
-  };
-
   return (
     <div className="map-container">
       <div ref={mapRef} className="ol-map" />
-      <LayerManager
-        baseLayers={layerState.baseLayers}
-        // overlayLayers={layerState.overlayLayers}
-        toggleVisibility={toggleVisibility}
-        changeOpacity={changeOpacity}
-      />
     </div>
   );
 }
