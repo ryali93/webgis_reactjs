@@ -4,7 +4,7 @@ import TsVis from '../vis/TsVis';
 import GraphVis from '../vis/GraphVis';
 
 function BottomCanvas({ onHeightChange, leftSidebarWidth, rightSidebarWidth }) {
-  const bottomCanvasRef = useRef(null);
+  const downbarRef = useRef(null);
   const isDragging = useRef(false);
   const [height, setHeight] = useState(200);
   const [activeTab, setActiveTab] = useState('Vis1'); // Tab activa por defecto
@@ -25,7 +25,7 @@ function BottomCanvas({ onHeightChange, leftSidebarWidth, rightSidebarWidth }) {
     if (!isDragging.current) return;
 
     const newHeight = window.innerHeight - e.clientY;
-    if (newHeight >= 50 && newHeight <= 500) {
+    if (newHeight >= 50 && newHeight <= 600) {
       setHeight(newHeight);
       onHeightChange(newHeight);
     }
@@ -43,8 +43,8 @@ function BottomCanvas({ onHeightChange, leftSidebarWidth, rightSidebarWidth }) {
 
   return (
     <div
-      ref={bottomCanvasRef}
-      className="bottomCanvas"
+      ref={downbarRef}
+      className="downbar"
       style={{ height: `${height}px`, left: `${leftSidebarWidth}px`, right: `${rightSidebarWidth}px` }}
     >
       <div
@@ -52,7 +52,7 @@ function BottomCanvas({ onHeightChange, leftSidebarWidth, rightSidebarWidth }) {
         onMouseDown={startDragging}
         title="Arrastra para redimensionar"
       ></div>
-      <div className="bottomCanvas-content">
+      <div className="downbar-content">
         <div className="tabs">
           {Object.keys(vis).map((tab) => (
             <button
