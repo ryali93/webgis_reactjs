@@ -10,6 +10,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.3.0",
+    "@yaireo/tagify": "^4.33.1",
     "antd": "^5.22.6",
     "babel-loader": "^9.2.1",
     "cra-template": "1.2.0",

@@ -12,7 +12,8 @@ function RightSidebar({
   onWidthChange,
   addDrawInteraction,
   clearGeometries,
-  geometry
+  geometry,
+  addTileLayerFn
 }) {
   const [activeTab, setActiveTab] = useState('Tool1');
 
@@ -70,7 +71,8 @@ function RightSidebar({
                     console.warn('No clearGeometries function found!');
                   }
                 },
-                geometry: geometry
+                geometry: geometry,
+                addTileLayerFn: addTileLayerFn,
               })
             }
           </div>

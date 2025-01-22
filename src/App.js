@@ -16,6 +16,7 @@ function App() {
   const [drawFn, setDrawFn] = useState(null);
   const [clearFn, setClearFn] = useState(null);
   const [geometry, setGeometry] = useState(null);
+  const [addTileLayerFn, setAddTileLayerFn] = useState(null);
 
   const [rightSidebarWidth, setRightSidebarWidth] = useState(400);
   const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
@@ -37,7 +38,7 @@ function App() {
 
   useEffect(() => {
     // 1) Creamos el mapa
-    const { map, addDrawInteraction, clearGeometries } = createMap((coordinates) => {
+    const { map, addDrawInteraction, clearGeometries, addTileLayer } = createMap((coordinates) => {
       console.log('[App.js] onDrawEndCallback => coordinates:', coordinates);
       setGeometry(coordinates);
     });
@@ -45,6 +46,7 @@ function App() {
     setMapInstance(map); // 2) Guardamos la instancia del mapa en el state
     setDrawFn(() => addDrawInteraction); // 3) Guardamos la referencia a la función de dibujado
     setClearFn(() => clearGeometries); // 4) Guardamos la referencia a clearGeometries
+    setAddTileLayerFn(() => addTileLayer); // (por ejemplo)
   }, []);
 
   useEffect(() => {
@@ -77,6 +79,7 @@ function App() {
           addDrawInteraction={drawFn} // Le pasamos la función del draw al sidebar
           clearGeometries={clearFn} // Le pasamos la función de limpiar geometrías al sidebar
           geometry={geometry} // Pasamos la geometría al sidebar
+          addTileLayerFn={addTileLayerFn} // Pasamos la función de añadir capa al sidebar
         />
 
         <BottomCanvas

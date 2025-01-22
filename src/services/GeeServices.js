@@ -1,51 +1,117 @@
 // src/services/GeeServices.js
-// Post-ts
-
 import { GeometryValidation } from '../tools/utils';
 
-const GeeFunction = async (request) => {
-    try {
+const post_mapid = async (request) => {
+  try {
+    console.log('[GeeServices] Received request:', request);
+    let coordinates;
+    var { idName, geometry, bands, gee_type, scale, start_date, end_date, vis, cloud_cover } = request;
+    coordinates = GeometryValidation(geometry);
 
-      let coordinates;
-      var { geometry, dateRange } = request;
+    // Crear la URL con todos los parámetros necesarios
+    const url = `${process.env.REACT_APP_GEE_API_URL}/ee/post-mapid`;
 
-      console.log('[GeeServices] Received request:', request);
-      coordinates = GeometryValidation(geometry);
-      console.log('[GeeServices] Geometry:', geometry);
-      
-      const requestData = {
-        id: "COPERNICUS/S2_SR_HARMONIZED",
-        area: JSON.stringify(coordinates),
-        indices: "",
-        start_date: dateRange[0],
-        end_date: dateRange[1],
-        scale: "10",
-        reducer: "mean",
-        cloud_cover: "80",
-      };
+    const body = {
+      id: idName,
+      area: JSON.stringify(coordinates),
+      indices: bands,
+      gee_type: gee_type,
+      scale: scale,
+      start_date: start_date,
+      end_date: end_date,
+      vis: JSON.stringify(vis),
+      cloud_cover: cloud_cover
+    };
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.text();
+    return data; 
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
-      console.log('Sending request to /ee/post-ts');
-      const response = await fetch(`${process.env.REACT_APP_GEE_API_URL}/ee/post-ts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      }); 
+const get_dates = async (request) => {
+  try {
+    console.log('[GeeServices] Received request:', request);
+    let coordinates;
+    var { idName, geometry, cloud_cover } = request;
+    coordinates = GeometryValidation(geometry);
 
-      console.log('Received response:', response);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log('Received data:', data);
-      console.log(data.message);
-    } catch (error) {
-      console.error('Error:', error);
+    const url = new URL(`${process.env.REACT_APP_GEE_API_URL}/ee/get-available-dates`);
+    url.search = new URLSearchParams({
+      id: idName,
+      area: JSON.stringify(coordinates),
+      cloud_cover: cloud_cover
+    });
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+const post_time_series = async (request) => {
+  try {
+    console.log('[GeeServices] Received request:', request);
+    let coordinates;
+    var { idName, geometry, indices, reducer, start_date, end_date, cloud_cover } = request;
+    coordinates = GeometryValidation(geometry);
+
+    // Crear la URL con todos los parámetros necesarios
+    const url = `${process.env.REACT_APP_GEE_API_URL}/ee/post-ts`;
+    const body = {
+      id: idName,
+      area: JSON.stringify(coordinates),
+      indices: indices,
+      reducer: reducer,
+      start_date: start_date,
+      end_date: end_date,
+      cloud_cover: cloud_cover
+    };
+    console.log('body:', body);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    
+    function formatDate(timestamp) {
+        return new Date(timestamp).toISOString();
     }
-  };
+    const dates = data.dates.map(formatDate);
+    
+    let newData = [];
+    let newLabels = [];
+
+    Object.keys(data).forEach(key => {
+        if (key !== "dates") {
+            const [indexName, stat] = key.split("_"); // Obtenemos el nombre del índice y el estadístico
+            newData.push(data[key].map((value, i) => ({
+                x: dates[i],
+                y: value
+            })));
+            newLabels.push(`${indexName} ${stat.charAt(0).toUpperCase() + stat.slice(1)}`);
+        }
+    });
+    return {"data": newData, "labels": newLabels};
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
 // Export the function
 export {
-  GeeFunction
+  post_mapid,
+  get_dates,
+  post_time_series
 };

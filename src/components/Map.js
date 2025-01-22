@@ -17,7 +17,6 @@ import VectorSource from 'ol/source/Vector';
 
 import 'ol/ol.css';
 import 'ol-ext/dist/ol-ext.css';
-// import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
 import '../styles/Map.css'
 
@@ -62,7 +61,6 @@ function createMap(onDrawEndCallback) {
   map.addControl(new OlControlScaleLine());
   map.addControl(new LayerSwitcher());
   
-
   let draw; // Mantendremos la interacción actual
 
   // Función que se devolverá al padre (App.js)
@@ -88,8 +86,6 @@ function createMap(onDrawEndCallback) {
     // Escuchamos el evento drawend
     draw.on('drawend', (evt) => {
       const geometry = evt.feature.getGeometry();
-      // const coordinates = geometry.getCoordinates();
-      // console.log('[Map.js] drawend => geometry coords:', coordinates);
 
       if (onDrawEndCallback) {
         onDrawEndCallback(geometry);
@@ -106,7 +102,16 @@ function createMap(onDrawEndCallback) {
     source.clear(); // Limpia todas las geometrías
   }
 
-  return { map, addDrawInteraction, clearGeometries };
+  function addTileLayer(url) {
+    const tileLayer = new OlLayerTile({
+      source: new OlSourceXYZ({ url }),
+      title: 'S2',
+      type: 'base',
+      visible: false,
+    })
+    map.addLayer(tileLayer);
+  }
+  return { map, addDrawInteraction, clearGeometries, addTileLayer };
 }
 
 export default createMap;
