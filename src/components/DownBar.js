@@ -25,7 +25,7 @@ function DownBar({ onHeightChange, leftSidebarWidth, rightSidebarWidth }) {
     if (!isDragging.current) return;
 
     const newHeight = window.innerHeight - e.clientY;
-    if (newHeight >= 50 && newHeight <= 500) {
+    if (newHeight >= 50 && newHeight <= 600) {
       setHeight(newHeight);
       onHeightChange(newHeight);
     }

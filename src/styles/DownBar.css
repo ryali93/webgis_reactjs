@@ -1,7 +1,7 @@
 /* Sidebar general */
 .downbar {
     position: absolute;
-    bottom: -50px; /* Posición del sidebar abajo de la pantalla */
+    bottom: 0; /* Posición del sidebar abajo de la pantalla */
     background: rgba(44, 62, 80, 0.95);
     color: white;
     border-top: 1px solid #ddd; /* Cambiado de border-left a border-top */
