@@ -1,0 +1,174 @@
+/* Draw styles */
+.drawContainer {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.drawButtons {
+    width: 220px;
+    /* margin-top: 15px; */
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawButton {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    width: 50px;
+    height: 50px;
+    background-color: #a3a3a3;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.drawButton:hover {
+    background-color: #64a8db;
+}
+
+.drawButton:active,
+.drawButton:focus {
+    background-color: #01579B;
+}
+
+#drawRectangle {
+    background-image: url("img/rectangle.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25px;
+}
+
+#drawPoint {
+    background-image: url("img/dot.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+}
+
+#drawPolygon {
+    background-image: url("img/polygon.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+}
+
+#drawClear {
+    background-image: url("img/delete.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #F45050;
+    background-size: 20px;
+    opacity: 0.8;
+}
+
+.drawClear:hover {
+    background-color: #851a1a;
+}
+
+.drawClear:focus {
+    background-color: #F45050;
+}
+
+/* Calendar */
+.group {
+    position: relative;
+    margin: 30px 20px 50px;
+}
+
+input {
+    color: #424242;
+    font-size: 1.2em;
+    padding: 10px 10px 5px 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #607D8B;
+}
+input:focus {
+    outline: none;
+}
+
+label.input-label {
+    color: #616161;
+    position: absolute;
+}
+
+input:focus ~ label.input-label {
+    color: #0288D1;
+}
+
+input[readonly] ~ label.input-label {
+    top: -15px;
+    font-size: 0.9em;
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 315px;
+}
+
+.bar:before,
+.bar:after {
+    background: #0288D1;
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+input:focus ~ .bar:before,
+input:focus ~ .bar:after {
+    width: 50%;
+}
+
+
+/*  */
+
+/* run button */
+.runButton {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    width: 100px;
+    height: 50px;
+    background-color: #dadada;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin-top: 15px;
+    margin-left: auto;
+}
+.runButton:hover {
+    background-color: #0288D1;
+}

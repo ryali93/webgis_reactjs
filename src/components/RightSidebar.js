@@ -1,13 +1,22 @@
+// src/components/RightSidebar.js
 import React, { useState } from 'react';
 import '../styles/RightSidebar.css';
+
 import GeeTools from '../tools/GeeTools';
 import VhrTools from '../tools/VhrTools';
 import InsarTools from '../tools/InsarTools';
 
-function RightSidebar({ isCollapsed, onToggle }) {
-  const [activeTab, setActiveTab] = useState('Tool1'); // Tab activa por defecto
+function RightSidebar({
+  isCollapsed,
+  onToggle,
+  onWidthChange,
+  addDrawInteraction,
+  clearGeometries,
+  geometry,
+  addTileLayerFn
+}) {
+  const [activeTab, setActiveTab] = useState('Tool1');
 
-  // Herramientas disponibles
   const tools = {
     Tool1: GeeTools,
     Tool2: VhrTools,
@@ -15,9 +24,9 @@ function RightSidebar({ isCollapsed, onToggle }) {
   };
 
   const activateTab = (tab) => {
-    setActiveTab(tab); // Activa la pestaña seleccionada
+    setActiveTab(tab); 
     if (isCollapsed) {
-      onToggle(); // Expande el sidebar si está colapsado
+      onToggle();
     }
   };
 
@@ -28,6 +37,7 @@ function RightSidebar({ isCollapsed, onToggle }) {
           {isCollapsed ? '>' : '<'}
         </button>
       </div>
+
       {!isCollapsed ? (
         <div className="sidebar-content">
           <div className="tabs">
@@ -41,8 +51,30 @@ function RightSidebar({ isCollapsed, onToggle }) {
               </button>
             ))}
           </div>
+
           <div className="tool-content">
-            {React.createElement(tools[activeTab].content)} {/* Renderiza el componente */}
+            {
+              React.createElement(tools[activeTab].content, {
+                // Pasamos la misma prop, sin renombrar
+                addDrawInteraction: (type) => {
+                  console.log('[RightSidebar] Child wants to draw:', type);
+                  if (addDrawInteraction) {
+                    addDrawInteraction(type);
+                  } else {
+                    console.warn('No addDrawInteraction function found!');
+                  }
+                },
+                clearGeometries: () => {
+                  if (clearGeometries) {
+                    clearGeometries();
+                  } else {
+                    console.warn('No clearGeometries function found!');
+                  }
+                },
+                geometry: geometry,
+                addTileLayerFn: addTileLayerFn,
+              })
+            }
           </div>
         </div>
       ) : (

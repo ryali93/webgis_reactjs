@@ -1,45 +1,61 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
-import ErrorBoundary from './components/ErrorBoundary';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import createMap from './components/Map';
 import MapContainer from './components/MapContainer';
 import RightSidebar from './components/RightSidebar';
-import DownBar from './components/DownBar';
+import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 
-import createMap from './components/Map';
+import BottomCanvas from './components/BottomCanvas';
+
+import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
 
 function App() {
-  const [map, setMap] = useState(null);
-  const [rightSidebarWidth, setRightSidebarWidth] = useState(400); // Ancho inicial del sidebar derecho
+  const [mapInstance, setMapInstance] = useState(null);
+  const [drawFn, setDrawFn] = useState(null);
+  const [clearFn, setClearFn] = useState(null);
+  const [geometry, setGeometry] = useState(null);
+  const [addTileLayerFn, setAddTileLayerFn] = useState(null);
+
+  const [rightSidebarWidth, setRightSidebarWidth] = useState(400);
+  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
+
   const [leftSidebarWidth, setLeftSidebarWidth] = useState(250); // Ancho inicial del sidebar izquierdo
-  const [downBarHeight, setDownBarHeight] = useState(200); // Altura inicial del downbar
-  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false); // Estado de colapso del sidebar derecho
-  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(false); // Estado de colapso del sidebar izquierdo
+  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(true); // Estado de colapso del sidebar izquierdo
 
-  useEffect(() => {
-    const mapInstance = createMap();
-    setMap(mapInstance);
-  }, []);
+  const [bottomCanvasHeight, setBottomCanvasHeight] = useState(200); // Altura inicial del BottomCanvasHeight
 
-  const handleRightSidebarToggle = () => {
+  const toggleRightSidebar = () => {
     setRightSidebarCollapsed(!rightSidebarCollapsed);
     setRightSidebarWidth(!rightSidebarCollapsed ? 50 : 400); // Ajusta el ancho según el estado de colapso
   };
 
-  const handleLeftSidebarToggle = () => {
+  const toggleLeftSidebar = () => {
     setLeftSidebarCollapsed(!leftSidebarCollapsed);
     setLeftSidebarWidth(!leftSidebarCollapsed ? 50 : 250); // Ajusta el ancho según el estado de colapso
   };
 
+  useEffect(() => {
+    // 1) Creamos el mapa
+    const { map, addDrawInteraction, clearGeometries, addTileLayer } = createMap((coordinates) => {
+      console.log('[App.js] onDrawEndCallback => coordinates:', coordinates);
+      setGeometry(coordinates);
+    });
+
+    setMapInstance(map); // 2) Guardamos la instancia del mapa en el state
+    setDrawFn(() => addDrawInteraction); // 3) Guardamos la referencia a la función de dibujado
+    setClearFn(() => clearGeometries); // 4) Guardamos la referencia a clearGeometries
+    setAddTileLayerFn(() => addTileLayer); // (por ejemplo)
+  }, []);
 
   useEffect(() => {
-    if (map) {
-      map.updateSize(); // Actualiza el tamaño del mapa
+    if (mapInstance) {
+      mapInstance.updateSize();
     }
   }, [rightSidebarCollapsed, rightSidebarWidth, 
-      leftSidebarCollapsed, leftSidebarWidth, map]);
+      leftSidebarCollapsed, leftSidebarWidth,
+      mapInstance]);
 
   return (
     <ErrorBoundary>
@@ -48,25 +64,29 @@ function App() {
         <div
           className="main-content"
           style={{
-            marginRight: rightSidebarCollapsed ? '50px' : `${rightSidebarWidth}px`, // Ajustar el espacio para el mapa
-            transition: 'margin-right 0.3s ease', // Suavizar la transición
+            marginRight: rightSidebarCollapsed ? '50px' : `${rightSidebarWidth}px`,
+            transition: 'margin-right 0.3s ease',
           }}
-        >        
-          
-          <Sidebar onToggle={handleLeftSidebarToggle} />
-          {map && <MapContainer map={map} />}
+        >
+          <Sidebar onToggle={toggleLeftSidebar}/>
+          {mapInstance && <MapContainer map={mapInstance} />}
 
-          <RightSidebar
+        <RightSidebar
           isCollapsed={rightSidebarCollapsed}
           onToggle={handleRightSidebarToggle}
           onWidthChange={setRightSidebarWidth}
-          />
 
-          <DownBar
-          onHeightChange={setDownBarHeight}
+          addDrawInteraction={drawFn} // Le pasamos la función del draw al sidebar
+          clearGeometries={clearFn} // Le pasamos la función de limpiar geometrías al sidebar
+          geometry={geometry} // Pasamos la geometría al sidebar
+          addTileLayerFn={addTileLayerFn} // Pasamos la función de añadir capa al sidebar
+        />
+
+        <BottomCanvas
+          onHeightChange={setBottomCanvasHeight}
           leftSidebarWidth={leftSidebarWidth}
           rightSidebarWidth={rightSidebarWidth}
-          />
+        />
         </div>
       </div>
     </ErrorBoundary>

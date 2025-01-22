@@ -2,12 +2,12 @@
 import React, { useState } from 'react';
 import '../styles/Sidebar.css';
 
-function Sidebar({ onToggle }) {
-  const [collapsed, setCollapsed] = useState(false);
+function Sidebar( { onToggle}) {
+  const [collapsed, setCollapsed] = useState(true);
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
-    onToggle(!collapsed); // Notifica al componente App sobre el cambio de estado
+    onToggle(!collapsed);
   };
 
   return (
