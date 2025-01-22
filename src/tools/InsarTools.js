@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { MdOutlineTimeline } from "react-icons/md";
 
 function InsarToolContent() {
   const [date, setDate] = useState('');
@@ -23,7 +23,7 @@ function InsarToolContent() {
 
 const InsarTools = {
   label: 'InSAR',
-  icon: <FaCalendarAlt />,
+  icon: <MdOutlineTimeline />,
   content: InsarToolContent,
 };
 
