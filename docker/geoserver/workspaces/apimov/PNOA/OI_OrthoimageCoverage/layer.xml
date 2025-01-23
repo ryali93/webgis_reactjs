@@ -1,0 +1,17 @@
+<layer>
+  <name>OI_OrthoimageCoverage</name>
+  <id>LayerInfoImpl--600e0acc:191dbb08263:-103c</id>
+  <type>WMS</type>
+  <defaultStyle>
+    <name></name>
+  </defaultStyle>
+  <resource class="wmsLayer">
+    <id>WMSLayerInfoImpl--600e0acc:191dbb08263:-103d</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-09-11 08:13:11.748 UTC</dateCreated>
+  <dateModified>2024-09-13 07:45:02.30 UTC</dateModified>
+</layer>

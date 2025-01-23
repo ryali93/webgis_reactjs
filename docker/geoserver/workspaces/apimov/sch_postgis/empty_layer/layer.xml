@@ -1,0 +1,16 @@
+<layer>
+  <name>empty_layer</name>
+  <id>LayerInfoImpl--23016ae8:1934e6e3997:29e6</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--600e0acc:191dbb08263:-1038</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--23016ae8:1934e6e3997:29e5</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-21 11:39:30.635 UTC</dateCreated>
+</layer>

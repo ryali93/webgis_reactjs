@@ -1,0 +1,16 @@
+<layer>
+  <name>vertical</name>
+  <id>LayerInfoImpl--23016ae8:1934e6e3997:2a99</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--6c01df0e:192af1c3ed5:-1c44</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--23016ae8:1934e6e3997:2a98</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-21 11:41:45.156 UTC</dateCreated>
+</layer>

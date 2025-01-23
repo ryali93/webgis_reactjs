@@ -1,0 +1,60 @@
+<wmsLayer>
+  <id>WMSLayerInfoImpl--600e0acc:191dbb08263:-1042</id>
+  <name>IGNBaseOrto</name>
+  <nativeName>IGNBaseOrto</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--600e0acc:191dbb08263:-105a</id>
+  </namespace>
+  <title>Callejero para imagen</title>
+  <description>Representación cartográfica preparada para superponer la información geográfica sobre otros fondos como las ortoimágenes. La información geográfica procede de los siguientes conjuntos de datos: BTN (zonas protegidas, surgencias, cascadas, salinas, agrupación de edificios, cementerios, monumentos, acueductos, presas, yacimientos arqueológicos, zonas verdes, instalaciones deportivas, instalaciones recreativas y centrales eléctricas), NGBE (nombres geográficos de playas, orografía, relieve costero, distritos y barrios), BDDAE (límites administrativos), Redes de transporte (carreteras y viales urbanos, áreas de servicio, estaciones de ferrocarril, aeródromos y puertos), Hidrografía (red hidrográfica y masas de agua), Poblaciones (núcleos de población), CartoCiudad (portales y puntos kilométricos). No contiene la representación de los países. Los datos se muestran a partir de la escala 1/20.000.000.</description>
+  <abstract>Representación cartográfica preparada para superponer la información geográfica sobre otros fondos como las ortoimágenes. La información geográfica procede de los siguientes conjuntos de datos: BTN (zonas protegidas, surgencias, cascadas, salinas, agrupación de edificios, cementerios, monumentos, acueductos, presas, yacimientos arqueológicos, zonas verdes, instalaciones deportivas, instalaciones recreativas y centrales eléctricas), NGBE (nombres geográficos de playas, orografía, relieve costero, distritos y barrios), BDDAE (límites administrativos), Redes de transporte (carreteras y viales urbanos, áreas de servicio, estaciones de ferrocarril, aeródromos y puertos), Hidrografía (red hidrográfica y masas de agua), Poblaciones (núcleos de población), CartoCiudad (portales y puntos kilométricos). No contiene la representación de los países. Los datos se muestran a partir de la escala 1/20.000.000.</abstract>
+  <keywords>
+    <string>BTN</string>
+    <string>Nomenclátor</string>
+    <string>Límites</string>
+    <string>Transporte</string>
+    <string>Hidrografía</string>
+    <string>Poblaciones</string>
+    <string>CartoCiudad</string>
+  </keywords>
+  <nativeCRS>GEOGCS[&quot;ETRS89&quot;, 
+  DATUM[&quot;European Terrestrial Reference System 1989&quot;, 
+    SPHEROID[&quot;GRS 1980&quot;, 6378137.0, 298.257222101, AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]], 
+    TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;6258&quot;]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;4258&quot;]]</nativeCRS>
+  <srs>EPSG:4258</srs>
+  <nativeBoundingBox>
+    <minx>-19.0</minx>
+    <maxx>5.0</maxx>
+    <miny>27.0</miny>
+    <maxy>44.0</maxy>
+    <crs>EPSG:4258</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-19.0</minx>
+    <maxx>5.0</maxx>
+    <miny>27.0</miny>
+    <maxy>44.0</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="OTHER_SRS">EPSG:4258,EPSG:4326,EPSG:3857,EPSG:3035,EPSG:25828,EPSG:25829,EPSG:25830,EPSG:25831,EPSG:32628,EPSG:32629,EPSG:32630,EPSG:32631,CRS:84</entry>
+  </metadata>
+  <store class="wmsStore">
+    <id>WMSStoreInfoImpl--600e0acc:191dbb08263:-1043</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <forcedRemoteStyle></forcedRemoteStyle>
+  <preferredFormat>image/png</preferredFormat>
+  <metadataBBoxRespected>false</metadataBBoxRespected>
+</wmsLayer>

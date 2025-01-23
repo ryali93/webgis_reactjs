@@ -1,13 +1,5 @@
 version: "3.7"
 name: webgis
-# volumes:
-#     postgres-data:
-#     pgadmin-data:
-#     redis-data:
-#     geoserver-data:
-networks:
-  frontend:
-  backend:
 services:
   node:
     build:
@@ -18,7 +10,9 @@ services:
     working_dir: /usr/src/app
     command: npm start  # Usa nodemon y webpack --watch | # npm start para producción
     ports:
-      - "${NODE_PORT}:3000"
+      - "${NODE_PORT}:4000"
+    volumes:
+      - '.:/usr/src/app'
     networks:
       - frontend
       - backend
@@ -33,68 +27,40 @@ services:
     networks:
       - backend
     mem_limit: 1g
-  
-
-
-    # postgres:
-    #     image: kartoza/postgis:14-3.3
-    #     container_name: postgres
-    #     hostname: postgres
-    #     restart: always
-    #     volumes:
-    #         - ./docker/postgresql/data:/var/lib/postgresql
-    #         - ./docker/postgresql/backups:/var/backups
-    #     ports:
-    #         - "5432:5432"
-    #     environment:
-    #         - POSTGRES_PASS=tidop#webgis
-    #         - POSTGRES_USER=postgres
-    #         - POSTGRES_DB=tidopwebgis
-    #         - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
-    #     networks:
-    #         - backend
-    # pgadmin:
-    #     image: dpage/pgadmin4
-    #     container_name: pgadmin4
-    #     hostname: pgadmin4
-    #     restart: always
-    #     ports:
-    #         - "8888:80"
-    #     environment:
-    #         PGADMIN_DEFAULT_EMAIL: tidop@tidop.es
-    #         PGADMIN_DEFAULT_PASSWORD: tidop#webgis
-    #     volumes:
-    #         - pgadmin-data:/var/lib/pgadmin
-    #     networks:
-    #         - backend
-    # redis:
-    #     image: redis:latest
-    #     hostname: redis
-    #     restart: always
-    #     sysctls:
-    #         - net.core.somaxconn=511
-    #     ports:
-    #         - "6379:6379"
-    #     volumes:
-    #         - redis-data:/data
-    #     networks:
-    #         - backend
-    # geoserver:
-    #     image: kartoza/geoserver:2.22.2
-    #     hostname: geoserver
-    #     restart: always
-    #     ports:
-    #         - "8080:8080"
-    #     volumes:
-    #         - ./docker/geoserver:/opt/geoserver/data_dir
-    #         - ./docker/geoserver/data:/opt/geoserver/data_dir/data
-    #     environment:
-    #         GEOSERVER_DATA_DIR: /opt/geoserver/data_dir
-    #         GEOSERVER_ADMIN_USER: admin
-    #         GEOSERVER_ADMIN_PASSWORD: tidop#webgis
-    #         STABLE_EXTENSIONS: sldservice-plugin,feature-pregeneralized-plugin,css-plugin,importer-plugin,imagemap-plugin,wmts-multi-dimensional-plugin
-    #         COMMUNITY_EXTENSIONS: backup-restore-plugin,colormap-plugin,cog-plugin
-    #         INITIAL_MEMORY: 2G
-    #         MAXIMUM_MEMORY: 4G
-    #     networks:
-    #         - backend
+  postgres:
+    image: kartoza/postgis:14-3.3
+    container_name: postgres
+    hostname: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASS: '${DB_PASSWORD}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis,hstore,postgis_topology,postgis_raster,pgrouting
+    volumes:
+      - ./docker/postgresql/data:/var/lib/postgresql
+      - ./docker/postgresql/backups:/var/backups
+    networks:
+      - backend
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: tidop@tidop.es
+      PGADMIN_DEFAULT_PASSWORD: crj#enagas#21
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - backend
+networks:
+  frontend:
+  backend:
+volumes:
+  postgres-data:
+  pgadmin-data:
+#     redis-data:
+#     geoserver-data:

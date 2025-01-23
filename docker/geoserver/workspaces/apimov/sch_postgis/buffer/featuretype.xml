@@ -1,0 +1,68 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--23016ae8:1934e6e3997:29e1</id>
+  <name>buffer</name>
+  <nativeName>buffer</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--600e0acc:191dbb08263:-105a</id>
+  </namespace>
+  <title>buffer</title>
+  <keywords>
+    <string>features</string>
+    <string>buffer</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;WGS 84 / Pseudo-Mercator&quot;, 
+  GEOGCS[&quot;WGS 84&quot;, 
+    DATUM[&quot;World Geodetic System 1984&quot;, 
+      SPHEROID[&quot;WGS 84&quot;, 6378137.0, 298.257223563, AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]], 
+  PROJECTION[&quot;Popular Visualisation Pseudo Mercator&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;1024&quot;]], 
+  PARAMETER[&quot;semi_minor&quot;, 6378137.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 0.0], 
+  PARAMETER[&quot;central_meridian&quot;, 0.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;false_easting&quot;, 0.0], 
+  PARAMETER[&quot;false_northing&quot;, 0.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;3857&quot;]]</nativeCRS>
+  <srs>EPSG:3857</srs>
+  <nativeBoundingBox>
+    <minx>-946738.5625</minx>
+    <maxx>-44436.76171875</maxx>
+    <miny>4639663.0</miny>
+    <maxy>5382801.5</maxy>
+    <crs class="projected">EPSG:3857</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-8.504697207590947</minx>
+    <maxx>-0.3991822222873038</maxx>
+    <miny>38.4251670824801</miny>
+    <maxy>43.46357826201012</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--600e0acc:191dbb08263:-1055</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

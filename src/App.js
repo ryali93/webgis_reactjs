@@ -21,10 +21,21 @@ function App() {
   const [rightSidebarWidth, setRightSidebarWidth] = useState(400);
   const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
 
-  const [leftSidebarWidth, setLeftSidebarWidth] = useState(250); // Ancho inicial del sidebar izquierdo
+  const [leftSidebarWidth, setLeftSidebarWidth] = useState(0); // Ancho inicial del sidebar izquierdo
   const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(true); // Estado de colapso del sidebar izquierdo
 
   const [bottomCanvasHeight, setBottomCanvasHeight] = useState(200); // Altura inicial del BottomCanvasHeight
+  const [bottomCanvasCollapsed, setBottomCanvasCollapsed] = useState(true); // Estado de colapso del BottomCanvas
+
+  useEffect(() => {
+    // Ajustar la altura del contenedor del mapa cuando cambia la altura del BottomCanvas
+    const mapContainer = document.querySelector('.map-container');
+    if (mapContainer) {
+      mapContainer.style.height = `calc(100% - ${bottomCanvasHeight}px)`;
+      
+      mapContainer.style.transition = 'bottom 0.3s ease, top 0.3s ease, left 0.3s ease, right 0.3s ease';
+    }
+  }, [bottomCanvasHeight, leftSidebarCollapsed, leftSidebarWidth, rightSidebarCollapsed, rightSidebarWidth]);
 
   const toggleRightSidebar = () => {
     setRightSidebarCollapsed(!rightSidebarCollapsed);
@@ -35,6 +46,11 @@ function App() {
     setLeftSidebarCollapsed(!leftSidebarCollapsed);
     setLeftSidebarWidth(!leftSidebarCollapsed ? 50 : 250); // Ajusta el ancho según el estado de colapso
   };
+
+  const toggleBottomCanvas = () => {
+    setBottomCanvasCollapsed(!bottomCanvasCollapsed);
+    setBottomCanvasHeight(bottomCanvasHeight === 60 ? 200 : 60); // Cambia la altura del BottomCanvas
+  }
 
   useEffect(() => {
     // 1) Creamos el mapa
@@ -55,7 +71,7 @@ function App() {
     }
   }, [rightSidebarCollapsed, rightSidebarWidth, 
       leftSidebarCollapsed, leftSidebarWidth,
-      mapInstance]);
+      bottomCanvasHeight, mapInstance]);
 
   return (
     <ErrorBoundary>
@@ -68,7 +84,11 @@ function App() {
             transition: 'margin-right 0.3s ease',
           }}
         >
-          <Sidebar onToggle={toggleLeftSidebar}/>
+        {/* <Sidebar
+          isCollapsed={leftSidebarCollapsed}
+          onToggle={toggleLeftSidebar}
+          onWidthChange={setLeftSidebarWidth}
+        /> */}
           {mapInstance && <MapContainer map={mapInstance} />}
 
         <RightSidebar
@@ -84,6 +104,8 @@ function App() {
 
         <BottomCanvas
           onHeightChange={setBottomCanvasHeight}
+          onToggle={toggleBottomCanvas}
+          isCollapsed={bottomCanvasCollapsed}
           leftSidebarWidth={leftSidebarWidth}
           rightSidebarWidth={rightSidebarWidth}
         />
