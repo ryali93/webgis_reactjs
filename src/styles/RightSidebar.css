@@ -4,14 +4,14 @@
   position: absolute;
   top: 50px;
   right: 0;
-  height: 100%; /* Altura total menos el Navbar */
+  height: calc(100% - 50px);
   background: rgba(44, 62, 80, 0.95);
   color: white;
   border-left: 1px solid #ddd;
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  overflow-y: auto; /* Permite scroll interno si el contenido excede */
-  transition: width 0.3s ease;
+  overflow-y: auto;
+  transition: width 0.3s ease-in-out;
 }
 
 /* Sidebar expandido */
