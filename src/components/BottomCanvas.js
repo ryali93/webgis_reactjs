@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/BottomCanvas.css';
-import TsVis from '../vis/TsVis';
-import GraphVis from '../vis/GraphVis';
+// import TsVis from '../vis/TsVis';
+// import GraphVis from '../vis/GraphVis';
 
 function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth, 
                         rightSidebarWidth }) {
@@ -11,9 +11,9 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
   const [height, setHeight] = useState(60);
   const [activeTab, setActiveTab] = useState('Vis1'); // Tab activa por defecto
 
-  const vis = {
-    Vis1: { label: 'Image Collection', content: TsVis },
-    Vis2: { label: 'Time Series Graph', content: GraphVis },
+const vis = {
+  //   Vis1: { label: 'Image Collection', content: TsVis },
+  //   Vis2: { label: 'Time Series Graph', content: GraphVis },
     Vis3: { label: 'Tab 3', content: () => <div>Tab 3 content</div> },
   };
 
