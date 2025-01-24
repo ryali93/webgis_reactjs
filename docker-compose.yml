@@ -11,8 +11,8 @@ services:
     command: npm start  # Usa nodemon y webpack --watch | # npm start para producción
     ports:
       - "${NODE_PORT}:4000"
-    volumes:
-      - '.:/usr/src/app'
+    # volumes:
+    #   - '.:/usr/src/app'
     networks:
       - frontend
       - backend
@@ -51,11 +51,30 @@ services:
       - "8888:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: tidop@tidop.es
-      PGADMIN_DEFAULT_PASSWORD: crj#enagas#21
+      PGADMIN_DEFAULT_PASSWORD: crj#roadeye#21
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     networks:
       - backend
+  geoserver:
+    image: kartoza/geoserver:2.22.2
+    restart: always
+    ports:
+        - "8085:8080"
+    volumes:
+        - ./docker/geoserver:/opt/geoserver/data_dir
+        - ./docker/geoserver/data:/opt/geoserver/data_dir/data
+    environment:
+        GEOSERVER_DATA_DIR: /opt/geoserver/data_dir
+        GEOSERVER_ADMIN_USER: admin
+        GEOSERVER_ADMIN_PASSWORD: crj#roadeye#21
+        STABLE_EXTENSIONS: sldservice-plugin,feature-pregeneralized-plugin,css-plugin,importer-plugin
+        COMMUNITY_EXTENSIONS: cog-plugin
+        INITIAL_MEMORY: 2G
+        MAXIMUM_MEMORY: 4G
+    networks:
+        - backend
+    mem_limit: 2g
 networks:
   frontend:
   backend:

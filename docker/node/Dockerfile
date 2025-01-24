@@ -12,9 +12,8 @@ RUN apt-get install -y postgresql-client
 
 # Instalar todas las dependencias del proyecto localmente en node_modules dentro del contenedor
 RUN npm install
-RUN npm i -D @craco/craco
+RUN npm i @craco/craco
 RUN npm i web-vitals
-RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
 
 # Copiar todo el código fuente
 COPY . .
