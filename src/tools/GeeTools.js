@@ -1,7 +1,7 @@
 // src/tools/Tools.js
 import React, { useEffect, useRef, useState } from 'react';
 import { MdSatelliteAlt } from "react-icons/md";
-import { post_mapid, post_time_series } from '../services/GeeServices';
+import { post_mapid, post_time_series, display_img } from '../services/GeeServices';
 import Tagify from '@yaireo/tagify';
 import flatpickr from 'flatpickr';
 import '@yaireo/tagify/dist/tagify.css';
@@ -10,7 +10,8 @@ import 'flatpickr/dist/flatpickr.css';
 
 const vis_s2 = {"bands":["B4","B3","B2"],"max":[3000],"min":[0]}
 
-export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, addTileLayerFn }) {
+export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, addTileLayerFn,
+  setTimeSeriesData, setMultitemporalImages}) {
   const [dateRange, setDateRange] = useState([]);
   const [selectedIndices, setSelectedIndices] = useState([]); // Guardar los índices seleccionados
   const tagifyRef = useRef(); // Referencia para Tagify
@@ -27,11 +28,11 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
   useEffect(() => {
     const input = tagifyRef.current; // Obtener la referencia del input
     const tagify = new Tagify(input, {
-      whitelist: ["NDVI", "NDWI", "NDMI", "EVI", "SAVI"], // Opciones disponibles
-      maxTags: 5,
+      whitelist: ["NDVI", "NDWI", "NDMI", "EVI", "SAVI", "GNDVI", "NBR"], // Opciones disponibles
+      maxTags: 7,
       dropdown: {
         enabled: 1, // Mostrar sugerencias al escribir
-        maxItems: 5,
+        maxItems: 7,
       },
     });
 
@@ -95,16 +96,35 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
       vis: vis_s2,
       cloud_cover: "80",
     }
-    
+
+    const requestURLDisplay = {
+      idName: "COPERNICUS/S2_SR_HARMONIZED",
+      geometry: geometry,
+      indices: selectedIndices.join(','),
+      scale: "10",
+      start_date: dateRange[0],
+      end_date: dateRange[1],
+      cloud_cover: "80",
+    }
+
     console.log('[GeeTool:TimeSeries] Sending data:', requestDataTimeSeries);
+    
     var time_series = await post_time_series(requestDataTimeSeries);
-    var mapid = await post_mapid(requestDataMapId);
+    console.log('[GeeTool:TimeSeries] Result:', time_series);        // Pasar los resultados al estado de App.js
     
-    // Muestra los resultados en la consola
-    console.log('[GeeTool:TimeSeries] Result:', time_series);
-    console.log('[GeeTool:MapId] Result:', mapid);
-    
+    setTimeSeriesData(time_series);
+    console.log('[GeeTool:TimeSeries] Reprint: ', time_series);
+
+    var mapid = await post_mapid(requestDataMapId);   
+    // Muestra los resultados en la consola    
+    console.log('[GeeTool:MapId] Result:', mapid);    
     addTileLayerFn(mapid);
+
+    var display = await display_img(requestURLDisplay);
+    console.log('[GeeTool:Display] Result:', display);
+
+    setMultitemporalImages(display);
+    console.log('[GeeTool:Display] Reprint: ', display);
   };
 
   return (

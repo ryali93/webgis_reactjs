@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import createMap from './components/Map';
 import MapContainer from './components/MapContainer';
 import RightSidebar from './components/RightSidebar';
@@ -9,7 +9,9 @@ import Navbar from './components/Navbar';
 import BottomCanvas from './components/BottomCanvas';
 
 import ErrorBoundary from './components/ErrorBoundary';
+
 import './App.css';
+import { set } from 'ol/transform';
 
 function App() {
   const [mapInstance, setMapInstance] = useState(null);
@@ -17,6 +19,9 @@ function App() {
   const [clearFn, setClearFn] = useState(null);
   const [geometry, setGeometry] = useState(null);
   const [addTileLayerFn, setAddTileLayerFn] = useState(null);
+  const [timeSeriesData, setTimeSeriesData] = useState(null); // Estado para almacenar los datos de la serie temporal
+  const [multitemporalImages, setMultitemporalImages] = useState(null); // Estado para almacenar las imágenes multitemporales
+
 
   const [rightSidebarWidth, setRightSidebarWidth] = useState(400);
   const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
@@ -66,6 +71,7 @@ function App() {
     setAddTileLayerFn(() => addTileLayer); // (por ejemplo)
   }, []);
 
+
   useEffect(() => {
     if (mapInstance) {
       mapInstance.updateSize();
@@ -100,18 +106,23 @@ return (
           isCollapsed={bottomCanvasCollapsed}
           leftSidebarWidth={leftSidebarWidth}
           rightSidebarWidth={rightSidebarWidth}
+          timeSeriesData={timeSeriesData} // Pasamos la función de añadir series temporales al Bottom
+          multitemporalImages={multitemporalImages} // Pasamos la función de añadir imágenes multitemporales al Bottom
         />
-      </div>
-      <RightSidebar
-        isCollapsed={rightSidebarCollapsed}
-        onToggle={toggleRightSidebar}
-        onWidthChange={setRightSidebarWidth}
-        addDrawInteraction={drawFn} // Le pasamos la función del draw al sidebar
-        clearGeometries={clearFn} // Le pasamos la función de limpiar geometrías al sidebar
-        geometry={geometry} // Pasamos la geometría al sidebar
-        addTileLayerFn={addTileLayerFn} // Pasamos la función de añadir capa al sidebar
-      />
-    </div>
+
+        </div>
+        <RightSidebar
+          isCollapsed={rightSidebarCollapsed}
+          onToggle={toggleRightSidebar}
+          onWidthChange={setRightSidebarWidth}
+          addDrawInteraction={drawFn} // Le pasamos la función del draw al sidebar
+          clearGeometries={clearFn} // Le pasamos la función de limpiar geometrías al sidebar
+          geometry={geometry} // Pasamos la geometría al sidebar
+          addTileLayerFn={addTileLayerFn} // Pasamos la función de añadir capa al sidebar
+          setTimeSeriesData={setTimeSeriesData} // Pasamos la función para añadir datos de la serie temporal
+          setMultitemporalImages={setMultitemporalImages} // Pasamos la función para añadir imágenes multitemporales
+        />
+    </div>    
   </ErrorBoundary>
 );
 }

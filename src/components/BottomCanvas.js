@@ -4,7 +4,7 @@ import TsVis from '../vis/TsVis';
 import GraphVis from '../vis/GraphVis';
 
 function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth, 
-                        rightSidebarWidth }) {
+                        rightSidebarWidth, timeSeriesData, multitemporalImages }) {
   
   const downbarRef = useRef(null);
   const isDragging = useRef(false);
@@ -13,8 +13,7 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
 
   const vis = {
     Vis1: { label: 'Image Collection', content: TsVis },
-    Vis2: { label: 'Time Series Graph', content: GraphVis },
-    Vis3: { label: 'Tab 3', content: () => <div>Tab 3 content</div> },
+    Vis2: { label: 'Time Series Graph', content: GraphVis }
   };
 
   const startDragging = (e) => {
@@ -52,6 +51,7 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
     onHeightChange(height);
   }, [height, onHeightChange]);
 
+
   return (
     <div
       ref={downbarRef}
@@ -82,7 +82,10 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
             ))}
           </div>
           <div className="tool-content">
-            {React.createElement(vis[activeTab].content)} {/* Renderiza el componente */}
+            {React.createElement(vis[activeTab].content, {
+              timeSeriesData: timeSeriesData,
+              multitemporalImages: multitemporalImages
+            })} 
           </div>
         </div>
       )}

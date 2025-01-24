@@ -1,5 +1,5 @@
 // src/components/RightSidebar.js
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import '../styles/RightSidebar.css';
 
 import GeeTools from '../tools/GeeTools';
@@ -13,8 +13,11 @@ function RightSidebar({
   addDrawInteraction,
   clearGeometries,
   geometry,
-  addTileLayerFn
+  addTileLayerFn,
+  setTimeSeriesData,
+  setMultitemporalImages
 }) {
+
   const [activeTab, setActiveTab] = useState('Tool1');
 
   const tools = {
@@ -30,7 +33,21 @@ function RightSidebar({
     }
   };
 
-  return (
+
+const addTimeSeriesData = (timeSeriesData) => {
+  console.log('[RightSidebar] addTimeSeriesData:', timeSeriesData);
+  setTimeSeriesData(timeSeriesData);
+    return timeSeriesData;
+  };
+
+const addMultitemporalImages = (multitemporalImages) => {
+  console.log('[RightSidebar] addMultitemporalImages:', multitemporalImages);
+  setMultitemporalImages(multitemporalImages);
+  return multitemporalImages;
+};
+
+
+ return (
     <div className={`right-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="toggle-wrapper">
         <button className="toggle-button" onClick={onToggle}>
@@ -73,6 +90,8 @@ function RightSidebar({
                 },
                 geometry: geometry,
                 addTileLayerFn: addTileLayerFn,
+                setTimeSeriesData: addTimeSeriesData,
+                setMultitemporalImages: addMultitemporalImages
               })
             }
           </div>

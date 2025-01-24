@@ -15,5 +15,13 @@
 #chartOverlay.minimized {
     height: 30px; /* o el tamaño que prefieras para el botón */
     width: 120px; /* ajusta según necesites */
-    overflow: hidden;
+    overflow: hidden
+    ;
 }
+
+.chartOverlay .chart-button {
+    padding: 10px 10px;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+  }
