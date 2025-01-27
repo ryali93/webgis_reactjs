@@ -1,4 +1,5 @@
 import Group from 'ol/layer/Group';
+import VectorLayer from 'ol/layer/Vector';
 import TileLayer from 'ol/layer/WebGLTile';
 import OlLayerTile from 'ol/layer/Tile';
 import OlSourceOsm from 'ol/source/OSM';
@@ -58,6 +59,26 @@ const baseLayers = new Group({
                 type: 'base',
                 visible: false,
         }),
+        new TileLayer({
+            id: 'catastro',
+            title: "Catastro",
+            name: 'catastro',
+            source: new TileWMS({
+                url: 'http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx', //url_proxy + 
+                params: {
+                    LAYERS: 'PARCELA', 
+                    VERSION: '1.1.1', 
+                    TILED: true, 
+                    TRANSPARENT: true
+                },
+                transition: 0
+              }),
+              queryable: true,
+              noSwitcherDelete: true,
+              displayInLayerSwitcher : true,
+              visible: false,
+              minZoom: 18
+        })        
     ],
   });
 
@@ -123,8 +144,7 @@ var tramos = new TileLayer({
       visible: true,
       queryable: true,
       icon: 'fa-solid fa-square buffer'
-    })
-
+});
 
 var egmsLayers = new Group({
     id: 'egms',
@@ -137,6 +157,6 @@ var egmsLayers = new Group({
         ortho_east_view,
         ortho_up_view
       ]
-  });
+});
 
 export {baseLayers, egmsLayers};

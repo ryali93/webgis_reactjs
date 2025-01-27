@@ -1,26 +1,22 @@
 // src/components/Map.js
 import OlMap from 'ol/Map';
 import OlView from 'ol/View';
-import { fromLonLat } from 'ol/proj';
-import { defaults as defaultInteractions } from 'ol/interaction';
-import LayerSwitcher from 'ol-ext/control/LayerSwitcher';
-import CustomLayerSwitcher from '../tools/Ol-ext';
-
-import Draw, { createRegularPolygon } from 'ol/interaction/Draw';
-
-import Group from 'ol/layer/Group';
 import OlLayerTile from 'ol/layer/Tile';
-import OlSourceOsm from 'ol/source/OSM';
 import OlSourceXYZ from 'ol/source/XYZ';
 import OlControlScaleLine from 'ol/control/ScaleLine';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import CustomLayerSwitcher from '../tools/Ol-ext';
+import Draw, { createRegularPolygon } from 'ol/interaction/Draw';
+import { fromLonLat } from 'ol/proj';
+import { defaults as defaultInteractions } from 'ol/interaction';
+
+import { get_data_by_id, get_metadata_by_id } from '../services/InsarServices';
 
 import { baseLayers, egmsLayers } from '../services/MapLayers';
 
 import 'ol/ol.css';
 import 'ol-ext/dist/ol-ext.css';
-
 import '../styles/Map.css'
 
 function createMap(onDrawEndCallback) {
@@ -41,7 +37,6 @@ function createMap(onDrawEndCallback) {
 
   // Controles
   map.addControl(new OlControlScaleLine());
-  // map.addControl(new LayerSwitcher());
   map.addControl(new CustomLayerSwitcher());
   
   let draw; // Mantendremos la interacción actual
@@ -90,10 +85,57 @@ function createMap(onDrawEndCallback) {
       source: new OlSourceXYZ({ url }),
       title: 'S2',
       type: 'base',
-      visible: false,
+      visible: true,
     })
     map.addLayer(tileLayer);
   }
+
+  // Escuchar clics en el mapa para obtener información de las capas
+  map.on('singleclick', async (evt) => {
+    const viewResolution = map.getView().getResolution();
+    const clickedCoordinate = evt.coordinate;
+
+    // Verifica las capas interesadas
+    const layersToQuery = egmsLayers.getLayers().getArray().filter((layer) =>
+      ['ortho_east_view', 'ortho_up_view'].includes(layer.get('id')) && layer.getVisible()
+    );
+
+    for (const layer of layersToQuery) {
+      const source = layer.getSource();
+      const url_insar = source.getFeatureInfoUrl(
+        clickedCoordinate,
+        viewResolution,
+        'EPSG:3857', // Sistema de referencia espacial
+        {
+          INFO_FORMAT: 'application/json', // Formato de respuesta
+          FEATURE_COUNT: 1, // Máximo de características devueltas
+        }
+      );
+
+      if (url_insar) {
+        try {
+          const response_insar = await fetch(url_insar);
+          const data_insar_geo = await response_insar.json();
+
+          const id_insar = data_insar_geo.features[0].properties.id
+          console.log(`[Map.js] ID del objeto "${layer.get('id')}"`, id_insar);
+
+          const requestDataInsar = {
+            id_insar: id_insar,
+            table: layer.get('id')
+          }
+          const data_insar_ts = await get_data_by_id(requestDataInsar);
+          console.log(data_insar_ts);
+          const metadata_insar = await get_metadata_by_id(requestDataInsar);
+          console.log(metadata_insar);
+
+        } catch (error) {
+          console.error(`[Map.js] Error consultando la capa "${layer.get('title')}"`, error);
+        }
+      }
+    }
+  });
+
   return { map, addDrawInteraction, clearGeometries, addTileLayer };
 }
 

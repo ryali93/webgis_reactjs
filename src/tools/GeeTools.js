@@ -32,9 +32,9 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
       dropdown: {
         enabled: 1, // Mostrar sugerencias al escribir
         maxItems: 5,
-      },
+      }
     });
-
+    
     tagify.on('change', (e) => {
       const selected = e.detail.value ? JSON.parse(e.detail.value) : [];
       setSelectedIndices(selected.map(tag => tag.value)); // Actualizar estado con los índices seleccionados
@@ -45,18 +45,18 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
   const handleGeometrySelection = (type) => {
     console.log("[GeeToolContent] handleGeometrySelection called with type:", type);
     if (addDrawInteraction) {
-      addDrawInteraction(type);
+        addDrawInteraction(type);
     } else {
-      console.error('[GeeToolContent] addDrawInteraction is not defined!');
+        console.error('[GeeToolContent] addDrawInteraction is not defined!');
     }
   };
 
   const clearGeometry = () => {
     console.log('[GeeToolContent] clearGeometry called');
     if (clearGeometries) {
-      clearGeometries(); // Llama a la función para limpiar geometrías en el mapa
+        clearGeometries(); // Llama a la función para limpiar geometrías en el mapa
     } else {
-      console.error('[GeeToolContent] clearGeometries is not defined!');
+        console.error('[GeeToolContent] clearGeometries is not defined!');
     }
   };
 
@@ -129,7 +129,7 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
       </div>
 
       <div className="group">
-        <input ref={tagifyRef} name="tags" placeholder="Select indices (e.g., NDVI, NDWI)" />
+        <input ref={tagifyRef} name="tags" defaultValue='["NDVI", "NDMI"]' placeholder="Select indices (e.g., NDVI, NDWI)" />
         <span className="bar"></span>
       </div>
       
