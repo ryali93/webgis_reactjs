@@ -183,9 +183,9 @@ input:focus ~ .bar:after {
     display: flex; /* Flexbox para alinear los selects */
     flex-direction: row; /* Coloca los selects en fila */
     gap: 10px; /* Espaciado entre los selects */
-  }
+}
   
-  .planet-custom-controls select {
+.planet-custom-controls select {
     flex: 1; /* Permite que los selects ocupen espacio igual */
     padding: 5px; /* Espaciado interno */
     font-size: 14px; /* Tamaño de fuente */
@@ -194,5 +194,52 @@ input:focus ~ .bar:after {
     background-color: #ffffff; /* Fondo blanco */
     color: #495057; /* Texto gris oscuro */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  }
+}
   
+/* Ul-examples */
+.examples-list {
+    list-style: none;
+    padding: 0;
+}
+
+.example-item {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.example-item:hover {
+    background: #f0f0f0;
+}
+
+.example-item.selected {
+    background: #007bff;
+    color: white;
+}
+
+/* Indices */
+.indices-list {
+    list-style: none;
+    padding: 0;
+}
+
+.indice-item {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.indice-item:hover {
+    background: #f0f0f0;
+}
+
+.indice-item.selected {
+    background: #007bff;
+    color: white;
+}

@@ -7,9 +7,32 @@ import { get_flood } from '../services/GeeServices';
 
 export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry, addTileLayerFn} ) {
     const [dateEval, setDate] = useState([]);
+    const [selectedExample, setSelectedExample] = useState(null);
+    const [flatpickrInstance, setFlatpickrInstance] = useState(null);
+
+    const examples = [
+        { 
+            id: 1, 
+            name: "1: Las Navas del Marqués - Ávila (2019-08-26)", 
+            date: "2019-08-26", 
+            geometry: { type: "Polygon", coordinates: [[[ -99.1332, 19.4326 ], [ -99.1342, 19.4336 ], [ -99.1352, 19.4326 ], [ -99.1332, 19.4326 ]]] } 
+        },
+        { 
+            id: 2, 
+            name: "2: Orihuela - Alicante (2019-09-14)", 
+            date: "2019-09-14", 
+            geometry: { type: "Rectangle", coordinates: [[[ -80.1918, 25.7617 ], [ -80.1928, 25.7627 ]]] } 
+        },
+        { 
+            id: 3, 
+            name: "3: Catarroja - Valencia (2024-10-29)", 
+            date: "2024-10-29", 
+            geometry: { type: "Polygon", coordinates: [[[ -91.132, 29.234 ], [ -91.135, 29.238 ], [ -91.138, 29.230 ], [ -91.132, 29.234 ]]] }
+        }
+    ];
 
     useEffect(() => {
-        flatpickr('#calendar-range', {
+        const fp = flatpickr('#calendar-range', {
             onChange: (selectedDates) => {
                 if (selectedDates.length > 0) {
                     const fechaFormateada = selectedDates[0].toISOString().slice(0, 10);
@@ -17,7 +40,21 @@ export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry
                 }
             }
         });
+        setFlatpickrInstance(fp);
     }, []);
+
+    const handleSelectExample = (example) => {
+        setSelectedExample(example.id);
+        setDate(example.date);
+
+        if (flatpickrInstance) {
+            flatpickrInstance.setDate(example.date, true);
+        }
+
+        if (addDrawInteraction) {
+            addDrawInteraction(example.geometry.type);
+        }
+    };
     
     const handleGeometrySelection = (type) => {
         console.log("[FloodToolContent] handleGeometrySelection called with type:", type);
@@ -73,6 +110,8 @@ export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry
         <div>
         <h4>Flood Tool</h4>
 
+        <p> Select a geometry and a date to evaluate the flood. </p>
+
         <div className="drawContainer">
             <div className="drawButtons">
                 <button onClick={() => handleGeometrySelection('Rectangle')} className="drawButton" id="drawRectangle" title="Rectangle" />
@@ -89,7 +128,21 @@ export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry
             <label className="input-label">Range of dates</label>
         </div>
 
+        <h5>Ejemplos de evaluación:</h5>
+        <ul className="examples-list">
+            {examples.map((example) => (
+                <li 
+                    key={example.id} 
+                    className={`example-item ${selectedExample === example.id ? 'selected' : ''}`} 
+                    onClick={() => handleSelectExample(example)}
+                >
+                    {example.name}
+                </li>
+            ))}
+        </ul>
+
         <button onClick={handleRun} className="runButton">Run</button>
+
         </div>
     );
 }

@@ -4,7 +4,6 @@ import '../styles/RightSidebar.css';
 
 import GeeTools from '../tools/GeeTools';
 import VhrTools from '../tools/VhrTools';
-// import InsarTools from '../tools/InsarTools';
 import FloodTools from '../tools/FloodTools';
 
 function RightSidebar({
@@ -20,8 +19,8 @@ function RightSidebar({
 
   const tools = {
     Tool1: GeeTools,
-    Tool2: VhrTools,
-    Tool3: FloodTools,
+    Tool2: FloodTools,
+    Tool3: VhrTools,
   };
 
   const activateTab = (tab) => {

@@ -2,9 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MdSatelliteAlt } from "react-icons/md";
 import { post_mapid, post_time_series } from '../services/GeeServices';
-import Tagify from '@yaireo/tagify';
 import flatpickr from 'flatpickr';
-import '@yaireo/tagify/dist/tagify.css';
 import '../styles/Tools.css';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -13,7 +11,16 @@ const vis_s2 = {"bands":["B4","B3","B2"],"max":[3000],"min":[0]}
 export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, addTileLayerFn }) {
   const [dateRange, setDateRange] = useState([]);
   const [selectedIndices, setSelectedIndices] = useState([]); // Guardar los índices seleccionados
-  const tagifyRef = useRef(); // Referencia para Tagify
+
+  const indices = [
+    {id: "NDVI", name: "NDVI", description: "Normalized Difference Vegetation Index", vis: {"bands":["B8","B4","B3"],"max":[1],"min":[-0.4], colors: "#0c0c0c, #bfbfbf, #dbdbdb, #eaeaea, #fff9cc, #ede8b5, #ddd89b, #ccc682, #bcb76b, #afc160, #a3cc59, #91bf51, #7fb247, #70a33f, #609635, #4f892d, #3f7c23, #306d1c, #216011, #0f540a, #004400"} },
+    {id: "NDWI", name: "NDWI", description: "Normalized Difference Water Index", vis: {"bands":["B8","B11","B12"],"max":[0.15],"min":[-0.1], colors: "#008000, #FFFFFF, #0000CC"} },
+    {id: "NDMI", name: "NDMI", description: "Normalized Difference Moisture Index", vis: {"bands":["B8","B11","B8A"],"max":[0.8],"min":[-0.8], colors: "#800000, #ff0000, #ffff00, #00ffff, #0000ff, #000080"} },
+    {id: "EVI", name: "EVI", description: "Enhanced Vegetation Index", vis: {"bands":["B8","B4","B3"],"max":[1],"min":[-0.4], colors: "#0c0c0c, #bfbfbf, #dbdbdb, #eaeaea, #fff9cc, #ede8b5, #ddd89b, #ccc682, #bcb76b, #afc160, #a3cc59, #91bf51, #7fb247, #70a33f, #609635, #4f892d, #3f7c23, #306d1c, #216011, #0f540a, #004400"} },
+    {id: "SAVI", name: "SAVI", description: "Soil Adjusted Vegetation Index", vis: {"bands":["B8","B4","B3"],"max":[1],"min":[-0.4], colors: "#0c0c0c, #bfbfbf, #dbdbdb, #eaeaea, #fff9cc, #ede8b5, #ddd89b, #ccc682, #bcb76b, #afc160, #a3cc59, #91bf51, #7fb247, #70a33f, #609635, #4f892d, #3f7c23, #306d1c, #216011, #0f540a, #004400"} },
+    {id: "NBR", name: "NBR", description: "Normalized Burn Ratio", vis: {"bands":["B12","B8","B4"],"max":[0],"min":[-0.5], colors: "#662506, #993404, #cc4c02, #ec7014, #fe9929, #fec44f, #fee391, #fff7bc, #ffffe5"} },
+    {id: "GNDVI", name: "GNDVI", description: "Green Normalized Difference Vegetation Index", vis: {"bands":["B8","B3","B2"],"max":[0.5],"min":[-0.5], colors: "#0c0c0c, #bfbfbf, #dbdbdb, #eaeaea, #fff9cc, #ede8b5, #ddd89b, #ccc682, #bcb76b, #afc160, #a3cc59, #91bf51, #7fb247, #70a33f, #609635, #4f892d, #3f7c23, #306d1c, #216011, #0f540a, #004400"} },
+  ];
 
   useEffect(() => {
     flatpickr('#calendar-range', {
@@ -24,23 +31,18 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
     });
   }, []);
 
-  useEffect(() => {
-    const input = tagifyRef.current; // Obtener la referencia del input
-    const tagify = new Tagify(input, {
-      whitelist: ["NDVI", "NDWI", "NDMI", "EVI", "SAVI"], // Opciones disponibles
-      maxTags: 5,
-      dropdown: {
-        enabled: 1, // Mostrar sugerencias al escribir
-        maxItems: 5,
+  // Maneja selección/deselección de índices (multi-select)
+  const handleSelectIndices = (indice) => {
+    setSelectedIndices((prev) => {
+      if (prev.includes(indice.id)) {
+        // Si ya estaba seleccionado, lo quitamos
+        return prev.filter((i) => i !== indice.id);
+      } else {
+        // Si no estaba, lo agregamos
+        return [...prev, indice.id];
       }
     });
-    
-    tagify.on('change', (e) => {
-      const selected = e.detail.value ? JSON.parse(e.detail.value) : [];
-      setSelectedIndices(selected.map(tag => tag.value)); // Actualizar estado con los índices seleccionados
-      console.log('Selected indices:', selected.map(tag => tag.value));
-    });
-  }, []);
+  };
 
   const handleGeometrySelection = (type) => {
     console.log("[GeeToolContent] handleGeometrySelection called with type:", type);
@@ -128,10 +130,48 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
         <label className="input-label">Range of dates</label>
       </div>
 
-      <div className="group">
-        <input ref={tagifyRef} name="tags" defaultValue='["NDVI", "NDMI"]' placeholder="Select indices (e.g., NDVI, NDWI)" />
-        <span className="bar"></span>
-      </div>
+      <h5>Select indices:</h5>
+      <ul className="indices-list">
+        {indices.map((indice) => {
+          // Verificamos si este índice está seleccionado
+          const isSelected = selectedIndices.includes(indice.id);
+          return (
+            <li
+              key={indice.id}
+              className={`indice-item ${isSelected ? 'selected' : ''}`}
+              onClick={() => handleSelectIndices(indice)}
+              style={{ cursor: 'pointer', marginBottom: '8px' }}
+            >
+              {/* Nombre en negrita */}
+              <strong>{indice.name}</strong>{' '}
+              {/* Descripción con tipografía pequeña y color gris */}
+              <span style={{ fontSize: '0.85em', color: 'black' }}>
+                {indice.description}
+              </span>
+
+              {/* Si está seleccionado, mostramos una 'leyenda' de ejemplo */}
+              {isSelected && (
+                <div className="indice-legend" style={{ marginTop: '4px' }}>
+                  {/* <p style={{ fontSize: '0.8em' }}>Legend for {indice.id}</p> */}
+                  <div
+                    style={{
+                      width: '320px',
+                      height: '15px',
+                      background: 'linear-gradient(to right, ' + indice.vis.colors + ')',
+                      
+                    }}
+                  />
+                  {/* Add values range */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <p style={{ fontSize: '0.8em' }}>Min: {indice.vis.min[0]}</p>
+                    <p style={{ fontSize: '0.8em' }}>Max: {indice.vis.max[0]}</p>
+                  </div>
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
       
       <button onClick={handleRun} className="runButton">Run</button>
     </div>

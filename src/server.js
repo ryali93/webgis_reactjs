@@ -8,6 +8,7 @@ const pool = require('./services/db'); // Importamos la conexión a la base de d
 
 const app = express();
 const PORT = process.env.PORT || 4001;
+const HOST = process.env.HOST || 'localhost';
 
 // Middlewares
 app.use(cors());
@@ -22,6 +23,7 @@ router.get('/data', async (req, res) => {
         }
         // Sanitizar el nombre de la tabla para evitar inyecciones SQL
         const sanitizedTable = table.replace(/[^a-zA-Z0-9_]/g, '').replace('view', 'data');
+        console.log('Sanitized table:', sanitizedTable);
         
         // Crear consulta dinámica con la tabla
         const query = `SELECT * FROM sch_postgis.${sanitizedTable} WHERE id = $1 ORDER BY date`;
@@ -56,5 +58,5 @@ app.use('/insar', router);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
 });

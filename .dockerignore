@@ -2,3 +2,7 @@
 .pnp.js
 
 /node_modules
+/docker/geoserver/gwc
+/docker/postgresql/data
+
+.package-lock.json
