@@ -172,3 +172,27 @@ input:focus ~ .bar:after {
 .runButton:hover {
     background-color: #0288D1;
 }
+
+/* CustomLayerSwitcher */
+.planet-custom-controls {
+    margin-top: 5px; /* Pequeña separación del control de opacidad */
+    padding: 5px; /* Espaciado interno */
+    background-color: #f8f9fa; /* Fondo claro */
+    border: 1px solid #dee2e6; /* Borde tenue */
+    border-radius: 5px; /* Bordes redondeados */
+    display: flex; /* Flexbox para alinear los selects */
+    flex-direction: row; /* Coloca los selects en fila */
+    gap: 10px; /* Espaciado entre los selects */
+  }
+  
+  .planet-custom-controls select {
+    flex: 1; /* Permite que los selects ocupen espacio igual */
+    padding: 5px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    border: 1px solid #ced4da; /* Borde estándar */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #ffffff; /* Fondo blanco */
+    color: #495057; /* Texto gris oscuro */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  }
+  

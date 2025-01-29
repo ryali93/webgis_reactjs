@@ -7,6 +7,7 @@ import flatpickr from 'flatpickr';
 import '@yaireo/tagify/dist/tagify.css';
 import '../styles/Tools.css';
 import 'flatpickr/dist/flatpickr.css';
+import { set } from 'ol/transform';
 
 const vis_s2 = {"bands":["B4","B3","B2"],"max":[3000],"min":[0]}
 
@@ -75,6 +76,8 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
       return;
     }
 
+    console.log(geometry);
+
     const requestDataTimeSeries = {
       idName: "COPERNICUS/S2_SR_HARMONIZED",
       geometry: geometry,
@@ -97,8 +100,9 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
       cloud_cover: "80",
     }
 
+    // const {id, geometry, indices, scale, start_date, end_date, cloud_cover} = request.query;
     const requestURLDisplay = {
-      idName: "COPERNICUS/S2_SR_HARMONIZED",
+      id: "COPERNICUS/S2_SR_HARMONIZED",
       geometry: geometry,
       indices: selectedIndices.join(','),
       scale: "10",
@@ -108,23 +112,23 @@ export function GeeToolContent({ addDrawInteraction, clearGeometries, geometry, 
     }
 
     console.log('[GeeTool:TimeSeries] Sending data:', requestDataTimeSeries);
-    
     var time_series = await post_time_series(requestDataTimeSeries);
-    console.log('[GeeTool:TimeSeries] Result:', time_series);        // Pasar los resultados al estado de App.js
-    
     setTimeSeriesData(time_series);
-    console.log('[GeeTool:TimeSeries] Reprint: ', time_series);
+    console.log('[GeeTool:TimeSeries] Result:', time_series);        // Pasar los resultados al estado de App.js 
+    
 
-    var mapid = await post_mapid(requestDataMapId);   
-    // Muestra los resultados en la consola    
-    console.log('[GeeTool:MapId] Result:', mapid);    
-    addTileLayerFn(mapid);
+    if (geometry.getType() === "Point") {
+      const urls = await display_img(requestURLDisplay);     
+      setMultitemporalImages(urls);
+      console.log('[GeeTool:Display] Result:', urls); // SOLO FUNCIONA CON PUNTOS
 
-    var display = await display_img(requestURLDisplay);
-    console.log('[GeeTool:Display] Result:', display);
+    }else{
+      var mapid = await post_mapid(requestDataMapId);   
+      // Muestra los resultados en la consola    
+      console.log('[GeeTool:MapId] Result:', mapid); // SOLO FUNCIONA CON POLÍGONOS   
+      addTileLayerFn(mapid);
+  }
 
-    setMultitemporalImages(display);
-    console.log('[GeeTool:Display] Reprint: ', display);
   };
 
   return (

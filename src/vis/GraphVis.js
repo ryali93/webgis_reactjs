@@ -4,7 +4,7 @@ import 'chartjs-adapter-date-fns';
 import { format } from 'date-fns';
 import './GraphVis.css';
 
-const GraphVis = ({timeSeriesData}) => {
+const GraphVis = (timeSeriesData) => {
   const chartRef = useRef(null);
   const [chart, setChart] = useState(null);
 

@@ -1,0 +1,35 @@
+@mode "Exclusive";
+
+[@sd <= 100000] {
+  mark: symbol(circle);
+  :mark {
+    fill: #ddaa22;
+  };
+  mark-size: 6;
+}
+
+[@sd > 100000] [@sd < 200000] {
+  mark: symbol(circle);
+  :mark {
+    fill: #ddaa22;
+  };
+  mark-size: 3;
+
+}
+
+[@sd >= 200000] [@sd < 300000] {
+  mark: symbol(circle);
+  :mark {
+    fill: #ddaa22;
+  };
+  mark-size: 2;
+
+}
+
+[@sd >= 300000] {
+  mark: symbol(circle);
+  :mark {
+    fill: #ddaa22;
+  };
+  mark-size: 0.5;
+}

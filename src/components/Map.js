@@ -4,6 +4,7 @@ import OlView from 'ol/View';
 import { fromLonLat } from 'ol/proj';
 import { defaults as defaultInteractions } from 'ol/interaction';
 import LayerSwitcher from 'ol-ext/control/LayerSwitcher';
+import CustomLayerSwitcher from '../tools/Ol-ext';
 
 import Draw, { createRegularPolygon } from 'ol/interaction/Draw';
 
@@ -15,33 +16,14 @@ import OlControlScaleLine from 'ol/control/ScaleLine';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 
+import { baseLayers, egmsLayers } from '../services/MapLayers';
+
 import 'ol/ol.css';
 import 'ol-ext/dist/ol-ext.css';
 
 import '../styles/Map.css'
 
 function createMap(onDrawEndCallback) {
-  // Basemaps
-  const baseLayers = new Group({
-    title: 'Basemaps',
-    layers: [
-      new OlLayerTile({
-        source: new OlSourceOsm(),
-        title: 'OpenStreetMap',
-        type: 'base',
-        visible: true,
-      }),
-      new OlLayerTile({
-        source: new OlSourceXYZ({
-          url: 'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-        }),
-        title: 'Satellite',
-        type: 'base',
-        visible: false,
-      }),
-    ],
-  });
-
   // Mapa
   const map = new OlMap({
     interactions: defaultInteractions({ doubleClickZoom: false }),
@@ -49,7 +31,7 @@ function createMap(onDrawEndCallback) {
       center: fromLonLat([-3.7038, 40.4168]), // Madrid
       zoom: 6,
     }),
-    layers: [baseLayers],
+    layers: [baseLayers, egmsLayers],
   });
 
   // Vector layer
@@ -59,7 +41,8 @@ function createMap(onDrawEndCallback) {
 
   // Controles
   map.addControl(new OlControlScaleLine());
-  map.addControl(new LayerSwitcher());
+  // map.addControl(new LayerSwitcher());
+  map.addControl(new CustomLayerSwitcher());
   
   let draw; // Mantendremos la interacción actual
 

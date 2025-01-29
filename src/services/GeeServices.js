@@ -113,23 +113,24 @@ const display_img = async (request) => {
   try {
     console.log('[GeeServices] Received request:', request);
     let coordinates;
-    var { idName, geometry, indices, scale, start_date, end_date, cloud_cover } = request;
+    var { id, geometry, indices, scale, start_date, end_date, cloud_cover } = request;
     coordinates = GeometryValidation(geometry);
+    console.log('Coordinates:', coordinates);
 
     // Crear la URL con todos los parámetros necesarios
     const url = new URL(`${process.env.REACT_APP_GEE_API_URL}/ee/display-img`);
     url.search = new URLSearchParams({
-      id: idName,
-      area: JSON.stringify(coordinates),
+      id: id,
+      geometry: JSON.stringify(coordinates),
       indices: indices,
       scale: scale,
       start_date: start_date,
       end_date: end_date,
       cloud_cover: cloud_cover
     });    
+    console.log(url)
     const response = await fetch(url);
     const data = await response.text();
-    console.log('URL to display image:', data);
     return data;
   } catch (error) {
     console.error('Error:', error);

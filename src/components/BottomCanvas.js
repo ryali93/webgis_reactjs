@@ -3,19 +3,35 @@ import '../styles/BottomCanvas.css';
 import TsVis from '../vis/TsVis';
 import GraphVis from '../vis/GraphVis';
 
-function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth, 
-                        rightSidebarWidth, timeSeriesData, multitemporalImages }) {
+function BottomCanvas({ onHeightChange, 
+                        // onToggle, 
+                        isCollapsed, 
+                        leftSidebarWidth, 
+                        rightSidebarWidth, 
+                        timeSeriesData, 
+                        multitemporalImages }) {
   
   const downbarRef = useRef(null);
   const isDragging = useRef(false);
-  const [height, setHeight] = useState(60);
+  const [height, setHeight] = useState(60); // TODO
   const [activeTab, setActiveTab] = useState('Vis1'); // Tab activa por defecto
 
+  // Definir las pestañas y su contenido
   const vis = {
     Vis1: { label: 'Image Collection', content: TsVis },
     Vis2: { label: 'Time Series Graph', content: GraphVis }
   };
 
+  const getPropsForActiveTab = () => {
+    if (activeTab === 'Vis1') {
+      return  multitemporalImages;
+    } else if (activeTab === 'Vis2') {
+      return timeSeriesData;
+    }
+    return {};
+  };
+
+  // Iniciar el arrastre
   const startDragging = (e) => {
     e.preventDefault();
     isDragging.current = true;
@@ -27,7 +43,7 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
     if (!isDragging.current || isCollapsed) return;
 
     const newHeight = window.innerHeight - e.clientY;
-    if (newHeight >= 60 && newHeight <= 600) {
+    if (newHeight >= 60 && newHeight <= 400) { // Limitar la altura
       setHeight(newHeight);
       onHeightChange(newHeight);
     }
@@ -39,30 +55,27 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
     document.removeEventListener('mouseup', stopDragging);
   };
 
-  const handleToggle = () => {
-    onToggle();
-    if (isCollapsed) {
-      setHeight(200); // Restablecer la altura cuando se expande
-      onHeightChange(200);
-    }
-  };
+  // useEffect(() => {
+  //   onHeightChange(height);
+  // }, [height, onHeightChange]);
 
-  useEffect(() => {
-    onHeightChange(height);
-  }, [height, onHeightChange]);
-
+  const onToggle = () => {
+    onHeightChange(isCollapsed ? height : 60);
+  }
 
   return (
     <div
       ref={downbarRef}
       className={`bottomCanvas ${isCollapsed ? 'collapsed' : ''}`}
-      style={{ height: `${isCollapsed ? '60px' : `${height}px`}`, left: `${leftSidebarWidth}px`, right: `${rightSidebarWidth}px` }}
+      style={{ height: `${isCollapsed ? '60px' : `${height}px`}`, 
+               left: `${leftSidebarWidth}px`, 
+               right: `${rightSidebarWidth}px` }}
     >
-      <div className="toggle-wrapper">
-        <button className="toggle-button" onClick={handleToggle}>
-          {isCollapsed ? '▲' : '▼'}
-        </button>
-      </div>
+    <div className="bottomToggle-wrapper">
+      <button className="bottomToggle-button" onClick={onToggle}>
+        {isCollapsed ? '▲' : '▼'}
+      </button>
+    </div>
       <div
         className="downslicer"
         onMouseDown={startDragging}
@@ -82,10 +95,7 @@ function BottomCanvas({ onHeightChange, onToggle, isCollapsed, leftSidebarWidth,
             ))}
           </div>
           <div className="tool-content">
-            {React.createElement(vis[activeTab].content, {
-              timeSeriesData: timeSeriesData,
-              multitemporalImages: multitemporalImages
-            })} 
+          {React.createElement(vis[activeTab].content, getPropsForActiveTab())} 
           </div>
         </div>
       )}

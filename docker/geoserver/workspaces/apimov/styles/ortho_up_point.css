@@ -1,0 +1,33 @@
+@mode "Exclusive";
+
+[@sd <= 2] {
+  mark: symbol(circle);
+    mark-size: 6;
+    :mark {
+        fill: #64ace8;
+    }
+}
+
+[@sd > 2] [@sd < 5] {
+  mark: symbol(circle);
+    mark-size: 3;
+    :mark {
+        fill: #64ace8;
+    }
+}
+
+[@sd >= 5] [@sd < 10] {
+  mark: symbol(circle);
+    mark-size: 2;
+    :mark {
+        fill: #64ace8;
+    }
+}
+
+[@sd >= 10] {
+    mark: symbol(circle);
+    mark-size: 1;
+    :mark {
+        fill: #64ace8;
+    }
+}

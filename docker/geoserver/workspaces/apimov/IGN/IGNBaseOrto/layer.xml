@@ -1,0 +1,16 @@
+<layer>
+  <name>IGNBaseOrto</name>
+  <id>LayerInfoImpl--600e0acc:191dbb08263:-1041</id>
+  <type>WMS</type>
+  <defaultStyle>
+    <name></name>
+  </defaultStyle>
+  <resource class="wmsLayer">
+    <id>WMSLayerInfoImpl--600e0acc:191dbb08263:-1042</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-09-11 08:11:32.449 UTC</dateCreated>
+</layer>

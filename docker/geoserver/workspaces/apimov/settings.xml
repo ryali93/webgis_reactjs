@@ -1,0 +1,51 @@
+<settings>
+  <id>SettingsInfoImpl--600e0acc:191dbb08263:-1059</id>
+  <workspace>
+    <id>WorkspaceInfoImpl--600e0acc:191dbb08263:-105b</id>
+    <name>apimov</name>
+    <isolated>false</isolated>
+    <dateCreated>2024-09-11 07:55:15.986 UTC</dateCreated>
+    <dateModified>2024-09-11 07:55:50.577 UTC</dateModified>
+  </workspace>
+  <contact>
+    <id>contact</id>
+    <internationalAddress class="org.geotools.util.GrowableInternationalString"/>
+    <internationalAddressCity class="org.geotools.util.GrowableInternationalString"/>
+    <internationalAddressCountry class="org.geotools.util.GrowableInternationalString"/>
+    <internationalAddressDeliveryPoint class="org.geotools.util.GrowableInternationalString"/>
+    <internationalAddressPostalCode class="org.geotools.util.GrowableInternationalString"/>
+    <internationalAddressState class="org.geotools.util.GrowableInternationalString"/>
+    <internationalAddressType class="org.geotools.util.GrowableInternationalString"/>
+    <internationalContactEmail class="org.geotools.util.GrowableInternationalString"/>
+    <internationalContactFacsimile class="org.geotools.util.GrowableInternationalString"/>
+    <internationalContactOrganization class="org.geotools.util.GrowableInternationalString"/>
+    <internationalContactPerson class="org.geotools.util.GrowableInternationalString"/>
+    <internationalContactPosition class="org.geotools.util.GrowableInternationalString"/>
+    <internationalContactVoice class="org.geotools.util.GrowableInternationalString"/>
+    <internationalOnlineResource class="org.geotools.util.GrowableInternationalString"/>
+    <internationalWelcome class="org.geotools.util.GrowableInternationalString"/>
+  </contact>
+  <charset>UTF-8</charset>
+  <numDecimals>4</numDecimals>
+  <verbose>true</verbose>
+  <verboseExceptions>false</verboseExceptions>
+  <metadata>
+    <map>
+      <entry>
+        <string>CogSettings.Key</string>
+        <cogSettings>
+          <useCachingStream>false</useCachingStream>
+          <rangeReaderSettings>HTTP</rangeReaderSettings>
+        </cogSettings>
+      </entry>
+      <entry>
+        <string>quietOnNotFound</string>
+        <boolean>false</boolean>
+      </entry>
+    </map>
+  </metadata>
+  <localWorkspaceIncludesPrefix>false</localWorkspaceIncludesPrefix>
+  <showCreatedTimeColumnsInAdminList>false</showCreatedTimeColumnsInAdminList>
+  <showModifiedTimeColumnsInAdminList>false</showModifiedTimeColumnsInAdminList>
+  <useHeadersProxyURL>false</useHeadersProxyURL>
+</settings>

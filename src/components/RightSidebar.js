@@ -5,6 +5,7 @@ import '../styles/RightSidebar.css';
 import GeeTools from '../tools/GeeTools';
 import VhrTools from '../tools/VhrTools';
 import InsarTools from '../tools/InsarTools';
+import { set } from 'ol/transform';
 
 function RightSidebar({
   isCollapsed,
@@ -37,13 +38,13 @@ function RightSidebar({
 const addTimeSeriesData = (timeSeriesData) => {
   console.log('[RightSidebar] addTimeSeriesData:', timeSeriesData);
   setTimeSeriesData(timeSeriesData);
-    return timeSeriesData;
+  return timeSeriesData;
   };
 
 const addMultitemporalImages = (multitemporalImages) => {
-  console.log('[RightSidebar] addMultitemporalImages:', multitemporalImages);
-  setMultitemporalImages(multitemporalImages);
-  return multitemporalImages;
+  const urlsArray = JSON.parse(multitemporalImages);
+  setMultitemporalImages(urlsArray);
+return multitemporalImages;
 };
 
 
