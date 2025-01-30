@@ -1,27 +1,18 @@
-#chartOverlay {
-    position: absolute;
-    top: auto;
-    bottom: 25px;
-    right: 10px;
-    width: 540px; /* ajustar según necesidad */
-    height: 250px; /* ajustar según necesidad */
-    background-color: rgba(255, 255, 255, 0.7); /* fondo blanco con transparencia */
-    border-radius: 5px;
-    overflow: auto; /* permitir desplazamiento si el contenido es muy grande */
-    padding: 10px;
-    z-index: 10; /* garantizar que aparezca sobre otros elementos */
+/* src/styles/GraphVis.css */
+.chartOverlay {
+  position: relative; /* Cambiado a relative para que se ajuste al contenedor padre */
+  width: 100%; /* Ajustar al 100% del contenedor padre */
+  height: 100%; /* Ajustar al 90% del contenedor padre */
+  max-height: 290px; /* Limitar la altura máxima a 280px */
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  padding: 0px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
 }
 
-#chartOverlay.minimized {
-    height: 30px; /* o el tamaño que prefieras para el botón */
-    width: 120px; /* ajusta según necesites */
-    overflow: hidden
-    ;
+.chartOverlay canvas {
+  height: auto; /* Mantener la altura automática */
 }
-
-.chartOverlay .chart-button {
-    padding: 10px 10px;
-    margin: 5px;
-    font-size: 14px;
-    cursor: pointer;
-  }

@@ -4,7 +4,7 @@ import 'chartjs-adapter-date-fns';
 import { format } from 'date-fns';
 import './GraphVis.css';
 
-const GraphVis = (timeSeriesData) => {
+const GraphVis = ({timeSeriesData}) => {
   const chartRef = useRef(null);
   const [chart, setChart] = useState(null);
 
@@ -13,6 +13,7 @@ const GraphVis = (timeSeriesData) => {
       plotData(timeSeriesData);
     }
   }, [timeSeriesData]);
+
 
   function plotData(timeSeriesData) {
     try {
@@ -104,8 +105,8 @@ const GraphVis = (timeSeriesData) => {
 
   return (
     <div className="chartOverlay">
-      <button className="chart-button" onClick={handleDestroyChart}>Deshacer Gráfica</button>
-      <button className="chart-button" onClick={() => plotData(timeSeriesData)}>Crear Gráfica</button>
+      {/* <button className="chart-button" onClick={handleDestroyChart}>Deshacer Gráfica</button>
+      <button className="chart-button" onClick={() => plotData(timeSeriesData)}>Crear Gráfica</button>  */}
       <canvas ref={chartRef}></canvas>
     </div>
   );

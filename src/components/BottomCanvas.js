@@ -4,9 +4,9 @@ import TsVis from '../vis/TsVis';
 import GraphVis from '../vis/GraphVis';
 
 function BottomCanvas({ onHeightChange, 
-                        // onToggle, 
+                        onToggle, 
                         isCollapsed, 
-                        leftSidebarWidth, 
+                        // leftSidebarWidth, 
                         rightSidebarWidth, 
                         timeSeriesData, 
                         multitemporalImages }) {
@@ -26,7 +26,7 @@ function BottomCanvas({ onHeightChange,
     if (activeTab === 'Vis1') {
       return  multitemporalImages;
     } else if (activeTab === 'Vis2') {
-      return timeSeriesData;
+      return { timeSeriesData, height };
     }
     return {};
   };
@@ -55,52 +55,65 @@ function BottomCanvas({ onHeightChange,
     document.removeEventListener('mouseup', stopDragging);
   };
 
-  // useEffect(() => {
-  //   onHeightChange(height);
-  // }, [height, onHeightChange]);
+  useEffect(() => {
+    onHeightChange(height);
+  }, [height, onHeightChange]);
 
-  const onToggle = () => {
-    onHeightChange(isCollapsed ? height : 60);
-  }
+
+  const handleToggle = () => {
+    onToggle();
+    if (isCollapsed) {
+      setHeight(400);
+    } else {
+      setHeight(60);
+    }
+  };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    if (isCollapsed) {
+      handleToggle(); // Expandir el BottomCanvas al hacer clic en una pestaña
+    }
+  };
 
   return (
     <div
       ref={downbarRef}
       className={`bottomCanvas ${isCollapsed ? 'collapsed' : ''}`}
       style={{ height: `${isCollapsed ? '60px' : `${height}px`}`, 
-               left: `${leftSidebarWidth}px`, 
-               right: `${rightSidebarWidth}px` }}
+               width: `calc(100% - ${rightSidebarWidth}px)` }}
     >
-    <div className="bottomToggle-wrapper">
-      <button className="bottomToggle-button" onClick={onToggle}>
-        {isCollapsed ? '▲' : '▼'}
-      </button>
-    </div>
+      <div className="bottomToggle-wrapper">
+        <button className="bottomToggle-button" onClick={handleToggle}>
+          {isCollapsed ? '▲' : '▼'}
+        </button>
+      </div>
       <div
         className="downslicer"
         onMouseDown={startDragging}
         title="Arrastra para redimensionar"
       ></div>
+      <div className="tabs">
+        {Object.keys(vis).map((tab) => (
+          <button
+          key={tab}
+          className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+          onClick={() => handleTabClick(tab)}
+        >
+          {vis[tab].label}
+        </button>
+        ))}
+      </div>
       {!isCollapsed && (
         <div className="bottomCanvas-content">
-          <div className="tabs">
-            {Object.keys(vis).map((tab) => (
-              <button
-                key={tab}
-                className={`tab-button ${activeTab === tab ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {vis[tab].label}
-              </button>
-            ))}
-          </div>
           <div className="tool-content">
-          {React.createElement(vis[activeTab].content, getPropsForActiveTab())} 
+            {React.createElement(vis[activeTab].content, getPropsForActiveTab())} 
           </div>
         </div>
       )}
     </div>
   );
-};
+}
+
 
 export default BottomCanvas;

@@ -10,6 +10,7 @@ import BottomCanvas from './components/BottomCanvas';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
+import { calc } from 'antd/es/theme/internal';
 
 function App() {
   const [mapInstance, setMapInstance] = useState(null);
@@ -25,10 +26,10 @@ function App() {
   const [rightSidebarWidth, setRightSidebarWidth] = useState(400);
   const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
 
-  const [leftSidebarWidth, setLeftSidebarWidth] = useState(0); // Ancho inicial del sidebar izquierdo
-  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(true); // Estado de colapso del sidebar izquierdo
+  // const [leftSidebarWidth, setLeftSidebarWidth] = useState(0); // Ancho inicial del sidebar izquierdo
+  // const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(true); // Estado de colapso del sidebar izquierdo
 
-  const [bottomCanvasHeight, setBottomCanvasHeight] = useState(60); // Altura inicial del BottomCanvasHeight
+  const [bottomCanvasHeight, setBottomCanvasHeight] = useState(null); // Altura inicial del BottomCanvasHeight
   const [bottomCanvasCollapsed, setBottomCanvasCollapsed] = useState(true); // Estado de colapso del BottomCanvas
 
   useEffect(() => {
@@ -39,22 +40,19 @@ function App() {
       
       mapContainer.style.transition = 'bottom 0.3s ease, top 0.3s ease, left 0.3s ease, right 0.3s ease';
     }
-  }, [bottomCanvasHeight, leftSidebarCollapsed, leftSidebarWidth, rightSidebarCollapsed, rightSidebarWidth]);
+  }, [bottomCanvasHeight, 
+    // leftSidebarCollapsed, leftSidebarWidth, 
+    rightSidebarCollapsed, rightSidebarWidth]);
 
   const toggleRightSidebar = () => {
     setRightSidebarCollapsed(!rightSidebarCollapsed);
     setRightSidebarWidth(!rightSidebarCollapsed ? 50 : 400); // Ajusta el ancho según el estado de colapso
   };
 
-  // const toggleLeftSidebar = () => {
-  //   setLeftSidebarCollapsed(!leftSidebarCollapsed);
-  //   setLeftSidebarWidth(!leftSidebarCollapsed ? 50 : 250); // Ajusta el ancho según el estado de colapso
-  // };
-
-  // const toggleBottomCanvas = () => {
-  //   setBottomCanvasCollapsed(bottomCanvasCollapsed);
-  //   setBottomCanvasHeight(bottomCanvasCollapsed ? 60: 400); // Cambia la altura del BottomCanvas
-  // }
+  const toggleBottomCanvas = () => {
+    setBottomCanvasCollapsed(!bottomCanvasCollapsed);
+    setBottomCanvasHeight(bottomCanvasCollapsed ? 60 : 400); // Ajusta la altura según el estado de colapso
+  };
 
   useEffect(() => {
     // 1) Creamos el mapa
@@ -74,7 +72,7 @@ function App() {
       mapInstance.updateSize();
     }
   }, [rightSidebarCollapsed, rightSidebarWidth, 
-      leftSidebarCollapsed, leftSidebarWidth,
+      // leftSidebarCollapsed, leftSidebarWidth,
       bottomCanvasHeight, mapInstance]);
 
   return (
@@ -85,7 +83,7 @@ function App() {
           className="main-content"
           style={{
             marginRight: rightSidebarCollapsed ? '50px' : `${rightSidebarWidth}px`,
-            transition: 'margin-right 0.3s ease',
+            transition: 'margin-right 0.3s ease'
           }}
         >
         {/* <Sidebar
@@ -109,9 +107,9 @@ function App() {
         />
        <BottomCanvas
           onHeightChange={setBottomCanvasHeight}
-          // onToggle={toggleBottomCanvas}
+          onToggle={toggleBottomCanvas}
           isCollapsed={bottomCanvasCollapsed}
-          leftSidebarWidth={leftSidebarWidth}
+          // leftSidebarWidth={leftSidebarWidth}
           rightSidebarWidth={rightSidebarWidth}
           timeSeriesData={timeSeriesData} // Pasamos los datos de la serie temporal al BottomCanvas
           multitemporalImages={multitemporalImages} // Pasamos las imágenes multitemporales al BottomCanvas

@@ -28,7 +28,6 @@ useEffect(() => {
 
 return (
   <div className="tsvis-container">
-    <h1>Time Series Visualization</h1>
     <div className="tsvis-buttons">
       {indices.map((indice) => (
         <button key={indice} onClick={() => setSelectedIndex(indice)}>
@@ -36,8 +35,7 @@ return (
         </button>
       ))}
     </div>
-    <h2>{selectedIndex}</h2>
-    <div className="tsvis-images">
+    <div className="tsvis-images-container">
       {filteredImages.map((data, index) => (
         <div key={index} className="tsvis-image-container">
           <img src={data.url} alt={`Multitemporal Image ${index}`} />

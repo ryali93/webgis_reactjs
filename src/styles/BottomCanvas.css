@@ -8,7 +8,7 @@
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Cambiado de -4px 0 a 0 -4px */
     z-index: 1000;
     overflow-y: auto;
-    transition: left 0.3s ease, right 0.3s ease; /* Añadido right y width */
+    transition: width 0.3s ease-in-out;
 }
 
 /* Barra de arrastre (slicer) */
@@ -27,6 +27,65 @@
   background: white;
 }
 
+ 
+/* Contenedor del botón toggle */
+.bottomToggle-wrapper {
+  width: 100%;
+  height: 10px;
+  display: flex;
+  justify-content: center; /* Centrar el botón horizontalmente */
+  padding: 5px 0; /* Espaciado en la parte superior e inferior */
+  background: rgba(44, 62, 80, 0.95);; /* Mantén el color del fondo */
+}
+
+/* Botón de colapsar/expandir */
+.bottomToggle-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.bottomToggle-button:hover {
+  background-color: #2980b9;
+}
+
+.collapsed-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.collapsed-tab {
+  background-color: #34495e;
+  border: none;
+  color: white;
+  padding: 0px;
+  cursor: pointer;
+  height: 20px;
+  margin: 0 5px;
+  transition: transform 0.3s ease;
+}
+
+.collapsed-tabs {
+  display: flex;
+  justify-content: space-around; /* Separar los botones */
+  margin-top: 10px;
+}
+
+.collapsed-tab.active {
+  font-weight: bold;
+  color: white;
+}
+
+/* Contenido del sidebar */
 .bottomCanvas-content {
   padding: 10px; /* Ajustado el padding */
 }
@@ -83,6 +142,7 @@
 
 .tool-content {
   padding: 15px;
+  height: 290px;
   background: #ecf0f1;
   color: #333;
   border-radius: 10px;
@@ -95,8 +155,8 @@
 .tabs {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 1px;
+    border-bottom: 0px solid #ddd;
     position: relative;
   }
   
@@ -106,20 +166,20 @@
     background-color: #34495e;
     color: white;
     border: none;
-    padding: 12px;
+    padding: 6px;
     cursor: pointer;
     text-align: center;
-    font-size: 16px;
-    border-radius: 5px 5px 0 0; /* Bordes superiores redondeados */
+    font-size: 15px;
+    border-radius: 1px 1px 0 0; /* Bordes superiores redondeados */
     transition: background-color 0.2s ease, transform 0.2s ease;
     position: relative;
     z-index: 1; /* Asegura que la pestaña activa esté por encima de la línea */
-    margin: 0 5px; /* Espaciado entre pestañas */
+    margin: 0 1px; /* Espaciado entre pestañas */
   }
   
   .tab-button:hover {
     background-color: #2c3e50;
-    transform: scale(1.05); /* Efecto hover */
+    transform: scale(1); /* Efecto hover */
   }
   
   .tab-button.active {
@@ -146,32 +206,4 @@
   .collapsed-tab {
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
-  
-  /* Contenedor del botón toggle */
-.bottomToggle-wrapper {
-  width: 100%;
-  height: 10px;
-  display: flex;
-  justify-content: center; /* Centrar el botón horizontalmente */
-  padding: 5px 0; /* Espaciado en la parte superior e inferior */
-  background-color: #2c3e50; /* Mantén el color del fondo */
-}
-
-/* Botón de colapsar/expandir */
-.bottomToggle-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s ease;
-}
-
-.bottomToggle-button:hover {
-  background-color: #2980b9;
-}
+ 
