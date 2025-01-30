@@ -4,8 +4,7 @@ import '../styles/RightSidebar.css';
 
 import GeeTools from '../tools/GeeTools';
 import VhrTools from '../tools/VhrTools';
-import InsarTools from '../tools/InsarTools';
-import { set } from 'ol/transform';
+import FloodTools from '../tools/FloodTools';
 
 function RightSidebar({
   isCollapsed,
@@ -23,8 +22,8 @@ function RightSidebar({
 
   const tools = {
     Tool1: GeeTools,
-    Tool2: VhrTools,
-    Tool3: InsarTools,
+    Tool2: FloodTools,
+    Tool3: VhrTools,
   };
 
   const activateTab = (tab) => {

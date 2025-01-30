@@ -26,6 +26,7 @@
 
 .tsvis-images-container {
   display: flex;
+  justify-content: center;
   overflow-x: auto; /* Permitir desplazamiento horizontal */
   white-space: nowrap;
   width: 100%; /* Asegurar que el contenedor ocupe todo el ancho disponible */

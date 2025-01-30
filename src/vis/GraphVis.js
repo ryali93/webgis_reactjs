@@ -4,7 +4,7 @@ import 'chartjs-adapter-date-fns';
 import { format } from 'date-fns';
 import './GraphVis.css';
 
-const GraphVis = ({timeSeriesData}) => {
+const GraphVis = ({timeSeriesData, canvasId}) => {
   const chartRef = useRef(null);
   const [chart, setChart] = useState(null);
 
@@ -65,6 +65,7 @@ const GraphVis = ({timeSeriesData}) => {
         if (chart) {
           chart.destroy(); // Destroy the existing chart instance
         }
+
         const newChart = new Chart(chartRef.current, {
           type: 'line',
           data: {
@@ -89,13 +90,6 @@ const GraphVis = ({timeSeriesData}) => {
     }
   }
 
-  const handleDestroyChart = () => {
-    if (chart) {
-      chart.destroy();
-      setChart(null);
-    }
-  };
-
   useEffect(() => {
     if (chart) {
       console.log("Chart datasets:", chart.data.datasets);
@@ -107,7 +101,7 @@ const GraphVis = ({timeSeriesData}) => {
     <div className="chartOverlay">
       {/* <button className="chart-button" onClick={handleDestroyChart}>Deshacer Gráfica</button>
       <button className="chart-button" onClick={() => plotData(timeSeriesData)}>Crear Gráfica</button>  */}
-      <canvas ref={chartRef}></canvas>
+      <canvas id={canvasId} ref={chartRef}></canvas>
     </div>
   );
 };

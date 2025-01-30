@@ -2,14 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../styles/BottomCanvas.css';
 import TsVis from '../vis/TsVis';
 import GraphVis from '../vis/GraphVis';
+import InSAR from '../vis/InSAR';
 
 function BottomCanvas({ onHeightChange, 
                         onToggle, 
-                        isCollapsed, 
-                        // leftSidebarWidth, 
+                        isCollapsed,  
                         rightSidebarWidth, 
                         timeSeriesData, 
-                        multitemporalImages }) {
+                        multitemporalImages, 
+                        timeSeriesInSAR }) {
   
   const downbarRef = useRef(null);
   const isDragging = useRef(false);
@@ -19,14 +20,17 @@ function BottomCanvas({ onHeightChange,
   // Definir las pestañas y su contenido
   const vis = {
     Vis1: { label: 'Image Collection', content: TsVis },
-    Vis2: { label: 'Time Series Graph', content: GraphVis }
+    Vis2: { label: 'Time Series Graph', content: GraphVis, canvasId : 'graphVisCanvas'},
+    Vis3: { label: 'InSAR Graph', content: InSAR, canvasId : 'inSARCanvas'} 
   };
 
   const getPropsForActiveTab = () => {
     if (activeTab === 'Vis1') {
       return  multitemporalImages;
     } else if (activeTab === 'Vis2') {
-      return { timeSeriesData, height };
+      return {timeSeriesData, canvasId: vis[activeTab].canvasId};
+    } else if (activeTab === 'Vis3') {
+      return {timeSeriesInSAR, canvasId: vis[activeTab].canvasId};
     }
     return {};
   };
@@ -106,7 +110,7 @@ function BottomCanvas({ onHeightChange,
       </div>
       {!isCollapsed && (
         <div className="bottomCanvas-content">
-          <div className="tool-content">
+          <div className="toolBottom-content">
             {React.createElement(vis[activeTab].content, getPropsForActiveTab())} 
           </div>
         </div>

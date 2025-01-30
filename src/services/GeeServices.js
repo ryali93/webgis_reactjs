@@ -137,10 +137,32 @@ const display_img = async (request) => {
   }
 };
 
+const get_flood = async (request) => {
+  try {
+    console.log('[GeeServices:getFlood] Received request:', request);
+    let coordinates;
+    var { geometry, start_date, end_date } = request;
+    coordinates = GeometryValidation(geometry);
+
+    const url = new URL(`${process.env.REACT_APP_GEE_API_URL}/ee/get-flood`);
+    url.search = new URLSearchParams({
+      area: JSON.stringify(coordinates),
+      start_date: start_date,
+      end_date: end_date,
+    });
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 // Export the function
 export {
   post_mapid,
   get_dates,
   post_time_series,
-  display_img
+  display_img,
+  get_flood
 };

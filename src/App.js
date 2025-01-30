@@ -3,14 +3,10 @@ import React, { useState, useEffect } from 'react';
 import createMap from './components/Map';
 import MapContainer from './components/MapContainer';
 import RightSidebar from './components/RightSidebar';
-import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
-
 import BottomCanvas from './components/BottomCanvas';
-
 import ErrorBoundary from './components/ErrorBoundary';
 import './App.css';
-import { calc } from 'antd/es/theme/internal';
 
 function App() {
   const [mapInstance, setMapInstance] = useState(null);
@@ -18,16 +14,13 @@ function App() {
   const [clearFn, setClearFn] = useState(null);
   const [geometry, setGeometry] = useState(null);
   const [addTileLayerFn, setAddTileLayerFn] = useState(null);
+  const [timeSeriesInSAR, setTimeSeriesInSAR] = useState(null);
   
   const [timeSeriesData, setTimeSeriesData] = useState(null); // Estado para almacenar los datos de la serie temporal
   const [multitemporalImages, setMultitemporalImages] = useState(null); // Estado para almacenar las imágenes multitemporales
 
-
   const [rightSidebarWidth, setRightSidebarWidth] = useState(400);
   const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
-
-  // const [leftSidebarWidth, setLeftSidebarWidth] = useState(0); // Ancho inicial del sidebar izquierdo
-  // const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(true); // Estado de colapso del sidebar izquierdo
 
   const [bottomCanvasHeight, setBottomCanvasHeight] = useState(null); // Altura inicial del BottomCanvasHeight
   const [bottomCanvasCollapsed, setBottomCanvasCollapsed] = useState(true); // Estado de colapso del BottomCanvas
@@ -36,13 +29,10 @@ function App() {
     // Ajustar la altura del contenedor del mapa cuando cambia la altura del BottomCanvas
     const mapContainer = document.querySelector('.map-container');
     if (mapContainer) {
-      mapContainer.style.height = `calc(100% - ${bottomCanvasHeight}px)`;
-      
+      mapContainer.style.height = `calc(100% - ${bottomCanvasHeight}px)`;      
       mapContainer.style.transition = 'bottom 0.3s ease, top 0.3s ease, left 0.3s ease, right 0.3s ease';
     }
-  }, [bottomCanvasHeight, 
-    // leftSidebarCollapsed, leftSidebarWidth, 
-    rightSidebarCollapsed, rightSidebarWidth]);
+  }, [bottomCanvasHeight, rightSidebarCollapsed, rightSidebarWidth]);
 
   const toggleRightSidebar = () => {
     setRightSidebarCollapsed(!rightSidebarCollapsed);
@@ -56,10 +46,16 @@ function App() {
 
   useEffect(() => {
     // 1) Creamos el mapa
-    const { map, addDrawInteraction, clearGeometries, addTileLayer } = createMap((coordinates) => {
-      console.log('[App.js] onDrawEndCallback => coordinates:', coordinates);
-      setGeometry(coordinates);
-    });
+    const { map, addDrawInteraction, clearGeometries, addTileLayer } = createMap(
+      (coordinates) => {
+        console.log('[App.js] onDrawEndCallback => coordinates:', coordinates);
+        setGeometry(coordinates);
+      },
+      (insarData) => {
+        console.log('[App.js] onMapClickCallback => insarData:', insarData);
+        setTimeSeriesInSAR(insarData);
+      }
+    );
 
     setMapInstance(map); // 2) Guardamos la instancia del mapa en el state
     setDrawFn(() => addDrawInteraction); // 3) Guardamos la referencia a la función de dibujado
@@ -67,13 +63,13 @@ function App() {
     setAddTileLayerFn(() => addTileLayer); // (por ejemplo)
   }, []);
 
+
   useEffect(() => {
     if (mapInstance) {
       mapInstance.updateSize();
     }
-  }, [rightSidebarCollapsed, rightSidebarWidth, 
-      // leftSidebarCollapsed, leftSidebarWidth,
-      bottomCanvasHeight, mapInstance]);
+  }, [rightSidebarCollapsed, rightSidebarWidth, bottomCanvasHeight, mapInstance]);
+
 
   return (
     <ErrorBoundary>
@@ -109,10 +105,10 @@ function App() {
           onHeightChange={setBottomCanvasHeight}
           onToggle={toggleBottomCanvas}
           isCollapsed={bottomCanvasCollapsed}
-          // leftSidebarWidth={leftSidebarWidth}
           rightSidebarWidth={rightSidebarWidth}
           timeSeriesData={timeSeriesData} // Pasamos los datos de la serie temporal al BottomCanvas
           multitemporalImages={multitemporalImages} // Pasamos las imágenes multitemporales al BottomCanvas
+          timeSeriesInSAR={timeSeriesInSAR} // Pasamos los datos de la serie temporal de InSAR al BottomCanvas
         />
         </div>
       </div>
