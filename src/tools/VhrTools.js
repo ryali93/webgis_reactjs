@@ -18,19 +18,19 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
         id: 1, 
         name: "1: Madrid - Barajas (2020-06-22 a 2020-07-07)", 
         date: "2020-06-22 || 2020-07-07", 
-        geometry: { type: "Polygon", coordinates: [[[ -99.1332, 19.4326 ], [ -99.1342, 19.4336 ], [ -99.1352, 19.4326 ], [ -99.1332, 19.4326 ]]] } 
+        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ] }
     },
     { 
         id: 2, 
         name: "2: Valladolid (2022-08-08; 2022-08-23 )", 
         date: "2022-08-08 || 2022-08-23 ", 
-        geometry: { type: "Rectangle", coordinates: [[[ -80.1918, 25.7617 ], [ -80.1928, 25.7627 ]]] } 
+        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ] }
     },
     { 
         id: 3, 
         name: "3: Avila - Nissan (2022-05-20; 2022-07-27)", 
-        date: "2022-05-20 || 2022-06-12",  // || 2022-07-06 || 2022-07-27
-        geometry: { type: "Point", coordinates: [[[ -91.132, 29.234 ], [ -91.135, 29.238 ], [ -91.138, 29.230 ], [ -91.132, 29.234 ]]] }
+        date: "2021-08-20 || 2022-07-21",  // || 2022-07-06 || 2022-07-27
+        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ] }
     }
   ];
 
@@ -130,58 +130,52 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
   // Función para procesar y organizar imágenes
   const fetchImages = async (listImages) => {
     try {
-      // Reemplazar "/tmp/" por "/outputs/" en las rutas
-      const processedImages = listImages.map(image => image.replace("/tmp/", "outputs/"));
-
       // Diccionario para clasificar imágenes
       const imagesByType = {
         s2: [],
         sr: [],
         builds: []
       };
-
-      // Clasificar imágenes en categorías
-      processedImages.forEach(image => {
-        if (image.includes("/s2")) {
-          imagesByType.s2.push(image);
-        } else if (image.includes("/sr")) {
-          imagesByType.sr.push(image);
-        } else if (image.includes("/build")) {
-          imagesByType.builds.push(image);
+  
+      // Clasificar imágenes por tipo y convertirlas en URLs Base64
+      listImages.forEach(item => {
+        if (item.s2_image) {
+          imagesByType.s2.push(`data:image/png;base64,${item.s2_image}`);
+        }
+        if (item.sr_image) {
+          imagesByType.sr.push(`data:image/png;base64,${item.sr_image}`);
+        }
+        if (item.build_image) {
+          imagesByType.builds.push(`data:image/png;base64,${item.build_image}`);
         }
       });
-
-      console.log(imagesByType);
-
-      // Función para extraer la fecha del nombre de archivo
-      const extractDate = (imagePath) => {
-        const match = imagePath.match(/(\d{4}-\d{2}-\d{2})/);
-        return match ? match[0] : "0000-00-00"; // Si no encuentra fecha, asigna un valor mínimo
-      };
-
-      // Ordenar cada categoría por fecha
-      Object.keys(imagesByType).forEach(type => {
-        imagesByType[type].sort((a, b) => new Date(extractDate(a)) - new Date(extractDate(b)));
-      });
-
-      console.log("Imágenes clasificadas:", imagesByType);
-
-      // Almacenar imágenes ordenadas en el estado
+  
+      // Ordenar imágenes por fecha (si es necesario)
+      imagesByType.s2.sort((a, b) => new Date(a.date) - new Date(b.date));
+      imagesByType.sr.sort((a, b) => new Date(a.date) - new Date(b.date));
+      imagesByType.builds.sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+      // Almacenar las imágenes en el estado
       setImageUrls(imagesByType);
-
+  
     } catch (error) {
       console.error("Error obteniendo imágenes:", error);
     }
   };
 
   // Función para cambiar la imagen en el carrusel
-  const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+  const nextImage = (type) => {
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex + 1) % imageUrls[type].length
+    );
   };
 
-  const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+  const prevImage = (type) => {
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex - 1 + imageUrls[type].length) % imageUrls[type].length
+    );
   };
+
   
 
 
@@ -221,32 +215,28 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
       <button onClick={handleRun} className="runButton">Run</button>
 
       {/* Después de ejecutar el Run, agregar un div y las imágenes .png que están dentro de la carpeta "folder" */}
+      {/* // Renderizado del carrusel para cada tipo */}
       {imageUrls.s2.length > 0 && (
         <div className="carousel">
-          <button onClick={prevImage}>&lt;</button>
-          <img 
-            src={imageUrls.s2[currentImageIndex]} 
-            alt="S2 result" 
-            className="carousel-image" 
-            onError={(e) => console.log("Error loading image:", e.target.src)} 
-          />
-          <button onClick={nextImage}>&gt;</button>
+          <button onClick={() => prevImage('s2')}>&lt;</button>
+          <img src={imageUrls.s2[currentImageIndex]} alt="S2 result" className="carousel-image" />
+          <button onClick={() => nextImage('s2')}>&gt;</button>
         </div>
       )}
 
       {imageUrls.sr.length > 0 && (
         <div className="carousel">
-          <button onClick={prevImage}>&lt;</button>
+          <button onClick={() => prevImage('sr')}>&lt;</button>
           <img src={imageUrls.sr[currentImageIndex]} alt="SR result" className="carousel-image" />
-          <button onClick={nextImage}>&gt;</button>
+          <button onClick={() => nextImage('sr')}>&gt;</button>
         </div>
       )}
 
       {imageUrls.builds.length > 0 && (
         <div className="carousel">
-          <button onClick={prevImage}>&lt;</button>
+          <button onClick={() => prevImage('builds')}>&lt;</button>
           <img src={imageUrls.builds[currentImageIndex]} alt="Buildings result" className="carousel-image" />
-          <button onClick={nextImage}>&gt;</button>
+          <button onClick={() => nextImage('builds')}>&gt;</button>
         </div>
       )}
 

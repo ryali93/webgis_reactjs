@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import './InSAR.css';
@@ -94,8 +94,11 @@ const InSAR = ({ timeSeriesInSAR, canvasId }) => {
       {metadata && (
         <div className="insar-metadata">
           <p>
-            ID: {metadata[0].id}, Acceleration: {metadata[0].acceleration}, Height: {metadata[0].height}, 
-            Mean Velocity: {metadata[0].mean_velocity}, RMSE: {metadata[0].rmse}
+            <strong>ID:</strong> {metadata[0].id} || 
+            <strong> Acceleration:</strong> {metadata[0].acceleration} || 
+            <strong> Height:</strong> {metadata[0].height} || 
+            <strong> Mean Velocity:</strong> {metadata[0].mean_velocity} || 
+            <strong> RMSE:</strong> {metadata[0].rmse}
           </p>
         </div>
       )}

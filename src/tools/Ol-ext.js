@@ -18,7 +18,7 @@ function findLayerByTitle(layers, title) {
     return null;
   }
 
-  class CustomLayerSwitcher extends LayerSwitcher {
+class CustomLayerSwitcher extends LayerSwitcher {
     constructor(options) {
       super(options);
       this.planetLayerTitle = 'Planet'; // Título de la capa específica
@@ -103,6 +103,42 @@ function findLayerByTitle(layers, title) {
               this.onPlanetChange(yearSelect.value, monthSelect.value);
             });
           }
+
+
+          // Obtener todas las capas listadas en el LayerSwitcher
+          const layerElements = panel.querySelectorAll('li');
+
+          layerElements.forEach((layerElement) => {
+            const label = layerElement.querySelector('label span');
+            if (!label) return;
+
+            const layerTitle = label.textContent;
+
+            // Evitar duplicación de botones
+            const existingDeleteButton = layerElement.querySelector('.delete-layer-btn');
+            if (existingDeleteButton) return;
+
+            // Crear botón de eliminación para todas las capas
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.className = 'delete-layer-btn';
+            deleteButton.style.marginLeft = '10px';
+            deleteButton.style.backgroundColor = '#ff4d4f';
+            deleteButton.style.color = 'white';
+            deleteButton.style.border = 'none';
+            deleteButton.style.padding = '3px 6px';
+            deleteButton.style.cursor = 'pointer';
+            deleteButton.style.fontSize = '12px';
+
+            // Insertar el botón junto al nombre de la capa
+            label.parentNode.appendChild(deleteButton);
+
+            // Evento para eliminar la capa cuando se presiona el botón
+            deleteButton.addEventListener('click', () => {
+              this.removeLayerByTitle(layerTitle);
+            });
+          });
+          
         }, 100);
     }
   
@@ -129,6 +165,30 @@ function findLayerByTitle(layers, title) {
       console.error('No se encontró la capa Planet en el mapa.');
     }
   }
+
+  // Método para eliminar cualquier capa por su título
+  removeLayerByTitle(title) {
+    const map = this.getMap();
+    const layers = map.getLayers().getArray();
+
+    // Evitar eliminar la capa base si es necesario
+    const nonRemovableLayers = ['Base Layer', 'Base Map'];  // Ajusta los nombres según tu configuración
+    if (nonRemovableLayers.includes(title)) {
+      console.warn(`La capa "${title}" no puede ser eliminada.`);
+      return;
+    }
+
+    const layerToRemove = findLayerByTitle(layers, title);
+
+    if (layerToRemove) {
+      map.removeLayer(layerToRemove);
+      console.log(`Capa "${title}" eliminada.`);
+      this.drawPanel(); // Refresca el panel para actualizar la lista de capas
+    } else {
+      console.error(`No se encontró la capa "${title}" para eliminar.`);
+    }
+  }
+
   
 }
 

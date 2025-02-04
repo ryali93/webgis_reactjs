@@ -7,7 +7,8 @@ from typing import List
 from fastapi import HTTPException
 from skimage import exposure
 import matplotlib.pyplot as plt
-
+import io
+import base64
 import nest_asyncio
 
 nest_asyncio.apply()
@@ -133,61 +134,53 @@ async def get_visualization(folder: str):
     images = ["{}/{}".format(folder, x) for x in os.listdir(folder) if x.startswith("image")]
     srs = ["{}/{}".format(folder, x) for x in os.listdir(folder) if x.startswith("sr")]
     builds = ["{}/{}".format(folder, x) for x in os.listdir(folder) if x.startswith("build")]
-    
-    images.sort()
-    srs.sort()
-    builds.sort()
+    results = []
 
     for i in range(len(images)):
         date_eval = images[i].split("_")[-1].split(".")[0]
+        date_folder = os.path.join(folder, date_eval)
+        
+        # Crear carpetas por fecha si no existen
+        os.makedirs(date_folder, exist_ok=True)
 
+        # Procesar imagen Sentinel-2
         img_np = np.moveaxis(np.load(images[i]), 0, -1)
         img_np = (img_np / 10000 * 3).clip(0, 1)
         img_np_equalized = exposure.equalize_hist(img_np)
+        s2_img_b64 = save_image_to_base64(img_np_equalized[:, :, [0, 1, 2]], os.path.join(date_folder, f"s2_{date_eval}.png"))
 
+        # Procesar imagen de superresolución
         sr_np = np.moveaxis(np.load(srs[i]), 0, -1)
         sr_np = (sr_np * 3).clip(0, 1)
         sr_np_equalized = exposure.equalize_hist(sr_np)
+        sr_img_b64 = save_image_to_base64(sr_np_equalized[:, :, [0, 1, 2]], os.path.join(date_folder, f"sr_{date_eval}.png"))
 
-        build_np = np.load(builds[i])
-        build_np = build_np.clip(0, 1)
-        
-        # Guardar la imagen original individualmente
-        plt.imshow(img_np_equalized[:, :, [0, 1, 2]])
-        plt.axis("off")
-        image_filename = f"s2_{date_eval}.png"
-        image_path = os.path.join(folder, image_filename)
-        plt.savefig(image_path)
-        plt.close()
+        # Procesar imagen de edificaciones
+        build_np = np.load(builds[i]).clip(0, 1)
+        build_img_b64 = save_image_to_base64(build_np, os.path.join(date_folder, f"build_{date_eval}.png"), cmap="gray")
 
-        # Guardar la imagen de superresolución individualmente
-        plt.imshow(sr_np_equalized[:, :, [0, 1, 2]])
-        plt.axis("off")
-        sr_filename = f"sr_{date_eval}.png"
-        sr_path = os.path.join(folder, sr_filename)
-        plt.savefig(sr_path)
-        plt.close()
+        # Agregar resultados al listado
+        results.append({
+            "date": date_eval,
+            "s2_image": s2_img_b64,
+            "sr_image": sr_img_b64,
+            "build_image": build_img_b64
+        })
 
-        # Guardar la imagen de edificaciones individualmente
-        plt.imshow(build_np, cmap="gray")
-        plt.axis("off")
-        build_filename = f"build_{date_eval}.png"
-        build_path = os.path.join(folder, build_filename)
-        plt.savefig(build_path)
-        plt.close()
+    return results
 
-        # Guardar la imagen combinada
-        # fig, ax = plt.subplots(1, 3, figsize=(15, 5))
-        # ax[0].imshow(img_np_equalized[:, :, [0, 1, 2]])
-        # ax[0].axis("off")
-        # ax[1].imshow(sr_np_equalized[:, :, [0, 1, 2]])
-        # ax[1].axis("off")
-        # ax[2].imshow(build_np, cmap="gray")
-        # ax[2].axis("off")
-        # combined_filename = f"combined_{date_eval}.png"
-        # combined_path = os.path.join(folder, combined_filename)
-        # plt.savefig(combined_path)
-        # plt.close()
+# Función auxiliar para guardar y convertir imágenes a Base64
+def save_image_to_base64(image_array, save_path, cmap=None):
+    plt.imshow(image_array, cmap=cmap)
+    plt.axis("off")
 
-    list_path = [os.path.join(folder, x) for x in os.listdir(folder) if x.endswith(".png")]
-    return list_path
+    # Guardar imagen en disco
+    plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    # Convertir imagen a Base64
+    buf = io.BytesIO()
+    plt.imsave(buf, image_array, cmap=cmap, format='png')
+    buf.seek(0)
+    img_b64 = base64.b64encode(buf.read()).decode('utf-8')
+    return img_b64

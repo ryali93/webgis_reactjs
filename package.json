@@ -24,6 +24,7 @@
     "ol": "^10.3.1",
     "ol-ext": "^4.0.24",
     "ol-ext-tidop": "^0.0.50",
+    "ol-geocoder": "^4.3.3",
     "ol-layerswitcher": "^4.0.0-beta.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

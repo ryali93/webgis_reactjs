@@ -114,7 +114,7 @@ function App() {
           rightSidebarWidth={rightSidebarWidth}
           timeSeriesData={timeSeriesData} // Pasamos los datos de la serie temporal al BottomCanvas
           multitemporalImages={multitemporalImages} // Pasamos las imágenes multitemporales al BottomCanvas
-          setTimeSeriesInSAR={timeSeriesInSAR} // Pasamos los datos de la serie temporal de InSAR al BottomCanvas
+          timeSeriesInSAR={timeSeriesInSAR} // Pasamos los datos de la serie temporal de InSAR al BottomCanvas
         />
         </div>
       </div>

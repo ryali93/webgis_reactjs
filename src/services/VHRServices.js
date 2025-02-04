@@ -14,8 +14,8 @@ const get_s2 = async (request) => {
         console.log(url)
 
         const body = {
-            lat: coordinates[0],
-            lon: coordinates[1],
+            lat: coordinates[1],
+            lon: coordinates[0],
             bands: ["B04", "B03", "B02", "B08"],
             fechas: fechas,
             edge_size: 64,
