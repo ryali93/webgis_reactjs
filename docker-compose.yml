@@ -1,18 +1,34 @@
 version: "3.7"
 name: webgis
 services:
-  node:
+  # ReactJS Frontend
+  reactjs:
     build:
       context: .
       dockerfile: docker/node/Dockerfile
-    container_name: node
+    container_name: reactjs
     restart: always
     working_dir: /usr/src/app
     command: npm start  # Usa nodemon y webpack --watch | # npm start para producción
     ports:
       - "${NODE_PORT}:4000"
-    # volumes:
-    #   - '.:/usr/src/app'
+    volumes:
+      - './outputs_shared:/usr/src/app/outputs_shared'
+    networks:
+      - frontend
+      - backend
+  express:
+    build:
+      context: .
+      dockerfile: docker/express/Dockerfile  # Usamos la misma imagen que React
+    container_name: express
+    restart: always
+    working_dir: /usr/src/app
+    command: npm start
+    ports:
+      - "${NODE_SERVER_PORT}:4001"
+    volumes:
+      - './outputs_shared:/usr/src/app/outputs_shared'
     networks:
       - frontend
       - backend
@@ -60,21 +76,32 @@ services:
     image: kartoza/geoserver:2.22.2
     restart: always
     ports:
-        - "8085:8080"
+      - "8085:8080"
     volumes:
-        - ./docker/geoserver:/opt/geoserver/data_dir
-        - ./docker/geoserver/data:/opt/geoserver/data_dir/data
+      - ./docker/geoserver:/opt/geoserver/data_dir
+      - ./docker/geoserver/data:/opt/geoserver/data_dir/data
     environment:
-        GEOSERVER_DATA_DIR: /opt/geoserver/data_dir
-        GEOSERVER_ADMIN_USER: admin
-        GEOSERVER_ADMIN_PASSWORD: crj#roadeye#21
-        STABLE_EXTENSIONS: sldservice-plugin,feature-pregeneralized-plugin,css-plugin,importer-plugin
-        COMMUNITY_EXTENSIONS: cog-plugin
-        INITIAL_MEMORY: 2G
-        MAXIMUM_MEMORY: 4G
+      GEOSERVER_DATA_DIR: /opt/geoserver/data_dir
+      GEOSERVER_ADMIN_USER: admin
+      GEOSERVER_ADMIN_PASSWORD: crj#roadeye#21
+      STABLE_EXTENSIONS: sldservice-plugin,feature-pregeneralized-plugin,css-plugin,importer-plugin
+      COMMUNITY_EXTENSIONS: cog-plugin
+      INITIAL_MEMORY: 2G
+      MAXIMUM_MEMORY: 4G
     networks:
-        - backend
+      - backend
     mem_limit: 2g
+  vhr:
+    build:
+      context: ./docker/vhr_fastapi
+      dockerfile: Dockerfile
+    volumes:
+      - ./outputs_shared:/tmp
+    ports:
+      - "8000:8000"
+    networks:
+      - frontend
+      - backend
 networks:
   frontend:
   backend:

@@ -109,6 +109,34 @@ const post_time_series = async (request) => {
   }
 };
 
+const display_img = async (request) => {
+  try {
+    console.log('[GeeServices] Received request:', request);
+    let coordinates;
+    var { id, geometry, indices, scale, start_date, end_date, cloud_cover } = request;
+    coordinates = GeometryValidation(geometry);
+    console.log('Coordinates:', coordinates);
+
+    // Crear la URL con todos los parámetros necesarios
+    const url = new URL(`${process.env.REACT_APP_GEE_API_URL}/ee/display-img`);
+    url.search = new URLSearchParams({
+      id: id,
+      geometry: JSON.stringify(coordinates),
+      indices: indices,
+      scale: scale,
+      start_date: start_date,
+      end_date: end_date,
+      cloud_cover: cloud_cover
+    });    
+    console.log(url)
+    const response = await fetch(url);
+    const data = await response.text();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 const get_flood = async (request) => {
   try {
     console.log('[GeeServices:getFlood] Received request:', request);
@@ -135,5 +163,6 @@ export {
   post_mapid,
   get_dates,
   post_time_series,
+  display_img,
   get_flood
 };

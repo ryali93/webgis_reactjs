@@ -25,6 +25,8 @@ yarn-error.log*
 /docker/geoserver/gwc/*
 /docker/*.csv
 /docker/postgresql/data/*
+/docker/vhr_fastapi/src/weights/*
 
 *.sql
 *.db
+*.onnx

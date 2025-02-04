@@ -6,6 +6,11 @@ import OlSourceOsm from 'ol/source/OSM';
 import OlSourceXYZ from 'ol/source/XYZ';
 import TileWMS from 'ol/source/TileWMS';
 
+import GeoTIFF from 'ol/source/GeoTIFF.js';
+
+import WebGLTile from 'ol/layer/WebGLTile';
+
+
 var ip_server = 'localhost';
 var port_geoserver = 8085;
 
@@ -158,5 +163,16 @@ var egmsLayers = new Group({
         ortho_up_view
       ]
 });
+
+// var cogLayer = new WebGLTile({
+//     id: 'cogLayer',
+//     title: "COG Layer",
+//     source: new GeoTIFF({
+//         sources: [{
+//             url: 'https://storage.googleapis.com/ryali93_bucket/cog_test/orto_ndvi_1m_cog_3857_RGB.tif'
+//         }],
+//         interpolate: true,
+//     })
+// });
 
 export {baseLayers, egmsLayers};

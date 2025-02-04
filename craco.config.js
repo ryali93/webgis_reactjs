@@ -16,7 +16,6 @@ module.exports = {
         include: /node_modules/,
         type: 'javascript/auto'
       });
-
       // Evitar errores “fully specified”
       webpackConfig.resolve.fullySpecified = false;
 

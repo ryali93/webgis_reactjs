@@ -1,0 +1,18 @@
+/* src/styles/GraphVis.css */
+.chartOverlay {
+  position: relative; /* Cambiado a relative para que se ajuste al contenedor padre */
+  width: 100%; /* Ajustar al 100% del contenedor padre */
+  height: 100%; /* Ajustar al 90% del contenedor padre */
+  max-height: 290px; /* Limitar la altura máxima a 280px */
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  padding: 0px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.chartOverlay canvas {
+  height: auto; /* Mantener la altura automática */
+}

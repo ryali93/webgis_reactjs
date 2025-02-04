@@ -243,3 +243,39 @@ input:focus ~ .bar:after {
     background: #007bff;
     color: white;
 }
+
+/* Carousel */
+.carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    position: relative;
+}
+  
+.carousel button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel button:first-child {
+    left: 10px;
+}
+
+.carousel button:last-child {
+    right: 10px;
+}
+
+.carousel-image {
+    max-width: 500px;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}

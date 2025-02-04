@@ -29,7 +29,12 @@
 }
 
 /* Botón de colapsar/expandir */
-.toggle-button {
+.toggle-wrapper-sd {
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-button-sd {
   background-color: #3498db;
   color: white;
   border: none;
@@ -46,7 +51,7 @@
 }
 
 
-.toggle-button:hover {
+.toggle-button-sd:hover {
   background-color: #2980b9;
   transform: scale(1.1); /* Efecto visual */
 }
@@ -145,7 +150,7 @@
 }
 
 /* Botones de pestañas */
-.tab-button {
+.tab-button-sd {
   flex: 1;
   background-color: #34495e;
   color: white;
@@ -161,19 +166,19 @@
   margin: 0 5px; /* Espaciado entre pestañas */
 }
 
-.tab-button:hover {
+.tab-button-sd:hover {
   background-color: #2c3e50;
   transform: scale(1.05); /* Efecto hover */
 }
 
-.tab-button.active {
+.tab-button-sd.active {
   background-color: #3498db;
   font-weight: bold;
   color: white;
 }
 
 /* Línea decorativa debajo de la pestaña activa */
-.tab-button.active::after {
+.tab-button-sd.active::after {
   content: "";
   position: absolute;
   bottom: -1px;
@@ -186,12 +191,12 @@
 }
 
 /* Suavizar transiciones */
-.tab-button,
+.tab-button-sd,
 .collapsed-tab {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.tab-button:hover,
+.tab-button-sd:hover,
 .collapsed-tab:hover {
   background-color: #2c3e50;
   color: #fff;

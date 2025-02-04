@@ -4,11 +4,12 @@ const express = require('express');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const pool = require('./services/db'); // Importamos la conexión a la base de datos
+const path = require('path');
+const pool = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 4001;
-const HOST = process.env.HOST || 'localhost';
+const PORT = process.env.NODE_SERVER_PORT || 4001;
+const HOST = process.env.APP_HOST || '0.0.0.0';
 
 // Middlewares
 app.use(cors());
@@ -53,7 +54,11 @@ router.get('/metadata', async (req, res) => {
         res.status(500).send('Error en el servidor');
     }
 });
-  
+
+// Servir dinámicamente la carpeta de resultados compartidos
+app.use('/results', express.static(path.join(__dirname, 'shared_outputs')));
+
+// Agregar la ruta principal para Insar API
 app.use('/insar', router);
 
 // Iniciar el servidor

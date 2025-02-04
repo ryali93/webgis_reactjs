@@ -19,7 +19,7 @@ import 'ol/ol.css';
 import 'ol-ext/dist/ol-ext.css';
 import '../styles/Map.css'
 
-function createMap(onDrawEndCallback) {
+function createMap(onDrawEndCallback, onMapClickCallback) {
   // Mapa
   const map = new OlMap({
     interactions: defaultInteractions({ doubleClickZoom: false }),
@@ -27,9 +27,9 @@ function createMap(onDrawEndCallback) {
       center: fromLonLat([-3.7038, 40.4168]), // Madrid
       zoom: 6,
     }),
-    layers: [baseLayers, egmsLayers],
+    layers: [baseLayers, egmsLayers], // , cogLayer
   });
-
+  
   // Vector layer
   const source = new VectorSource();
   const vector = new VectorLayer({ source });
@@ -128,6 +128,12 @@ function createMap(onDrawEndCallback) {
           console.log(data_insar_ts);
           const metadata_insar = await get_metadata_by_id(requestDataInsar);
           console.log(metadata_insar);
+
+          // Llama al callback con los datos obtenidos
+          if (onMapClickCallback) {
+            console.log("[Map.js] Llamando a onMapClickCallback");
+            onMapClickCallback({ data_insar_ts, metadata_insar });
+          }
 
         } catch (error) {
           console.error(`[Map.js] Error consultando la capa "${layer.get('title')}"`, error);

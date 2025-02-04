@@ -13,7 +13,9 @@ function RightSidebar({
   addDrawInteraction,
   clearGeometries,
   geometry,
-  addTileLayerFn
+  addTileLayerFn,
+  setTimeSeriesData,
+  setMultitemporalImages
 }) {
   const [activeTab, setActiveTab] = useState('Tool1');
 
@@ -30,10 +32,23 @@ function RightSidebar({
     }
   };
 
+  const addTimeSeriesData = (timeSeriesData) => {
+    console.log('[RightSidebar] addTimeSeriesData:', timeSeriesData);
+    setTimeSeriesData(timeSeriesData);
+    return timeSeriesData;
+    };
+
+  const addMultitemporalImages = (multitemporalImages) => {
+    const urlsArray = JSON.parse(multitemporalImages);
+    setMultitemporalImages(urlsArray);
+    return multitemporalImages;
+  };
+
+
   return (
     <div className={`right-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="toggle-wrapper">
-        <button className="toggle-button" onClick={onToggle}>
+      <div className="toggle-wrapper-sd">
+        <button className="toggle-button-sd" onClick={onToggle}>
           {isCollapsed ? '>' : '<'}
         </button>
       </div>
@@ -44,7 +59,7 @@ function RightSidebar({
             {Object.keys(tools).map((tab) => (
               <button
                 key={tab}
-                className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+                className={`tab-button-sd ${activeTab === tab ? 'active' : ''}`}
                 onClick={() => activateTab(tab)}
               >
                 {tools[tab].label}
@@ -73,6 +88,8 @@ function RightSidebar({
                 },
                 geometry: geometry,
                 addTileLayerFn: addTileLayerFn,
+                setTimeSeriesData: addTimeSeriesData,
+                setMultitemporalImages: addMultitemporalImages
               })
             }
           </div>
