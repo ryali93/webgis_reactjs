@@ -40,20 +40,20 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   margin: 10px 0;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.1s ease, background-color 0.1s ease;
 }
 
 
 .toggle-button-sd:hover {
   background-color: #2980b9;
-  transform: scale(1.1); /* Efecto visual */
+  transform: scale(1.2); /* Efecto visual */
 }
 
 /* Contenido de herramientas en el estado expandido */

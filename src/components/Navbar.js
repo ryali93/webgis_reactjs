@@ -10,7 +10,7 @@ function Navbar() {
       </div>
 
       <div className="navbar-center">
-        <h1>Proyecto Prueba</h1>
+        <h1>Roadeye Viewer</h1>
       </div>
 
       <div className="navbar-right">

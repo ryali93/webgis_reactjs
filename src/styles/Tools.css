@@ -81,6 +81,24 @@
     background-color: #F45050;
 }
 
+#clearResults {
+    /* background-image: url("img/delete.png"); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ce9732;
+    background-size: 20px;
+    opacity: 0.8;
+    font-size: small;
+}
+
+#clearResults:hover {
+    background-color: #a36b1f;
+}
+
+#clearResults:focus {
+    background-color: #ce9732;
+}
+
 /* Calendar */
 .group {
     position: relative;
@@ -244,38 +262,81 @@ input:focus ~ .bar:after {
     color: white;
 }
 
-/* Carousel */
+/* Estilos para el carrusel */
 .carousel {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
     position: relative;
-}
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
   
-.carousel button {
+  .carousel-content {
+    text-align: center;
+  }
+  
+  .carousel button {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
+    border-radius: 50%;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-}
-
-.carousel button:first-child {
-    left: 10px;
-}
-
-.carousel button:last-child {
-    right: 10px;
-}
-
-.carousel-image {
-    max-width: 500px;
-    max-height: 300px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .carousel button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .carousel button:first-child {
+    left: 5px;
+  }
+  
+  .carousel button:last-child {
+    right: 5px;
+  }
+  
+  .carousel-image {
+    max-width: 400px;
+    max-height: 250px;
     border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
+    margin-top: 5px;
+  }
+  
+  .image-date {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .loading-message {
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    margin-top: 15px;
+  }
+  
+
+  .loader {
+    margin: auto;
+    border: 10px solid #acacac;
+    border-radius: 50%;
+    border-top: 10px solid #3498db;
+    width: 20px;
+    height: 20px;
+    animation: spinner 3s linear infinite;
+  }
+  
+  @keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

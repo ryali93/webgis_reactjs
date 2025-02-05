@@ -15,6 +15,7 @@ function App() {
   const [geometry, setGeometry] = useState(null);
   const [addTileLayerFn, setAddTileLayerFn] = useState(null);
   const [timeSeriesInSAR, setTimeSeriesInSAR] = useState(null);
+  const [imageGroups, setImageGroups] = useState([]);  // <-- Nuevo estado para las imágenes
 
   const [timeSeriesData, setTimeSeriesData] = useState(null); // Estado para almacenar los datos de la serie temporal
   const [multitemporalImages, setMultitemporalImages] = useState(null); // Estado para almacenar las imágenes multitemporales
@@ -24,9 +25,6 @@ function App() {
 
   const [bottomCanvasHeight, setBottomCanvasHeight] = useState(null); // Altura inicial del BottomCanvasHeight
   const [bottomCanvasCollapsed, setBottomCanvasCollapsed] = useState(true); // Estado de colapso del BottomCanvas
-
-  // const [leftSidebarWidth, setLeftSidebarWidth] = useState(0); // Ancho inicial del sidebar izquierdo
-  // const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(true); // Estado de colapso del sidebar izquierdo
 
   useEffect(() => {
     // Ajustar la altura del contenedor del mapa cuando cambia la altura del BottomCanvas
@@ -41,11 +39,6 @@ function App() {
     setRightSidebarCollapsed(!rightSidebarCollapsed);
     setRightSidebarWidth(!rightSidebarCollapsed ? 50 : 400); // Ajusta el ancho según el estado de colapso
   };
-
-  // const toggleLeftSidebar = () => {
-  //   setLeftSidebarCollapsed(!leftSidebarCollapsed);
-  //   setLeftSidebarWidth(!leftSidebarCollapsed ? 50 : 250); // Ajusta el ancho según el estado de colapso
-  // };
 
   const toggleBottomCanvas = () => {
     setBottomCanvasCollapsed(!bottomCanvasCollapsed);
@@ -87,11 +80,7 @@ function App() {
             transition: 'margin-right 0.3s ease',
           }}
         >
-        {/* <Sidebar
-          isCollapsed={leftSidebarCollapsed}
-          onToggle={toggleLeftSidebar}
-          onWidthChange={setLeftSidebarWidth}
-        /> */}
+
           {mapInstance && <MapContainer map={mapInstance} />}
 
         <RightSidebar
@@ -105,6 +94,10 @@ function App() {
           addTileLayerFn={addTileLayerFn} // Pasamos la función de añadir capa al sidebar
           setTimeSeriesData={setTimeSeriesData} // Pasamos la función para añadir datos de la serie temporal
           setMultitemporalImages={setMultitemporalImages} // Pasamos la función para añadir imágenes multitemporales
+          
+          imageGroups={imageGroups}  // <-- Pasamos imageGroups
+          setImageGroups={setImageGroups}  // <-- Pasamos el setter
+          mapInstance={mapInstance} // <-- Pasamos la instancia
         />
 
         <BottomCanvas

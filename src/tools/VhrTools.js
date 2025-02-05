@@ -1,36 +1,44 @@
 // src/tools/VhrTools.js
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ImRoad } from "react-icons/im";
 import flatpickr from 'flatpickr';
 import '../styles/Tools.css';
 import 'flatpickr/dist/flatpickr.css';
 import { get_s2, get_sr, get_builds, get_vis } from '../services/VHRServices';
+import { fromLonLat } from 'ol/proj';
 
-export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} ) {
+
+export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry, imageGroups, setImageGroups, mapInstance} ) {
   const [datesEval, setDates] = useState([]);
   const [selectedExample, setSelectedExample] = useState(null);
   const [flatpickrInstance, setFlatpickrInstance] = useState(null);
-  const [imageUrls, setImageUrls] = useState({ s2: [], sr: [], builds: [] });
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const examples = [
     { 
         id: 1, 
         name: "1: Madrid - Barajas (2020-06-22 a 2020-07-07)", 
         date: "2020-06-22 || 2020-07-07", 
-        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ] }
+        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ], zoom: 15 }
     },
     { 
         id: 2, 
         name: "2: Valladolid (2022-08-08; 2022-08-23 )", 
         date: "2022-08-08 || 2022-08-23 ", 
-        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ] }
+        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ], zoom: 15 }
     },
     { 
         id: 3, 
         name: "3: Avila - Nissan (2022-05-20; 2022-07-27)", 
         date: "2021-08-20 || 2022-07-21",  // || 2022-07-06 || 2022-07-27
-        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ] }
+        geometry: { type: "Point", coordinates: [ -4.697, 40.673 ], zoom: 16 }
+    },
+    { 
+        id: 4, 
+        name: "4: Avila - Postas (2024-07-19; 2024-08-18)", 
+        date: "2024-07-19 || 2024-08-18",  // || 2022-07-06 || 2022-07-27
+        geometry: { type: "Point", coordinates: [ -4.70459, 40.6452 ], zoom: 16 }
     }
   ];
 
@@ -58,6 +66,13 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
     if (addDrawInteraction) {
         addDrawInteraction(example.geometry.type);
     }
+
+    // Centrar el mapa en la coordenada seleccionada
+    if (mapInstance) {
+      const view = mapInstance.getView();
+      view.setCenter(fromLonLat(example.geometry.coordinates));
+      view.setZoom(example.geometry.zoom); // Ajusta el nivel de zoom según lo necesites
+    }
   };
 
   const handleGeometrySelection = (type) => {
@@ -80,103 +95,52 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
 
   const handleRun = async (event) => {
     event.preventDefault(); 
+    setLoading(true);
 
     if (!geometry) {
       console.error('Please select a valid geometry.');
+      setLoading(false);
       return;
     }
-    // 1. GET VHR - S2 Images
-    const requestVHRs2 = {
-      geometry: geometry,
-      fechas: datesEval
-    };
-    console.log('[VHR: get_s2] requestVHR:', requestVHRs2);
-    try {
-      var folder_s2 = await get_s2(requestVHRs2);
-      console.log(folder_s2);
-    } catch (error) {
-      console.error("Error fetching VHR data:", error);
-    }
-    // 2. GET VHR - S2 Super Resolution
-    console.log('[VHR: get_sr] requestVHRsr:', {"folder": folder_s2});
-    try {
-      var folder_sr = await get_sr({folder: folder_s2});
-      console.log(folder_sr);
-    } catch (error) {
-      console.error("Error fetching VHR SR data:", error);
-    }
-    // 3. GET VHR - S2 Builds
-    console.log('[VHR: get_builds] requestVHRbuilds:', {"folder": folder_s2});
-    try {
-      var path_builds = await get_builds({folder: folder_s2});
-      console.log(path_builds);
-    } catch (error) {
-      console.error("Error fetching VHR builds data:", error);
-    }
-    // 4. GET VHR - Visualization
-    console.log('[VHR: get_vis] requestVHRvis:', {"folder": folder_s2});
-    try {
-      var listImages = await get_vis({folder: folder_s2});
-      console.log(listImages);
-    } catch (error) {
-      console.error("Error fetching VHR VIS data:", error);
-    }
 
-    // 5. Buscar imágenes en la carpeta y mostrarlas en el carrusel
-    fetchImages(listImages);
-
+    try {
+      const requestVHRs2 = { geometry, fechas: datesEval };
+      const folder_s2 = await get_s2(requestVHRs2);
+      await get_sr({ folder: folder_s2 });
+      await get_builds({ folder: folder_s2 });
+      const listImages = await get_vis({ folder: folder_s2 });
+      processImages(listImages);
+    } catch (error) {
+      console.error("Error in processing VHR data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Función para procesar y organizar imágenes
-  const fetchImages = async (listImages) => {
-    try {
-      // Diccionario para clasificar imágenes
-      const imagesByType = {
-        s2: [],
-        sr: [],
-        builds: []
-      };
-  
-      // Clasificar imágenes por tipo y convertirlas en URLs Base64
-      listImages.forEach(item => {
-        if (item.s2_image) {
-          imagesByType.s2.push(`data:image/png;base64,${item.s2_image}`);
-        }
-        if (item.sr_image) {
-          imagesByType.sr.push(`data:image/png;base64,${item.sr_image}`);
-        }
-        if (item.build_image) {
-          imagesByType.builds.push(`data:image/png;base64,${item.build_image}`);
-        }
-      });
-  
-      // Ordenar imágenes por fecha (si es necesario)
-      imagesByType.s2.sort((a, b) => new Date(a.date) - new Date(b.date));
-      imagesByType.sr.sort((a, b) => new Date(a.date) - new Date(b.date));
-      imagesByType.builds.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
-      // Almacenar las imágenes en el estado
-      setImageUrls(imagesByType);
-  
-    } catch (error) {
-      console.error("Error obteniendo imágenes:", error);
-    }
+  const processImages = (listImages) => {
+    const groupedImages = listImages.map(item => ({
+      date: item.date,
+      s2_image: item.s2_image ? `data:image/png;base64,${item.s2_image}` : null,
+      sr_image: item.sr_image ? `data:image/png;base64,${item.sr_image}` : null,
+      build_image: item.build_image ? `data:image/png;base64,${item.build_image}` : null
+    }));
+    setImageGroups(groupedImages);
+    // preservedData.current = groupedImages;
   };
 
   // Función para cambiar la imagen en el carrusel
-  const nextImage = (type) => {
-    setCurrentImageIndex((prevIndex) => 
-      (prevIndex + 1) % imageUrls[type].length
-    );
+  const nextGroup = () => {
+    setCurrentGroupIndex((prevIndex) => (prevIndex + 1) % imageGroups.length);
   };
 
-  const prevImage = (type) => {
-    setCurrentImageIndex((prevIndex) => 
-      (prevIndex - 1 + imageUrls[type].length) % imageUrls[type].length
-    );
+  const prevGroup = () => {
+    setCurrentGroupIndex((prevIndex) => (prevIndex - 1 + imageGroups.length) % imageGroups.length);
   };
 
-  
+  const clearResults = () => {
+    setImageGroups([]);
+    setCurrentGroupIndex(0);
+  };
 
 
   return (
@@ -187,6 +151,8 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
           <div className="drawButtons">
               <button onClick={() => handleGeometrySelection('Point')} className="drawButton" id="drawPoint" title="Point" />
               <button onClick={clearGeometry} className="drawButton" id="drawClear" title="Clear geometry" />
+              
+          <button onClick={clearResults} className="drawButton" id="clearResults" title="Clear Results">Clear results</button>
           </div>
       </div>
       
@@ -214,32 +180,22 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry} 
 
       <button onClick={handleRun} className="runButton">Run</button>
 
-      {/* Después de ejecutar el Run, agregar un div y las imágenes .png que están dentro de la carpeta "folder" */}
+      {/* {loading && <p className="loading-message">Processing, please wait...</p>} */}
+      {loading && <div class="loader"></div>}
+
       {/* // Renderizado del carrusel para cada tipo */}
-      {imageUrls.s2.length > 0 && (
+      {imageGroups.length > 0 && (
         <div className="carousel">
-          <button onClick={() => prevImage('s2')}>&lt;</button>
-          <img src={imageUrls.s2[currentImageIndex]} alt="S2 result" className="carousel-image" />
-          <button onClick={() => nextImage('s2')}>&gt;</button>
+          <button onClick={prevGroup}>&lt;</button>
+          <div className="carousel-content">
+            <p className="image-date">{imageGroups[currentGroupIndex].date}</p>
+            {imageGroups[currentGroupIndex].s2_image && <img src={imageGroups[currentGroupIndex].s2_image} alt="S2 result" className="carousel-image" />}
+            {imageGroups[currentGroupIndex].sr_image && <img src={imageGroups[currentGroupIndex].sr_image} alt="SR result" className="carousel-image" />}
+            {imageGroups[currentGroupIndex].build_image && <img src={imageGroups[currentGroupIndex].build_image} alt="Buildings result" className="carousel-image" />}
+          </div>
+          <button onClick={nextGroup}>&gt;</button>
         </div>
       )}
-
-      {imageUrls.sr.length > 0 && (
-        <div className="carousel">
-          <button onClick={() => prevImage('sr')}>&lt;</button>
-          <img src={imageUrls.sr[currentImageIndex]} alt="SR result" className="carousel-image" />
-          <button onClick={() => nextImage('sr')}>&gt;</button>
-        </div>
-      )}
-
-      {imageUrls.builds.length > 0 && (
-        <div className="carousel">
-          <button onClick={() => prevImage('builds')}>&lt;</button>
-          <img src={imageUrls.builds[currentImageIndex]} alt="Buildings result" className="carousel-image" />
-          <button onClick={() => nextImage('builds')}>&gt;</button>
-        </div>
-      )}
-
     </div>
   );
 }

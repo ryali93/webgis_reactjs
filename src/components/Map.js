@@ -9,6 +9,7 @@ import VectorSource from 'ol/source/Vector';
 import CustomLayerSwitcher from '../tools/Ol-ext';
 import Geocoder from 'ol-geocoder';
 import Draw, { createRegularPolygon } from 'ol/interaction/Draw';
+import MousePosition from 'ol/control/MousePosition';
 import { fromLonLat } from 'ol/proj';
 import { defaults as defaultInteractions } from 'ol/interaction';
 
@@ -33,26 +34,36 @@ function createMap(onDrawEndCallback, onMapClickCallback) {
   });
   
   // Vector layer
-  const source = new VectorSource();
+  const source = new VectorSource({
+    openInLayerSwitcher: false,
+    displayInLayerSwitcher: false,
+  });
   const vector = new VectorLayer({ source });
   map.addLayer(vector);
 
   // Controles
   map.addControl(new OlControlScaleLine());
   map.addControl(new CustomLayerSwitcher());
+  var mouse_position = new MousePosition({
+    projection: 'EPSG:4326',
+    coordinateFormat: function(coordinate) {
+      return 'Coordinates: ' + coordinate[0].toFixed(3) + ', ' + coordinate[1].toFixed(3);
+    },
+  });
+  map.addControl(mouse_position);
 
   //Instantiate with some options and add the Control
-  // var geocoder = new Geocoder('nominatim', {
-  //   provider: 'osm',
-  //   lang: 'es',
-  //   placeholder: 'Search for ...',
-  //   limit: 5,
-  //   debug: false,
-  //   autoComplete: true,
-  //   keepOpen: true,
-  //   countrycodes: 'es',
-  // });
-  // map.addControl(geocoder);
+  var geocoder = new Geocoder('nominatim', {
+    provider: 'osm',
+    lang: 'es',
+    placeholder: 'Search for ...',
+    limit: 5,
+    debug: false,
+    autoComplete: true,
+    keepOpen: true,
+    countrycodes: 'es',
+  });
+  map.addControl(geocoder);
 
   
   let draw; // Mantendremos la interacción actual

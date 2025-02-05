@@ -6,6 +6,8 @@ import GeeTools from '../tools/GeeTools';
 import VhrTools from '../tools/VhrTools';
 import FloodTools from '../tools/FloodTools';
 
+import { TbArrowBigLeftLinesFilled, TbArrowBigRightLinesFilled } from "react-icons/tb";
+
 function RightSidebar({
   isCollapsed,
   onToggle,
@@ -15,7 +17,10 @@ function RightSidebar({
   geometry,
   addTileLayerFn,
   setTimeSeriesData,
-  setMultitemporalImages
+  setMultitemporalImages,
+  imageGroups,          // <-- Recibir imageGroups del componente padre
+  setImageGroups,        // <-- Recibir setImageGroups del componente padre
+  mapInstance
 }) {
   const [activeTab, setActiveTab] = useState('Tool1');
 
@@ -49,7 +54,7 @@ function RightSidebar({
     <div className={`right-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="toggle-wrapper-sd">
         <button className="toggle-button-sd" onClick={onToggle}>
-          {isCollapsed ? '>' : '<'}
+          {isCollapsed ? <TbArrowBigLeftLinesFilled /> : <TbArrowBigRightLinesFilled />}
         </button>
       </div>
 
@@ -89,7 +94,10 @@ function RightSidebar({
                 geometry: geometry,
                 addTileLayerFn: addTileLayerFn,
                 setTimeSeriesData: addTimeSeriesData,
-                setMultitemporalImages: addMultitemporalImages
+                setMultitemporalImages: addMultitemporalImages, 
+                imageGroups,
+                setImageGroups,
+                mapInstance
               })
             }
           </div>
