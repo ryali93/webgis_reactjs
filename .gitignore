@@ -26,6 +26,7 @@ yarn-error.log*
 /docker/*.csv
 /docker/postgresql/data/*
 /docker/vhr_fastapi/src/weights/*
+/outputs_shared/tmp*
 
 *.sql
 *.db

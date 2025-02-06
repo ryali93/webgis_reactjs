@@ -46,11 +46,30 @@
 
 /* Sección central */
 .navbar-center h1 {
-  font-size: 18px;
+  /* font-size: 18px;
   font-weight: bold;
   color: #333333;
   margin: 0;
   text-align: center;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+  z-index: 1 */
+  top: 0;
+  width: 100%;
+  height: 5rem;
+  line-height: 5rem;
+  font-size: 2rem;
+  text-align: center;
+  z-index: 10;
+  color: #014487;
+  /* Cursiva */
+  /* font-style: italic; */
+  /* font-family: Courier, monospace; */
+  font-family: Helvetica, Arial, sans-serif;
+
+
 }
 
 /* Sección derecha */

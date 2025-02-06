@@ -5,14 +5,12 @@ import OlLayerTile from 'ol/layer/Tile';
 import OlSourceOsm from 'ol/source/OSM';
 import OlSourceXYZ from 'ol/source/XYZ';
 import TileWMS from 'ol/source/TileWMS';
-
-import GeoTIFF from 'ol/source/GeoTIFF.js';
-
-import WebGLTile from 'ol/layer/WebGLTile';
-
+// import GeoTIFF from 'ol/source/GeoTIFF.js';
+// import WebGLTile from 'ol/layer/WebGLTile';
 
 var ip_server = 'localhost';
 var port_geoserver = 8085;
+var url_geoserver = process.env.REACT_APP_GEOSERVER_API_URL
 
 const baseLayers = new Group({
     title: 'Basemaps',
@@ -36,7 +34,7 @@ const baseLayers = new Group({
             title: "Orthoimage",
             name: 'ortho',
             source: new TileWMS({
-                url: 'http://'+ip_server+':'+port_geoserver+'/geoserver/apimov/wms', //url_proxy + 
+                url: url_geoserver+'/geoserver/apimov/wms', //url_proxy + 
                 params: {
                     LAYERS: 'apimov:OI_OrthoimageCoverage', 
                     VERSION: '1.1.1', 
@@ -93,7 +91,7 @@ var ortho_east_view = new TileLayer({
     title: "Horizontal deformation",
     name: 'ortho_east_view',
     source: new TileWMS({
-        url: 'http://'+ip_server+':'+port_geoserver+'/geoserver/apimov/wms', //url_proxy + 
+        url: url_geoserver+'/geoserver/apimov/wms', //url_proxy + 
         params: {
             LAYERS: 'ortho_east_view', 
             VERSION: '1.1.1', 
@@ -116,7 +114,7 @@ var ortho_up_view = new TileLayer({
     title: "Vertical deformation",
     name: 'ortho_up_view',
     source: new TileWMS({
-        url: 'http://'+ip_server+':'+port_geoserver+'/geoserver/apimov/wms', //url_proxy + 
+        url: url_geoserver+'/geoserver/apimov/wms', //url_proxy + 
         params: {
             LAYERS: 'ortho_up_view', 
             VERSION: '1.1.1', 
@@ -136,7 +134,7 @@ var tramos = new TileLayer({
     title: "Tramos",
     name: 'buffer',
     source: new TileWMS({
-        url: 'http://'+ip_server+':'+port_geoserver+'/geoserver/ows?', //url_proxy + 
+        url: url_geoserver+'/geoserver/ows?', //url_proxy + 
         params: {
             LAYERS: 'apimov:buffer', 
             VERSION: '1.1.1', 
