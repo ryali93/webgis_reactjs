@@ -136,6 +136,11 @@ async def get_visualization(folder: str):
     builds = ["{}/{}".format(folder, x) for x in os.listdir(folder) if x.startswith("build")]
     results = []
 
+    # Ordenar imágenes por fecha
+    images.sort()
+    srs.sort()
+    builds.sort()
+
     for i in range(len(images)):
         date_eval = images[i].split("_")[-1].split(".")[0]
         date_folder = os.path.join(folder, date_eval)
@@ -146,12 +151,14 @@ async def get_visualization(folder: str):
         # Procesar imagen Sentinel-2
         img_np = np.moveaxis(np.load(images[i]), 0, -1)
         img_np = (img_np / 10000 * 3).clip(0, 1)
+        img_np = np.nan_to_num(img_np, nan=0.0)
         img_np_equalized = exposure.equalize_hist(img_np)
         s2_img_b64 = save_image_to_base64(img_np_equalized[:, :, [0, 1, 2]], os.path.join(date_folder, f"s2_{date_eval}.png"))
 
         # Procesar imagen de superresolución
         sr_np = np.moveaxis(np.load(srs[i]), 0, -1)
         sr_np = (sr_np * 3).clip(0, 1)
+        sr_np = np.nan_to_num(sr_np, nan=0.0)
         sr_np_equalized = exposure.equalize_hist(sr_np)
         sr_img_b64 = save_image_to_base64(sr_np_equalized[:, :, [0, 1, 2]], os.path.join(date_folder, f"sr_{date_eval}.png"))
 

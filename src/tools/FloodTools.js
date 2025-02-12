@@ -4,8 +4,9 @@ import flatpickr from 'flatpickr';
 import '../styles/Tools.css';
 import 'flatpickr/dist/flatpickr.css';
 import { get_flood } from '../services/GeeServices';
+import { fromLonLat } from 'ol/proj';
 
-export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry, addTileLayerFn} ) {
+export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry, addTileLayerFn, mapInstance} ) {
     const [dateEval, setDate] = useState([]);
     const [selectedExample, setSelectedExample] = useState(null);
     const [flatpickrInstance, setFlatpickrInstance] = useState(null);
@@ -15,19 +16,19 @@ export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry
             id: 1, 
             name: "1: Las Navas del Marqués - Ávila (2019-08-26)", 
             date: "2019-08-26", 
-            geometry: { type: "Polygon", coordinates: [[[ -99.1332, 19.4326 ], [ -99.1342, 19.4336 ], [ -99.1352, 19.4326 ], [ -99.1332, 19.4326 ]]] } 
+            geometry: { type: "Polygon", coordinates: [-4.327, 40.604], zoom: 13 } 
         },
         { 
             id: 2, 
             name: "2: Orihuela - Alicante (2019-09-14)", 
             date: "2019-09-14", 
-            geometry: { type: "Rectangle", coordinates: [[[ -80.1918, 25.7617 ], [ -80.1928, 25.7627 ]]] } 
+            geometry: { type: "Rectangle", coordinates: [-1.0356322, 38.1088479], zoom: 13  } 
         },
         { 
             id: 3, 
             name: "3: Catarroja - Valencia (2024-10-29)", 
             date: "2024-10-29", 
-            geometry: { type: "Polygon", coordinates: [[[ -91.132, 29.234 ], [ -91.135, 29.238 ], [ -91.138, 29.230 ], [ -91.132, 29.234 ]]] }
+            geometry: { type: "Polygon", coordinates: [-0.404, 39.403], zoom: 13  }
         }
     ];
 
@@ -53,6 +54,12 @@ export function FloodToolContent( {addDrawInteraction, clearGeometries, geometry
 
         if (addDrawInteraction) {
             addDrawInteraction(example.geometry.type);
+        }
+
+        if (mapInstance) {
+            const view = mapInstance.getView();
+            view.setCenter(fromLonLat(example.geometry.coordinates));
+            view.setZoom(example.geometry.zoom); // Ajusta el nivel de zoom según lo necesites
         }
     };
     

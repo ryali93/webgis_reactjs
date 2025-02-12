@@ -4,8 +4,8 @@ import { ImRoad } from "react-icons/im";
 import flatpickr from 'flatpickr';
 import '../styles/Tools.css';
 import 'flatpickr/dist/flatpickr.css';
-import { get_s2, get_sr, get_builds, get_vis } from '../services/VHRServices';
 import { fromLonLat } from 'ol/proj';
+import { get_s2, get_sr, get_builds, get_vis } from '../services/VHRServices';
 
 
 export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry, imageGroups, setImageGroups, mapInstance} ) {
@@ -20,13 +20,13 @@ export function VhrToolContent( {addDrawInteraction, clearGeometries, geometry, 
         id: 1, 
         name: "1: Madrid - Barajas (2020-06-22 a 2020-07-07)", 
         date: "2020-06-22 || 2020-07-07", 
-        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ], zoom: 15 }
+        geometry: { type: "Point", coordinates: [ -3.576, 40.503 ], zoom: 15 }
     },
     { 
         id: 2, 
-        name: "2: Valladolid (2022-08-08; 2022-08-23 )", 
-        date: "2022-08-08 || 2022-08-23 ", 
-        geometry: { type: "Point", coordinates: [ -91.132, 29.234 ], zoom: 15 }
+        name: "2: Vigo - Playa Samil (2023-08-08; 2023-08-23 )", 
+        date: "2023-08-08 || 2023-10-23 ", 
+        geometry: { type: "Point", coordinates: [ -8.775522, 42.208224 ], zoom: 15 }
     },
     { 
         id: 3, 

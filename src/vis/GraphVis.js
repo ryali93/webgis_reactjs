@@ -44,9 +44,8 @@ const GraphVis = ({timeSeriesData, canvasId}) => {
       // Obtener datasets con los indexes obtenidos para el chart
       // Siete colores diferentes
       const colorPalette = [
-        "red", "green", "blue", "orange", "purple", "brown", "pink"
+        "#43868f","#9eba91","#cfd4b2","#f7f1dc","#ebcca4","#e4a377","#de755b","#d43d51","#488f31"
       ]
-
 
       const datasets = indexMean.map((index) => ({
         label: labels[index],
@@ -60,6 +59,10 @@ const GraphVis = ({timeSeriesData, canvasId}) => {
       }));
 
       const labelsArray = indicesArray[0].date;
+      console.log("labelsArray: ", labelsArray);
+      // '2024-12-07' to date format
+      const labelsArrayDates = labelsArray.map((d) => new Date(d));
+
 
       if (chartRef.current) {
         if (chart) {
@@ -69,15 +72,18 @@ const GraphVis = ({timeSeriesData, canvasId}) => {
         const newChart = new Chart(chartRef.current, {
           type: 'line',
           data: {
-            labels: labelsArray,
+            labels: labelsArrayDates,
             datasets: datasets
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
               x: {
-                ticks: {
-                  maxRotation: 90,
-                  minRotation: 45
+                // type: 'time',
+                type: 'timeseries',
+                time: {
+                  unit: 'day'
                 }
               }
             }
