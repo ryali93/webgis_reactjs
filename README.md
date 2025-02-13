@@ -1,20 +1,25 @@
-# WebGis con ReactJS
+# WebGis Roadeye (ReactJS)
 
-Modificar .env de acuerdo a proyecto
+## Levantar aplicación
+1. Clonar repositorio, incluyendo submódulos
+- `git clone --recurse-submodules git@github.com:ryali93/webgis_reactjs.git`
 
-- `docker-compose up -d`
+2. Modificar archivo `.env` de acuerdo a proyecto, en específico `APP_HOST`
+- `APP_HOST=http://0.0.0.0`
 
-Restauración de la base de datos
-- `node src/commands/restoreDB.js`
-
-Backup de la base de datos
-- `node src/commands/backupDB.js`
-
-
-<!-- Producción
-- `docker exec -it reactjs node /usr/src/app/src/commands/restoreDB.js`
-- `docker exec -it reactjs node src/commands/backupDB.js` -->
-
-Desarrollo
+### Desarrollo
+3. Instalar los módulos de la aplicación
 - `npm install`
+
+4. Inicializar aplicación
 - `npm start`
+
+### Producción
+3. Levantar aplicación completa
+- `docker-compose up --build -d`
+
+4. Restauración de la base de datos (sólo la primera vez)
+- `docker exec -it reactjs node src/commands/restoreDB.js`
+
+<!-- Backup de la base de datos
+- `node src/commands/backupDB.js` -->

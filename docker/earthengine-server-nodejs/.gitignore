@@ -1,7 +1,0 @@
-node_modules/*
-gee-examples.zip
-.DS_Store
-NOTAS.txt
-package-lock.json
-/.idea
-auth/private-key-treeads.json

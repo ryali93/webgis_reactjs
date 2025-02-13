@@ -12,8 +12,8 @@ services:
     command: npm start  # Usa nodemon y webpack --watch | # npm start para producción
     ports:
       - "${NODE_PORT}:4000"
-    volumes:
-      - './outputs_shared:/usr/src/app/outputs_shared'
+    # volumes:
+    #   - './outputs_shared:/usr/src/app/outputs_shared'
     networks:
       - frontend
       - backend
@@ -27,8 +27,8 @@ services:
     command: npm start
     ports:
       - "${NODE_SERVER_PORT}:4001"
-    volumes:
-      - './outputs_shared:/usr/src/app/outputs_shared'
+    # volumes:
+    #   - './outputs_shared:/usr/src/app/outputs_shared'
     networks:
       - frontend
       - backend
@@ -95,8 +95,8 @@ services:
     build:
       context: ./docker/vhr_fastapi
       dockerfile: Dockerfile
-    volumes:
-      - ./outputs_shared:/tmp
+    # volumes:
+    #   - ./outputs_shared:/tmp
     ports:
       - "8000:8000"
     networks:
