@@ -24,5 +24,5 @@ EXPOSE 4000
 # npm run build
 # npx serve -s build
 # Comando por defecto al iniciar el contenedor
-# CMD ["npx", "serve", "-s", "build"]
-CMD ["npm", "start"]
+CMD ["npx", "serve", "-s", "build"]
+# CMD ["npm", "start"]
